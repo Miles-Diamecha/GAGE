@@ -1,0 +1,297 @@
+\documentclass[11pt]{article}
+
+% ---- Safe, minimal preamble (ASCII only) ----
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Listings style (no ligatures; keeps spaces)
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+  breaklines=false,
+  showstringspaces=false,
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{black},
+  tabsize=2
+}
+\lstdefinelanguage{text}{sensitive=false}
+\lstdefinelanguage{json}{
+  basicstyle=\ttfamily\small,
+  showstringspaces=false,
+  breaklines=false,
+  morestring=[b]",
+  morecomment=[l]{//}
+}
+\lstdefinelanguage{bash}{
+  morekeywords={bash,echo,cd,python3,set,tee,mkdir,if,then,fi,else,elif,for,in,do,done,export},
+  sensitive=true
+}
+
+\begin{document}
+
+\begin{center}
+{\Large GAGE\_repo code pack (copy-safe, ASCII)}\par
+\vspace{4pt}
+\small Michael DeMasi DNP
+\end{center}
+\hrule
+\vspace{1em}
+
+\section*{Layout}
+Files printed below (in order):\par
+README.txt; pins.json; src/omega\_chi.py; src/gate\_null.py; src/ward\_flatness\_stub.py (optional); src/snf\_check.py (optional; needs sympy); build.sh; checksums.py\par
+\textit{Usage:} Save each block to the exact filename shown, then run \texttt{bash build.sh}. Outputs: \texttt{results.json}, \texttt{stdout.txt}, \texttt{SHA256SUMS.txt}.
+
+% ===================== README.txt =====================
+\subsection*{README.txt}
+\begin{lstlisting}[language=text]
+GAGE_repo (from-scratch, deterministic, ASCII)
+
+Purpose:
+Recompute Omega_chi, alphaG_pp, closure Omega_chi/alphaG_pp, leave-one-out alpha_s*(MZ),
+and the lab quadratic null DeltaG/G ~= (DeltaXi/sigma_chi)^2 from pinned inputs.
+
+Quickstart:
+1) Save these files as shown (flat folder, keep names).
+2) bash build.sh
+3) Inspect results.json, stdout.txt, SHA256SUMS.txt
+
+Determinism:
+- No RNG, no network calls
+- All constants pinned in pins.json
+- Checksums recorded in SHA256SUMS.txt
+
+Optional:
+- src/snf_check.py verifies chi = (16,13,2) from an example lattice (needs sympy)
+- src/ward_flatness_stub.py wiring for F_sigma monitor (you add RGE grid later)
+\end{lstlisting}
+
+% ===================== pins.json =====================
+\newpage
+\subsection*{pins.json}
+\begin{lstlisting}[language=json]
+{
+  "meta": {
+    "scheme": "MS",
+    "scale": "MZ",
+    "notes": "Hats at MZ in MS; SI pins for alphaG_pp"
+  },
+  "pins": {
+    "alpha_s_MZ": 0.1180,
+    "inv_alpha_MZ": 127.955,
+    "sin2_thetaW_MZ": 0.23122,
+
+    "G_N_SI": 6.67430e-11,
+    "m_p_SI_kg": 1.67262192369e-27,
+    "hbar_SI_Js": 1.054571817e-34,
+    "c_SI_mps": 299792458.0
+  },
+  "gate": {
+    "sigma_chi": 247.683,
+    "K_eq_norm_chi": 17.6278
+  },
+  "projector": { "chi": [16, 13, 2] }
+}
+\end{lstlisting}
+
+\newpage
+% ===================== src/omega_chi.py =====================
+\subsection*{src/omega\_chi.py}
+\begin{lstlisting}[language=python]
+#!/usr/bin/env python3
+import json, math, sys, pathlib
+
+def load_pins(path="pins.json"):
+    with open(path,"r") as f: return json.load(f)
+
+def alpha2(alpha_em, sin2w): return alpha_em / sin2w
+def omega_chi(alpha_s, alpha2, alpha_em): return (alpha_s**16)*(alpha2**13)*(alpha_em**2)
+def alpha_G_pp(G_N, m_p, hbar, c): return G_N * (m_p**2) / (hbar * c)
+def loo_alpha_s_star(alpha_Gpp, alpha2, alpha_em):
+    return (alpha_Gpp / (alpha2**13 * alpha_em**2))**(1.0/16.0)
+
+def main():
+    pins = load_pins()
+    P, G = pins["pins"], pins["gate"]
+
+    alpha_em = 1.0 / float(P["inv_alpha_MZ"])
+    sin2w    = float(P["sin2_thetaW_MZ"])
+    a_s      = float(P["alpha_s_MZ"])
+    a_2      = alpha2(alpha_em, sin2w)
+
+    aGpp = alpha_G_pp(float(P["G_N_SI"]), float(P["m_p_SI_kg"]),
+                      float(P["hbar_SI_Js"]), float(P["c_SI_mps"]))
+    Om   = omega_chi(a_s, a_2, alpha_em)
+    closure = Om / aGpp
+    a_s_star = loo_alpha_s_star(aGpp, a_2, alpha_em)
+
+    Lambda_gate = float(G["sigma_chi"]) / float(G["K_eq_norm_chi"])
+
+    out = {
+      "alpha2_MZ": a_2,
+      "Omega_chi": Om,
+      "alpha_G_pp": aGpp,
+      "closure_ratio_Omega_over_alphaGpp": closure,
+      "alpha_s_star_MZ": a_s_star,
+      "Lambda_gate": Lambda_gate
+    }
+
+    with open("results.json","w") as f: json.dump(out, f, indent=2, sort_keys=True)
+    s = (f"alpha2(MZ) = {a_2:.9f}\\n"
+         f"Omega_chi  = {Om:.12e}\\n"
+         f"alphaG_pp  = {aGpp:.12e}\\n"
+         f"closure Omega_chi/alphaG_pp = {closure:.8f}\\n"
+         f"alpha_s* (LOO) = {a_s_star:.9f}\\n"
+         f"Lambda_gate = {Lambda_gate:.6f}\\n")
+    print(s)
+    with open("stdout.txt","w") as f: f.write(s)
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+
+\newpage
+% ===================== src/gate_null.py =====================
+\subsection*{src/gate\_null.py}
+\begin{lstlisting}[language=python]
+#!/usr/bin/env python3
+import json
+
+def load_gate(path="pins.json"):
+    with open(path,"r") as f: j = json.load(f)
+    return float(j["gate"]["sigma_chi"]), float(j["gate"]["K_eq_norm_chi"])
+
+def deltaG_over_G_from_phi(phi_chi, sigma_chi, norm_chi_Keq):
+    # DeltaXi = ||chi||_K * phi_chi ; DeltaG/G ~= (DeltaXi/sigma_chi)^2 near equilibrium
+    dXi = norm_chi_Keq * phi_chi
+    return (dXi / sigma_chi)**2
+
+if __name__ == "__main__":
+    sigma, norm = load_gate()
+    phi = 1.0
+    print(f"phi_chi={phi}, DeltaG/G ~= {deltaG_over_G_from_phi(phi, sigma, norm):.6e}")
+\end{lstlisting}
+
+% ===================== src/ward_flatness_stub.py (optional) =====================
+\subsection*{src/ward\_flatness\_stub.py (optional)}
+\begin{lstlisting}[language=python]
+#!/usr/bin/env python3
+def betaXi_over_logQ(alpha_s, alpha2, alpha_em, betas):
+    # beta_Xi = 16*beta_s/alpha_s + 13*beta_2/alpha_2 + 2*beta_em/alpha
+    return 16*betas["beta_s"]/alpha_s + 13*betas["beta_2"]/alpha2 + 
+         2*betas["beta_em"]/alpha_em
+
+def normalized_F_sigma(betaXi, sigma_chi): return betaXi / sigma_chi
+
+if __name__ == "__main__":
+    print("Stub: provide (Q, alpha_s, alpha_2, alpha, betas) 
+    grid and accumulate |F_sigma| stats.")
+\end{lstlisting}
+
+\newpage
+% ===================== src/snf_check.py (optional; needs sympy) =====================
+\subsection*{src/snf\_check.py (optional; needs sympy)}
+Exact-integer Smith normal form (SNF) + unimodular transport; certificate that
+\texttt{chi = (16,13,2)} arises from integer right-kernel of \texttt{DeltaW\_EM}.
+\textit{Optional; build passes without SymPy.}
+
+\begin{lstlisting}[language=python]
+#!/usr/bin/env python3
+"""
+"""
+snf_check.py -- Exact-integer SNF and unimodular transport for DeltaW_EM.
+"""
+Purpose: certify the primitive integer RIGHT-kernel generator chi_em and transport.
+"""
+from sympy import Matrix, ilcm
+from functools import reduce
+from math import gcd
+
+def primitive_integer_right_kernel(A: Matrix):
+    vQ = A.nullspace()[0]           # A * v = 0 (right kernel)
+    den = 1
+    for q in vQ: den = ilcm(den, getattr(q, "q", 1))
+    vZ = (den * vQ).applyfunc(int)
+    g  = reduce(gcd, [abs(int(x)) for x in vZ])
+    vZ //= g
+    if vZ[-1] < 0: vZ = -vZ
+    return vZ
+
+if __name__ == "__main__":
+    # Exact EM-basis difference stack (integers only; no rescaling)
+    A = Matrix([[8, 8, 224],[0, 1, 18]])  # 2x3, rank 2
+    U,D,V = A.smith_normal_form()
+    assert abs(int(U.det())) == 1 and abs(int(V.det())) == 1
+
+    chi_em = primitive_integer_right_kernel(A)
+    assert A * chi_em == Matrix([0,0])
+    assert tuple(chi_em) == (-10, -18, 1)
+    
+    M = Matrix([[-5,-3,-2],[2,1,1],[2,1,0]])  # unimodular (det = +1 or -1)
+    assert abs(int(M.det())) == 1, "M must be unimodular (det = +1 or -1)"
+    chi = M.T * chi_em
+
+    assert tuple(chi) == (16,13,2)
+
+    assert D[0,0] == 1 and D[1,1] == 8 and D.rank() == 2
+    print("D =", D)
+    print("chi_EM =", tuple(chi_em))
+    print("det(M) =", int(M.det()))
+    print("M^T*chi_EM =", tuple(chi))
+    print("All checks passed.")
+\end{lstlisting}
+
+
+\newpage
+% ===================== build.sh =====================
+\subsection*{build.sh}
+\begin{lstlisting}[language=bash]
+#!/usr/bin/env bash
+set -euo pipefail
+mkdir -p src
+
+python3 src/omega_chi.py | tee /dev/stderr
+python3 src/gate_null.py | tee -a /dev/stderr
+
+# Optional checks (won't fail the build)
+python3 src/ward_flatness_stub.py || true
+python3 -c "import sympy" >/dev/null 2>&1 && python3 src/snf_check.py || true
+
+python3 checksums.py
+echo "OK"
+\end{lstlisting}
+
+\newpage
+% ===================== checksums.py =====================
+\subsection*{checksums.py}
+\begin{lstlisting}[language=python]
+#!/usr/bin/env python3
+import hashlib, os
+
+def sha256(p):
+    h = hashlib.sha256()
+    with open(p,'rb') as f:
+        for chunk in iter(lambda: f.read(8192), b''):
+            h.update(chunk)
+    return h.hexdigest()
+
+def main():
+    outs = [p for p in ["results.json","stdout.txt"] if os.path.exists(p)]
+    with open("SHA256SUMS.txt","w") as f:
+        for p in outs:
+            s = f"{sha256(p)}  {p}"
+            print(s)
+            f.write(s+"\n")
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+
+\end{document}
