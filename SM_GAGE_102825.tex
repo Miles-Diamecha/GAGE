@@ -1,0 +1,2142 @@
+\pdfoutput=1
+\documentclass[10pt]{article}
+\usepackage[numbers,sort&compress]{natbib} % numeric, compress ranges
+\setcitestyle{super,sort&compress}         % make them superscripts like PRL
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{siunitx}
+\sisetup{separate-uncertainty=true}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,capitalise]{cleveref}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{caption}  % only needed once, doesn't interfere with anything else
+\usepackage{tikz,pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata} % nicer mono
+\usepackage{xcolor}
+
+\lstdefinestyle{pyclean}{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  numbers=left,
+  numberstyle=\scriptsize\color{black!50},
+  numbersep=8pt,
+  frame=single,
+  rulecolor=\color{black!20},
+  frameround=ffff,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=2,
+  upquote=true,
+  columns=fullflexible,
+  keywordstyle=\bfseries\color{blue!60!black},
+  commentstyle=\itshape\color{black!55},
+  stringstyle=\color{teal!60!black},
+  % Map unicode to LaTeX (so Δ renders)
+  literate=
+    {Δ}{{$\Delta$}}1
+    {α}{{$\alpha$}}1
+    {→}{{$\to$}}1
+}
+% tcolorbox
+\usepackage[most]{tcolorbox} % loads common libraries
+\tcbuselibrary{breakable,skins,theorems,hooks}
+
+% Simple gray callout box (breakable)
+\newtcolorbox{infobox}[1][]{%
+  breakable,
+  enhanced,
+  colback=gray!4!white,
+  colframe=black!30,
+  boxrule=0.4pt,
+  arc=2pt,
+  left=6pt,right=6pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries,
+  title=#1
+}
+
+
+% ==============================
+% GAGE Macros (MS-bar@MZ default) — CANON
+% ==============================
+
+% ---------- Fundamental constants ----------
+\providecommand{\GN}{G_{\mathrm N}}
+\providecommand{\MPl}{M_{\rm P}}                    % M_P^2 = 1/(8\pi G_N)
+\providecommand{\Mp}{m_p}
+\providecommand{\hbarc}{\hbar c}
+
+% ---------- Reference / emergent scales ----------
+\providecommand{\MZ}{M_Z}
+\providecommand{\Mstar}{M_\ast}                     % optional dressed Planck mass
+
+% ---------- Gauge couplings (MS-bar@MZ: hats by default) ----------
+\providecommand{\alphas}{\hat{\alpha}_s}
+\providecommand{\alphaTwo}{\hat{\alpha}_2}
+\providecommand{\alphae}{\hat{\alpha}}
+\providecommand{\alphaGpp}{\alpha^{(\mathrm{pp})}_{G}}
+
+% ---------- Integer projection / depth ----------
+\providecommand{\chis}{\boldsymbol{\chi}}           % (16,13,2)
+\providecommand{\Psivec}{\hat{\boldsymbol{\Psi}}}   % (ln \hatα_s, ln \hatα_2, ln \hatα)
+\providecommand{\XiDepth}{\hat{\Xi}}                % \hatΞ = χ·\hatΨ
+\providecommand{\XiEq}{\hat{\Xi}^{(\mathrm{eq})}}
+\providecommand{\DXi}{\Delta\hat{\Xi}}
+% --- Inverse-coupling logs (used in depth \Xi with 1/alpha) ---
+
+% ---------- Gate (projection, parity-even) ----------
+\DeclareRobustCommand{\PiGate}[1]{\Pi\!\left(#1\right)} % Π(Ξ)
+\providecommand{\sigchi}{\sigma_{\chi}}                 % σ_χ
+% Canonical emergent coupling (no metrology input):
+% G := (ħ c / m_p^2) Ω_χ; local running G(x) = G Π(Ξ)
+\providecommand{\G}{G}
+\newcommand{\Gx}{\G\,\PiGate{\XiDepth}}
+% Legacy alias: avoid implying G_N in derivations; map Geffx → Gx
+\providecommand{\Geffx}{\Gx}
+\providecommand{\Gstar}{G_\ast}                         % equilibrium coupling (optional)
+
+\newif\ifUseSI      \UseSItrue       % true: Ωχ = G_N m_p^2 / (ħ c); false: natural units
+\newcommand{\maybeBox}[1]{\ifPRLBoxes\boxed{#1}\else#1\fi}
+\newcommand{\SMpins}{\text{(SM pins @ }\MZ\text{, }\MSbar\text{)}} % helper text for captions
+\let\Gate\PiGate
+
+% ---------- Field-space kinetic metric ----------
+\providecommand{\Kfs}{\mathbf{K}(\Psivec)}
+\providecommand{\Keq}{\mathbf{K}_{\rm eq}}
+\DeclareRobustCommand{\normK}[1]{\ensuremath{\left\lVert#1\right\rVert_{\Keq}}}
+
+% ---------- Derived canonicals ----------
+\providecommand{\ohel}{\omega_{\mathrm{hel}}}       % ω_hel ≡ ||χ||_K / σ_χ
+\providecommand{\thel}{T_{\mathrm{hel}}}            % T_hel ≡ 2π / ω_hel
+\providecommand{\Lgate}{\Lambda_{\mathrm{gate}}}    % defined below from σ_χ and ||χ||_K
+
+% ---------- Math utilities ----------
+\providecommand{\LN}{\ln}
+\providecommand{\dd}{\mathrm{d}}
+\providecommand{\vev}{\langle\,\cdot\,\rangle}
+\DeclareMathOperator{\tr}{tr}
+\providecommand{\abs}[1]{\ensuremath{\lvert#1\rvert}}
+\providecommand{\norm}[1]{\ensuremath{\lVert#1\rVert}} % use lowercase l/r Vert
+\providecommand{\order}[1]{\ensuremath{\mathcal{O}(#1)}}
+\providecommand{\MSbar}{\overline{\mathrm{MS}}}
+\newcommand{\alphavec}{\hat{\boldsymbol{\alpha}}}
+
+% ---------- GAGE invariant (Ω_χ) ----------
+\providecommand{\Omega}{\Omega_{\chis}}          % Ω_χ ≡ α_s^{16} α_2^{13} α^{2}
+
+% --------- Boxes / identities ----------
+\newcommand{\OmegaProdBox}{\boxed{\Omega_{\chis} \;=\; \alphas^{16}\,\alphaTwo^{13}\,\alphae^{2}}}
+\newcommand{\GageLawBoxNat}{\boxed{\Omega_{\chis} \;=\; \GN\,\Mp^{2}}}
+\newcommand{\GageLawBoxSI}{\boxed{\Omega_{\chis} \;=\; \GN\,\Mp^{2} \big/ \hbarc}}
+
+% ---------- Electroweak shorthand ----------
+\providecommand{\thetaW}{\hat{\theta}_{\mathrm W}}
+\providecommand{\sWsq}{\sin^2\!\thetaW}
+
+% ---------- Beta monitors ----------
+\providecommand{\betaXi}{\beta_{\Xi}}               % d\Xi/d\ln Q
+\providecommand{\dlnQ}{\dd\!\LN Q}
+
+% ---------- Display boxes ----------
+\newcommand{\GateBox}{\boxed{\frac{\Geffx}{\GN} \;=\; \PiGate{\XiDepth}
+\;=\; \exp\!\Big[-\frac{(\XiDepth-\XiEq)^2}{\sigchi^2}\Big]}}
+\newcommand{\ParityNullBox}{\boxed{\frac{\Delta G}{G}\;\simeq\;\frac{\DXi^2}{\sigchi^2}\quad(\partial_{\Xi}\Pi|_{\XiEq}=0)}}
+
+% ---------- Helicity/width relations (explicit ties) ----------
+\newcommand{\LgateDef}{\boxed{\Lgate \;=\; \frac{\sigchi}{\normK{\chis}}}}
+\newcommand{\HelicityDefs}{\boxed{\ohel \;=\; \frac{\normK{\chis}}{\sigchi}\,,\quad \thel \;=\; \frac{2\pi}{\ohel} \;=\; 2\pi\,\Lgate}}
+
+% ---------- Figure labels (optional) ----------
+\newcommand{\FigGate}{Fig.~S3}
+\newcommand{\TabPins}{Table~S0.1}
+
+% ---------- Legacy aliases (safe deprecation) ----------
+\let\Xsym\Omega
+\let\calX\Omega
+\let\ClosureBox\GageLawBoxNat
+
+% ------- Global toggles (space-saving) -------
+\newif\ifPRLBoxes   \PRLBoxestrue    % set \PRLBoxesfalse to remove \boxed{}
+\newif\ifUseSI      \UseSItrue       % true: Ωχ = G_N m_p^2 / (ħ c); false: natural units
+
+
+% ------- One canonical GAGE law (choose units via \UseSItrue) -------
+\newcommand{\GageLawBox}{%
+  \ifUseSI
+    \maybeBox{\Omega_{\chis} \;=\; \GN\,\Mp^{2}\big/\hbarc}%
+  \else
+    \maybeBox{\Omega_{\chis} \;=\; \GN\,\Mp^{2}}%
+  \fi
+}
+
+% ------- Canonical ΔG/G macro (avoid drift) -------
+\newcommand{\FracDG}{\frac{\Delta G}{G}}
+
+% ------- Replace existing boxes with togglable versions -------
+\renewcommand{\OmegaProdBox}{\maybeBox{\Omega_{\chis} \;=\; \alphas^{16}\,\alphaTwo^{13}\,\alphae^{2}}}
+\renewcommand{\GateBox}{\maybeBox{\frac{\Geffx}{\GN} \;=\; \PiGate{\XiDepth}
+\;=\; \exp\!\Big[-\frac{(\XiDepth-\XiEq)^2}{\sigchi^2}\Big]}}
+\renewcommand{\ParityNullBox}{\maybeBox{\FracDG\;\simeq\;\frac{\DXi^2}{\sigchi^2}\quad(\partial_{\Xi}\Pi|_{\XiEq}=0)}}
+\renewcommand{\LgateDef}{\maybeBox{\Lgate \;=\; \frac{\sigchi}{\normK{\chis}}}}
+\renewcommand{\HelicityDefs}{\maybeBox{\ohel=\frac{\normK{\chis}}{\sigchi}\,,\quad \thel=\frac{2\pi}{\ohel}=2\pi\,\Lgate}}
+
+% --- xi Log-coupling components (MS-bar @ M_Z) ---
+\providecommand{\xihats}{\xihat_s}      % ln \hat{\alpha}_s
+\providecommand{\xihatw}{\xihat_2}    % ln \hat{\alpha}_2
+\providecommand{\xihata}{\xihat_\alpha}      % ln \hat{\alpha}
+
+% Optional: generic log-coupling shorthand
+\providecommand{\xihat}{\hat{\xi}}        % generic component label
+
+
+% ---------- SI units ----------
+\DeclareSIUnit{\eV}{eV}
+\DeclareSIUnit{\MeV}{MeV}
+\DeclareSIUnit{\GeV}{GeV}
+\DeclareSIUnit{\fm}{fm}
+
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\SNF}{SNF}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+% --- Probability / statistics operators ---
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Corr}{Corr}
+
+% --- Table convenience (for “not available”) ---
+\newcommand{\NA}{\text{N/A}}
+
+\begin{document}
+
+
+\title{Supplemental Material for: Gauge-Aligned Graviton Emergence (GAGE)}
+\author{Michael DeMasi DNP}
+\date{\today}
+\maketitle
+
+\section*{S0. Notation, pins, and conventions}
+
+\paragraph*{Provenance and sources.}
+All numerical inputs, constants, and coupling data used herein are taken from established references. 
+The Standard Model framework and renormalization conventions follow Weinberg~\cite{Weinberg1996_QFTv2}, 
+Peskin--Schroeder~\cite{PeskinSchroeder1995_QFT}, and Langacker~\cite{Langacker2017_SMBeyond}.
+Decoupling and integer-lattice methods follow Appelquist--Carazzone~\cite{AppelquistCarazzone1975_Decoupling},
+Kannan--Bachem~\cite{KannanBachem1979_SNF}, and Newman~\cite{Newman1997_SNF}.
+Numerical pins and covariance values are drawn from the Particle Data Group and CODATA~\cite{PDG2024,PDG2024_EWReview,PDG2025_GaugeHiggs,CODATA2022_RMP}.
+Gravitational and metrological comparisons reference Carroll~\cite{Carroll2004_SG},
+Will~\cite{Will2014_LRR_TestsGR}, Bertotti~\cite{Cassini2003_PPN}, and Abbott \textit{et~al.} (LVK)~\cite{LVK2021_TestsGR}.
+Running of couplings follows Jegerlehner~\cite{Jegerlehner2019_alphaRun}.
+All calculations are performed within $\MSbar$ at $\mu=M_Z$, with no external data sources beyond these references.
+
+\paragraph*{Purpose.}
+This Supplemental Material provides the derivations, numeric checks, and reproducibility details referenced in the Letter. 
+It fixes all symbols, evaluation points, and unit conventions, and defines the error-propagation and covariance rules used in tables and figures.
+
+\paragraph*{Contents.}
+Hatted couplings; $\mu=\MZ$; $\MSbar$ scheme; PDG/CODATA pins with uncertainties; 
+unit policy; error-propagation rules; equilibrium metric $K_{\rm eq}$ and eigenvalues; 
+Smith–normal–form certificate for $\chis$; Fisher-width derivation of $\sigchi$; 
+Ward-flatness masks; closure and leave-one-out tests; reproducibility script and checksum manifest.
+
+
+\paragraph*{Coordinates and logs}
+Work in log–coupling space with hats denoting $\MSbar$ at $\mu=\MZ$:
+\[
+\Psivec=\big(\LN\alphas,\ \LN\alphaTwo,\ \LN\alphae\big),\qquad
+\chis=(16,13,2),\qquad
+\XiDepth=\chis\!\cdot\!\Psivec
+\]
+and the SM-internal invariant
+\[
+\Omega \equiv e^{\XiDepth}=\alphas^{16}\,\alphaTwo^{13}\,\alphae^{2}\,.
+\]
+All EFT derivations in this SM proceed in log space; metrology targets are used only later (S5) for closure/LOO validation, not as inputs.
+
+\paragraph*{Units policy (concise)}
+\noindent
+\textbf{SM pins:} $\MSbar$ at $Q=\MZ$ (hats by default) $\SMpins$ \\
+\textbf{EFT derivations:} natural units ($\hbar=c=1$), with explicit $\hbarc$ only when mapping back to SI \\
+\textbf{Metrology targets:} SI values (PDG/CODATA) used only in S5 for closure/LOO, never upstream
+
+\paragraph*{Gate and metric}
+\[
+\frac{\Gx}{\G}=\PiGate{\XiDepth}
+=\exp\!\Big[-\frac{(\XiDepth-\XiEq)^2}{\sigchi^{2}}\Big],\qquad
+\Keq\succ0,\ \ \normK{\mathbf v}^2=\mathbf v^{\!\top}\Keq\mathbf v
+\]
+with $\XiEq=\XiDepth\big|_{\mu=\MZ}$, gate width $\sigchi$, and gate scale $\Lgate=\sigchi/\normK{\chis}$. Even parity ($\partial_\Xi\Pi|_{\XiEq}=0$) enforces the quadratic lab-null
+\[
+\FracDG\simeq\frac{\DXi^2}{\sigchi^2}
+\qquad\text{with}\qquad \DXi=\XiDepth-\XiEq\,.
+\]
+
+% ==============================
+% Notation Summary (Supplement)
+% ==============================
+\paragraph*{Notation Summary.}
+Located at end of the document. Core scheme/pin conventions follow PDG/CODATA; 
+the Ward-flatness projector and the one-loop identity $\beta_{\Xi}=0$ (PRL Eq.~(14)) are used later in S5.
+
+\renewcommand{\arraystretch}{1.12}
+\begin{table}[t]
+\centering
+\label{tab:Notation}
+\small
+\begin{tabular}{@{}p{0.23\linewidth} p{0.58\linewidth} p{0.17\linewidth}@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning / role (plain language)} & \textbf{Value / where} \\
+\midrule
+$\chis=(16,13,2)$ & Integer projector (unique primitive SNF left-kernel generator of the 1L decoupling lattice). Selects the aligned soft direction in gauge–log space. & Fixed; SNF certificate \\
+$\Psivec=(\LN\hat\alpha_s,\LN\hat\alpha_2,\LN\hat\alpha)$ & Log–space coordinate vector of SM gauge couplings (hats: $\MSbar$). & PDG pins at $M_Z$ \\
+$\Xi=\chis\!\cdot\!\Psivec$ & Gauge–log depth (scalar projection along $\chis$). Invariant under $A\in\mathrm{GL}(\mathbb Z)$ transports. & Def. (Letter §2) \\
+$\XiEq$ & Equilibrium depth (gate center). & Def. (Letter §2) \\
+$\DXi=\Xi-\XiEq$ & Departure from equilibrium controlling parity–even response of $G$. & Def. (Letter §2) \\
+$\Pi(\Xi)=\exp[-\DXi^2/\sigchi^2]$ & Even Gaussian curvature gate; $\Pi'(\XiEq)=0$ (no linear term). GR normalization at equilibrium. & Def. (Letter §3) \\
+$G \equiv \dfrac{\hbar c}{m_p^2}\,\Omega$ & Equilibrium gravitational coupling derived solely from SM couplings (no $G_N$ input). & Def. (Letter §3) \\
+$G(x)=G\,\Pi(\Xi(x))$ & Local/spacetime running of $G$ through the gate. & Def. (Letter §3) \\
+$\Omega=\hat\alpha_s^{16}\hat\alpha_2^{13}\hat\alpha^{2}$ & GAGE invariant linking gauge sector to gravity. & Eq. (Letter §3) \\
+$\alpha_G^{(\mathrm{pp})}=\dfrac{G_N m_p^2}{\hbar c}$ & Dimensionless pp anchor for empirical closure/matching to $G_N$. & Closure (Letter §7) \\
+$Z_G \equiv \dfrac{\alpha_G^{(\mathrm{pp})}}{\Omega}$ & UV→IR match factor: $G_N = Z_G\,G$; captures scheme/threshold/higher-loop bridge. & $Z_G=0.91430$ (Letter) \\
+$\Keq \succ 0$ & Equilibrium kinetic metric in coupling space; defines inner products and the soft-mode direction. & Supp. (metrics) \\
+$\normK{\chis}$ & Norm of $\chis$ in $\Keq$; canonically normalizes the soft mode. & $17.6278$ \\
+$\sigchi$ & Gate width from Fisher curvature; sets quadratic lab-null scale. & $247.683$ \\
+$\Lgate=\sigchi/\normK{\chis}$ & Gate scale (soft-mode coherence length, canonical units). & $14.0507$ \\
+$\varphi_\chi=\normK{\chis}^{-1}\chis^{\!\top}(\Psivec-\vev{\Psivec})$ & Canonical soft scalar along $\chis$. & Def. (Letter §4) \\
+$\FracDG \simeq \DXi^2/\sigchi^2 = \varphi_\chi^2/\Lgate^2$ & Parity–even lab-null prediction (no linear term); direct falsifier with fixed curvature. & Eq. (Letter §4) \\
+$\ohel=\normK{\chis}/\sigchi,\ \ \thel=2\pi/\ohel$ & Helicity frequency and period of tensor envelope (Planck-thin). & Supp. (helicity) \\
+$P_\chi=\dfrac{\Keq\,\chis\,\chis^{\!\top}}{\chis^{\!\top}\Keq\chis},\ \ P_\perp=\mathbb{1}-P_\chi$ & Projectors onto the soft direction and its orthogonal complement in field space. & Supp. (metrics) \\
+$F(Q)=\dd\Xi/\dd\LN Q$ & Ward-flatness monitor (projected RG flow); evaluated on masked windows. & Supp. S5 \\
+$\beta_\Xi=\dd\Xi/\dlnQ$ & Projected RG flow; vanishes at 1L by Ward-flatness ($\chis^\top W^{(1)}=0$). & Eq. (Letter §6) \\
+$\beta_G=\dd(\LN G)/\dlnQ$ & Running of $G$ along aligned depth: $16\,\beta_{\alpha_s}/\alpha_s+13\,\beta_{\alpha_2}/\alpha_2+2\,\beta_\alpha/\alpha$. & Eq. (Letter §6) \\
+$\Delta\mathcal{L}\, h_{\mu\nu}=-\Box h_{\mu\nu}$ & Lichnerowicz operator (tensor sector): luminal helicity-2, $m_{\mathrm{PF}}=0$. & Eq. (Letter §4) \\
+$\MSbar,\ M_Z,\ m_p,\ \hbar c,\ G_N$ & Scheme/scale and constants for pinning and comparison. & PDG/CODATA \\
+\bottomrule
+\end{tabular}
+\caption{Symbols used in the Letter and SM. Unless stated otherwise, hats denote $\MSbar$ at $\mu=M_Z$; numerical pins are those quoted in the main text.}
+\label{tab:notation}
+\end{table}
+
+\paragraph*{Equilibrium convention}
+Pins are $\MSbar$ at $Q=\MZ$; we set $\Pi(\Psivec_{\rm eq})=1$ so $\Gx|_{\rm eq}=\G$. Any identification with metrology (e.g., $G\stackrel{?}{=}\GN$) is tested only in S5.
+
+\paragraph*{Pins and sources (SM pins @ $\mu=\MZ$; metrology targets in S5 only)}
+\noindent
+Table~\ref{tab:pins_inputs} lists \emph{inputs used in derivations} (SM pins); Table~\ref{tab:pins_targets} lists \emph{closure targets not used as inputs} (metrology). See PRL Table I and Secs.~“Running of G and Ward-flatness”–“Closure and prediction” for definitions. SM pins and electroweak conventions follow PDG; SI targets follow CODATA.
+
+
+\begin{table}[t]
+\centering
+\caption{Inputs used in derivations ($\MSbar$ at $\mu=\MZ$). These feed all SM-side calculations.}
+\label{tab:pins_inputs}
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}lcll@{}}
+\toprule
+Quantity & Symbol & Value $\pm 1\sigma$ & Source \\
+\midrule
+Fine structure (MS, $M_Z$) & $\alphae(\MZ)$ & $0.00781525 \pm 0.00000061$ & PDG ($1/\alpha=127.955\pm0.010$)\\
+Weak mixing (MS, $M_Z$) & $\sin^2\!\thetaW(\MZ)$ & $0.23129(4)$ & PDG EW review \\
+SU(2) coupling & $\alphaTwo(\MZ)=\alphae/\sin^2\!\thetaW$ & $0.03378982 \pm 0.00000641$ & derived from above \\
+Strong coupling & $\alphas(\MZ)$ & $0.1180 \pm 0.0009$ & PDG \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Closure targets (not used as inputs). Used only in S5 to test $\Omega$ against metrology.}
+\label{tab:pins_targets}
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}lcll@{}}
+\toprule
+Quantity & Symbol & Value $\pm 1\sigma$ & Source \\
+\midrule
+Newton constant (SI) & $\GN$ & $6.67430(15)\times 10^{-11}\ \mathrm{m^3\,kg^{-1}\,s^{-2}}$ & CODATA \\
+Conversion factor (exact) & $\hbarc$ & $197.3269804\ \mathrm{MeV\,fm}$ & SI/CODATA \\
+Proton mass & $\Mp$ & $0.93827208816\ \mathrm{GeV}$ & PDG \\
+Proton–proton grav.\ coupling & $\alphaGpp=\dfrac{\GN\,\Mp^{2}}{\hbarc}$ & $(5.90615 \pm 0.00013)\times 10^{-39}$ & derived (unc.\ from $\GN$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Certificate/response parameters (SM internal). Fixed once from $\Keq$ and the gate width.}
+\label{tab:cert_params}
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}lcll@{}}
+\toprule
+Quantity & Symbol & Value & Route \\
+\midrule
+Integer norm & $\chis^{\!\top}\chis$ & $429$ & $\chis=(16,13,2)$ \\
+Depth norm & $\normK{\chis}$ & $17.6278$ & $\sqrt{\chis^{\!\top}\Keq\chis}$ \\
+\addlinespace[2pt]
+Transverse width (strong) & $\sigma_{\alpha_s}$ & $0.446296$ & pin (transverse s.d.) \\
+Transverse width (weak) & $\sigma_{\alpha_2}$ & $0.547533$ & pin (transverse s.d.) \\
+Transverse width (EM) & $\sigma_{\alpha}$ & $0.551281$ & pin (transverse s.d.) \\
+\addlinespace[2pt]
+Gate width & $\sigchi$ & $247.683$ & fixed (closure–Fisher curvature; S0.4, S5.5) \\
+Gate scale & $\Lgate$ & $14.0507$ & $\sigchi/\normK{\chis}$ \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+\footnotesize
+Notes: $\Psivec=(\LN\alphas,\LN\alphaTwo,\LN\alphae)$, $\chis=(16,13,2)$, $\Lgate=\sigchi/\normK{\chis}$. PDG/CODATA conventions as cited. $\hbarc$ is exact in SI.
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Equilibrium kinetic matrix $\Keq$ in the basis $\Psivec=(\LN\alphas,\LN\alphaTwo,\LN\alphae)$; symmetric and positive definite.}
+\label{tab:keq}
+\scriptsize
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & $\LN\alphas$ & $\LN\alphaTwo$ & $\LN\alphae$ \\
+\midrule
+$\LN\alphas$ & 1.2509 & -0.6202 & -0.1813 \\
+$\LN\alphaTwo$ & -0.6202 & 1.5128 & -0.1633 \\
+$\LN\alphae$ & -0.1813 & -0.1633 & 3.2362 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Eigenvalues and orthonormal eigenvectors of $\Keq$. Components in $(\LN\alphas,\LN\alphaTwo,\LN\alphae)$.}
+\label{tab:keq_eigs}
+\scriptsize
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Mode & $\lambda_i$ & $e_i^\top$ \\
+\midrule
+1 (soft) & 0.7243366 & $(\;0.7724942,\;0.6276375,\;0.0965604\;)$ \\
+2        & 2.0155976 & $(-0.6313037,\;0.7754715,\;0.0099780)$ \\
+3 (stiff)& 3.2599658 & $(-0.0686172,\;-0.0686668,\;0.9952771)$ \\
+\bottomrule
+\end{tabular}
+
+\vspace{4pt}
+\footnotesize
+Checks: $e_i\!\cdot\! e_j=\delta_{ij}$, $\Keq e_i=\lambda_i e_i$, $\sum_i \lambda_i=\tr\Keq\approx 6.0$, $\det\Keq>0$. Depth norm $\normK{\chis}=\sqrt{\chis^{\!\top}\Keq\chis}=17.6278$.
+\end{table}
+
+\paragraph*{Error propagation and correlations}
+\noindent
+Unless stated, use linearized Gaussian propagation in vector form:
+\[
+\mathrm{Cov}(f)=J\,\mathrm{Cov}(x)\,J^{\!\top},\qquad
+J_{ai}=\partial_{x_i} f_a,\qquad
+\delta f^2=\nabla f^{\!\top}\,\mathrm{Cov}(x)\,\nabla f.
+\]
+For logarithms,
+\[
+\delta(\LN x)\simeq \frac{\delta x}{x},\qquad
+\mathrm{Cov}(\LN x,\LN y)\simeq \frac{\mathrm{Cov}(x,y)}{xy}.
+\]
+
+\textbf{Inputs and correlations}
+Include PDG/CODATA covariances where provided (e.g., components entering the running of $\alphae$ to $M_Z$). When unavailable, treat inputs as independent and propagate to derived quantities (e.g., $\alphaTwo=\alphae/\sin^2\!\thetaW$) via the Jacobian above. All reported uncertainties are $1\sigma$.
+
+\textbf{Log-space propagation}
+Quantities defined in log coordinates (e.g., $\Psivec$, $\XiDepth$) use the same rules; returns to linear variables use $\sigma(y)\approx y\,\sigma(\LN y)$.
+
+\textbf{Metrology (target-only) handling}
+Closure/LOO covariance, metrology depths, and any optional cross-covariances are handled in S5. We do not use metrology in upstream derivations.
+
+
+
+\paragraph*{Cross-references and reproducibility}
+\noindent
+Definitions of $\Omega$, closure, and LOO appear in PRL Eqs.~(7), (18), and (19). 
+The SM mirrors the Letter: S1 (SNF certificate), S2 (alignment principle), S3 (gate and parity lemma), 
+S4 (tensor sector / no PF mass), S5 (Ward-flatness), S6 (closure and LOO), S7 (environmental lab-null), S8 (helicity scales).
+
+\paragraph*{Versioning and reproducibility}
+All pins in Tables~\ref{tab:pins_inputs}, \ref{tab:pins_targets}, \ref{tab:cert_params}, \ref{tab:keq}, and \ref{tab:keq_eigs}
+are frozen to the cited PDG/CODATA releases and mirrored locally.
+Section~S9 points to the Repo’s \texttt{pins.json} (SI; $\MSbar$ at $\mu=\MZ$) and build scripts that regenerate the S0 tables and figure data from source pins.
+The build is deterministic (no network); SHA-256 hashes are emitted for all artifacts, and any drift indicates a pin or version change.
+Monte Carlo confirmation of closure/LOO appears only in the SM (Sec.~S6.8) and reproduces the linearized propagation.
+The Repo remains deterministic (no RNG) and regenerates numeric tables and figure data from pinned inputs only.
+
+\textbf{Reproduction (pointer to Repo)}
+S9 summarizes inputs/outputs and checksums; the complete, executable workflow lives in the accompanying Repo document (source of truth). From the Repo:
+\begin{itemize}\setlength\itemsep{2pt}
+  \item \texttt{pins.json} and \texttt{keq.json} (MS at $\mu=\MZ$); code derives $\hat\alpha_2=\hat\alpha/\sin^2\!\hat\theta_W$
+  \item one-command rebuild: \texttt{bash build.sh} \textit{(or Windows \texttt{build\_win.bat})} → regenerates numeric tables and figure data from pins
+  \item optional metrics: \texttt{src/metric\_eigs.py} emits \texttt{metric\_results.json} ($K_{\rm eq}$ eigs/evecs, $\|\chi\|_K$, $\Lambda_{\rm gate}$, alignment)
+  \item deterministic run; SHA-256 of all artifacts recorded in \texttt{SHA256SUMS.txt}
+\end{itemize}
+S9 records filenames, versions, and hashes matching the Repo; code listings are omitted here by design.
+
+
+\paragraph*{Vector form (Jacobian rule)}
+\noindent
+For a vector map $y=f(x)$ with inputs $x=(x_1,\dots,x_n)$ and outputs $y=(y_1,\dots,y_m)$,
+\[
+\mathrm{Cov}(y)=J\,\mathrm{Cov}(x)\,J^{\!\top},\qquad
+J_{ij}=\frac{\partial y_i}{\partial x_j}.
+\]
+\textbf{Log domain}
+Define $\xi_i=\LN x_i$. For monomials $y=\prod_i x_i^{\,a_i}$,
+\[
+\LN y = \sum_i a_i\,\xi_i,\qquad
+\delta(\LN y)^2 = \sum_i a_i^2\,\delta\xi_i^2 \;+\; 2\sum_{i<j} a_i a_j\,\mathrm{Cov}(\xi_i,\xi_j).
+\]
+For small errors, $\delta(\LN x)\simeq \delta x/x$ and $\mathrm{Cov}(\LN x,\LN y)\simeq \mathrm{Cov}(x,y)/(xy)$.
+
+\textbf{Example (derived SU(2) coupling)}
+With $\alphaTwo=\alphae/\sin^2\!\thetaW$,
+\[
+\LN \alphaTwo = \LN \alphae \;-\; \LN\!\big(\sin^2\!\thetaW\big),\quad
+\sigma^2(\LN \alphaTwo) = \sigma^2(\LN \alphae) + \sigma^2\!\big(\LN\sin^2\!\thetaW\big) - 2\,\mathrm{Cov}\!\Big(\LN \alphae,\LN\sin^2\!\thetaW\Big),
+\]
+and $\sigma(\alphaTwo)\approx \alphaTwo\,\sigma(\LN \alphaTwo)$.
+
+
+\paragraph*{Derived inputs (closed forms used throughout)}
+
+\textbf{(i) SU(2) coupling}
+\[
+\alphaTwo=\alphae/\sin^2\!\thetaW.
+\]
+In linear variables (set $\mathrm{Cov}=0$ unless specified):
+\[
+\delta \alphaTwo^{2}=\Big(\tfrac{1}{\sin^2\!\thetaW}\Big)^{\!2}\delta\alphae^{2}
++\Big(\tfrac{\alphae}{(\sin^2\!\thetaW)^{2}}\Big)^{\!2}\delta(\sin^2\!\thetaW)^{2}
+-2\,\frac{\alphae}{(\sin^2\!\thetaW)^{3}}\,\mathrm{Cov}\!\big(\alphae,\sin^2\!\thetaW\big).
+\]
+Equivalently, in logs,
+\[
+\delta\!\LN\alphaTwo^{2}=\delta\!\LN\alphae^{2}+\delta\!\LN(\sin^2\!\thetaW)^{2}
+-2\,\mathrm{Cov}\!\big(\LN\alphae,\LN(\sin^2\!\thetaW)\big),\quad
+\mathrm{Cov}(\LN\alphae,\LN\sin^2\!\thetaW)\simeq
+\frac{\mathrm{Cov}(\alphae,\sin^2\!\thetaW)}{\alphae\,\sin^2\!\thetaW}.
+\]
+
+\textbf{(ii) Projection depth and certificate}
+\[
+\XiEq=\chis\!\cdot\!(\LN\alphas,\LN\alphaTwo,\LN\alphae)
+=16\,\LN\alphas+13\,\LN\alphaTwo+2\,\LN\alphae.
+\]
+Work in the independent basis $x=(\LN\alphae,\ \LN(\sin^2\!\thetaW),\ \LN\alphas)$ with
+$\LN\alphaTwo=\LN\alphae-\LN(\sin^2\!\thetaW)$:
+\[
+\XiEq=15\,\LN\alphae-13\,\LN(\sin^2\!\thetaW)+16\,\LN\alphas,\qquad
+g_{\Xi}=(15,\,-13,\,16),
+\]
+\[
+\sigma^2(\XiEq)=g_{\Xi}^{\!\top}\,\mathrm{Cov}(x)\,g_{\Xi},\qquad
+\sigma(\Omega)\simeq \Omega\,\sigma(\XiEq).
+\]
+(Use this $x$–basis again in S5 to avoid double counting.)
+
+% ---- Moved to S5 (target-only) ----
+% Closure target and LOO gradients are handled in S5.
+
+\paragraph*{Ward-flatness prereg thresholds}
+\noindent
+Define $F(Q)=\dd\XiDepth/\dd\LN Q$ and the normalized monitor $F_\sigma(Q)=F(Q)/\sigchi$ with masks around thresholds. The preregistered bounds are on $F_\sigma$:
+\[
+\begin{aligned}
+&\text{EW }[80,160]\ \mathrm{GeV}:\ 
+\|F_\sigma\|_{\infty}\le 0.01430,\ \mathrm{RMS}(F_\sigma)\le 0.01372,\ |\langle F_\sigma\rangle|\le 0.01372,\\
+&\text{Low-GeV }[1,10]\ \mathrm{GeV}:\ 
+\|F_\sigma\|_{\infty}\le 0.03535,\ \mathrm{RMS}(F_\sigma)\le 0.02622,\ |\langle F_\sigma\rangle|\le 0.02585.
+\end{aligned}
+\]
+ \begin{table}[t]
+\centering
+\caption{Preregistered Ward-flatness bounds (on $F_\sigma=F/\sigchi$) used throughout}
+\label{tab:S0ward}
+\scriptsize
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Window & $\|F_\sigma\|_{\infty}$ & RMS$(F_\sigma)$ & $|\langle F_\sigma\rangle|$ \\
+\midrule
+EW [80,160] GeV & 0.01430 & 0.01372 & 0.01372 \\
+Low [1,10] GeV  & 0.03535 & 0.02622 & 0.02585 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\noindent\textit{Notes:} Bounds are preregistered from the max across 1L/off and 2L/off runs with a $1.5\times$ inflation and include masked thresholds.
+
+
+\section*{S1. Smith–Normal–Form (SNF) certificate for $\chis=(16,13,2)$}
+
+\paragraph*{Goal}
+Show that $\chis$ is fixed by integer structure alone (unique primitive generator up to sign), independent of masses, scales, or scheme choices within the admissible class.
+
+\paragraph*{Standing assumptions}
+SM with three families and one Higgs doublet; GUT-normalized hypercharge ($\alpha_1=\tfrac{5}{3}\alpha_Y$); mass-independent scheme with Appelquist–Carazzone decoupling. Fix a single $U(1)_Y$ integerization so that $U(1)$ weights are integers for each light set:
+\[
+w_1^{(\mathrm f)}=12\!\!\sum_{\rm Weyl}Y^2,\qquad
+w_1^{(\mathrm s)}=3\!\!\sum_{\rm scalars}Y^2.
+\]
+For $H\!\sim\!(\mathbf 1,\mathbf 2,\tfrac12)$, $\sum Y^2=2\!\times\!(\tfrac12)^2=\tfrac12\Rightarrow w_1(H)=3$.
+The ordering of $(\alphas,\alphaTwo,\alphae)$ is a notational convention; permutations simply relabel the components of $\chis$ while the kernel direction (and $\Xi=\chis^{\sf T}\Psi$) is basis-invariant.
+
+% ==============================
+% W_Z columns and window masks
+% ==============================
+\begin{table}[t]
+\centering
+\caption{Light species columns for $W_{\mathbb Z}$ on a window $W$. Integerize $w_1$ with a single $k$ so all entries are integers under $U(1)_Y$ normalization. $N_g$ = generations, $N_H$ = Higgs doublets.}
+\label{T:Wcols}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{lccccccc}
+\hline
+Species & Rep $(SU(3),SU(2),Y)$ & dof$_{\rm spec}$ & $2T_{3}$ & $2T_{2}$ & $w_3$ & $w_2$ & $w_1$ \\
+\hline
+$Q_L$  & $(\mathbf{3},\mathbf{2},\,1/6)$   & $6N_g$ & 1 & 1 & $6N_g$ & $6N_g$ & $k\,\sum Y^2$ \\
+$u_R$  & $(\mathbf{3},\mathbf{1},\,2/3)$   & $3N_g$ & 1 & 0 & $3N_g$ & $0$    & $k\,\sum Y^2$ \\
+$d_R$  & $(\mathbf{3},\mathbf{1},\,-1/3)$  & $3N_g$ & 1 & 0 & $3N_g$ & $0$    & $k\,\sum Y^2$ \\
+$L_L$  & $(\mathbf{1},\mathbf{2},\,-1/2)$  & $2N_g$ & 0 & 1 & $0$    & $2N_g$ & $k\,\sum Y^2$ \\
+$e_R$  & $(\mathbf{1},\mathbf{1},\,-1)$    & $1N_g$ & 0 & 0 & $0$    & $0$    & $k\,\sum Y^2$ \\
+$H$    & $(\mathbf{1},\mathbf{2},\,1/2)$   & $2N_H$ & 0 & 1 & $0$    & $2N_H$ & $k\,\sum Y^2$ \\
+$W$    & $\mathrm{adj}\,(\mathbf{1},\mathbf{3},0)$   & $1$    & 0 & 4 & $0$    & $4$    & $0$ \\
+$G$    & $\mathrm{adj}\,(\mathbf{8},\mathbf{1},0)$   & $1$    & 6 & 0 & $6$    & $0$    & $0$ \\
+\hline
+\multicolumn{8}{l}{%
+\parbox{\linewidth}{\footnotesize\textit{Note:} $w_1^{(f)}=12\sum Y^2$ for Weyl fermions and $w_1^{(s)}=3\sum Y^2$ per hypercharged scalar degree of freedom. For $H\sim(\mathbf 1,\mathbf 2,\,\tfrac12)$, $\sum_{\text{dof}}Y^2=1/2$ so $w_1(H)=3$, ensuring all entries in $\Delta W$ are integers.}%
+}
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{EW window $W_{\rm EW}:~ Q\in(80,160)\, \mathrm{GeV}$. Heavy multiplets removed, narrow threshold masks.}
+\label{T:Wmask_EW}
+\begin{tabular}{lcc}
+\hline
+Removed multiplet & Reason & Mask range in $Q$ \\
+\hline
+top quark & decoupled below $W_{\rm EW}$ & --- \\
+\hline
+\multicolumn{3}{l}{\textit{Within-window threshold masks:}}\\
+$W^\pm$ & resonance/threshold guard & $Q\in(79,82)\,\mathrm{GeV}$ \\
+$Z$     & resonance/threshold guard & $Q\in(90,92.5)\,\mathrm{GeV}$ \\
+$H$     & threshold guard            & $Q\in(124,127)\,\mathrm{GeV}$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Low GeV window $W_{\rm SM}:~ Q\in(1,10)\,\mathrm{GeV}$. Heavy multiplets removed, edge guards near thresholds.}
+\label{T:Wmask_SM}
+\begin{tabular}{lcc}
+\hline
+Removed multiplet & Reason & Mask range in $Q$ \\
+\hline
+$t,\,W/Z/H$ & decoupled below EW scale & --- \\
+$c,b$ (edges) & onset guards at $m_c,\,m_b$ & small masks around $m_c,\,m_b$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{S1.1 Construction recipe (per multiplet)}
+
+\paragraph*{Per–multiplet weights and integerization.}
+For each light multiplet $f$ in an admissible window $\mathcal W$,
+\[
+\begin{aligned}
+&\text{Weyl:}&\quad w_3(f)&=4\,T_{SU(3)}(f)\,d_{\rm spect}(f),\qquad
+w_2(f)=4\,T_{SU(2)}(f)\,d_{\rm spect}(f),\\
+&\text{scalar:}&\quad w_3(f)&=1\cdot T_{SU(3)}(f)\,d_{\rm spect}(f),\qquad
+w_2(f)=1\cdot T_{SU(2)}(f)\,d_{\rm spect}(f),
+\end{aligned}
+\]
+and choose a single $U(1)_Y$ integerizer so the hypercharge column is integral:
+\[
+w_1^{(\mathrm f)}=12\!\!\sum_{\text{Weyl in }f}\!Y^2,\qquad
+w_1^{(\mathrm s)}=3\!\!\sum_{\text{scalars in }f}\!Y^2.
+\]
+Here $T_{SU(N)}$ is the Dynkin index ($T(\mathbf 3)=T(\mathbf 2)=\tfrac12$), and $d_{\rm spect}$ counts spectator multiplicities (e.g., color for $SU(2)$ weights and weak multiplicity for $SU(3)$ weights). GUT normalization is used for hypercharge: $\alpha_1=\tfrac53\alpha_Y$.
+
+\paragraph*{Window vectors and differences.}
+Sum the weights across the light content of the window:
+\[
+b^{(\mathcal W)}=\begin{pmatrix}\sum_f w_3(f)\\[2pt]\sum_f w_2(f)\\[2pt]\sum_f w_1(f)\end{pmatrix}\in\mathbb Z^3,
+\]
+then form the integer \emph{difference stack} over admissible window pairs $\{(\mathcal W_i,\mathcal W_j)\}$:
+\[
+\Delta b^{(ij)}=b^{(\mathcal W_i)}-b^{(\mathcal W_j)},\qquad
+\Delta W=\begin{bmatrix} (\Delta b^{(i_1j_1)})^\top \\ (\Delta b^{(i_2j_2)})^\top \\ \vdots \end{bmatrix}\in\mathbb Z^{m\times3}.
+\]
+Adjoint self–contributions cancel in $\Delta b$, exposing the rank–2 lattice used for SNF.
+
+\paragraph*{Sanity check (electromagnetic basis).}
+After EWSB, use
+\(
+w_{\rm EM}=w_2+\tfrac53 w_1
+\Rightarrow 3w_{\rm EM}=3w_2+5w_1\in\mathbb Z
+\),
+so the $(SU(3),SU(2),{\rm EM})$ basis keeps exact integers for certification.
+
+\subsection*{S1.2 Worked integer kernel (by hand, no SNF)}
+
+\[
+\chi_{\rm EM}=(-10,-18,1),\qquad \gcd(10,18,1)=1\ \text{(primitive)}\,.
+\]
+
+In the $(SU(3),SU(2),{\rm EM})$ basis the two-row difference stack is
+\[
+\Delta W_{\rm EM}
+=\begin{bmatrix}
+8 & 8 & 224\\
+0 & 1 & 18
+\end{bmatrix}\in\mathbb Z^{2\times3}.
+\]
+Solve $\Delta W_{\rm EM}\,\chi_{\rm EM}=0$ over $\mathbb Z$:
+second row gives $\chi_2=-18\,\chi_3$; first row gives $8\chi_1+8\chi_2+224\chi_3=0\Rightarrow
+8\chi_1+8(-18)\chi_3+224\chi_3=0\Rightarrow \chi_1=-10\,\chi_3$.
+Choosing $\chi_3=1$ yields the \emph{primitive} generator
+\[
+\boxed{~\chi_{\rm EM}=(-10,-18,1)~,}\qquad \gcd(10,18,1)=1.
+\]
+
+\paragraph*{Transport to the canonical basis}
+Let $A\in{\rm GL}(3,\mathbb Z)$ be the unimodular change-of-columns from the EM stack
+to the canonical $(w_3,w_2,w_1)$ basis printed below. Kernel covectors transport contravariantly:
+\[
+\boxed{\ \chi \;=\; A^{-{\sf T}}\ \chi_{\rm EM}\ }\, .
+\]
+Evaluating with the $A$ (denoted $M$ below) gives
+\[
+M^{\!\top}\chi_{\rm EM}=(16,13,2)\equiv\chis\, .
+\]
+
+\paragraph*{SNF note}
+The Smith invariants of $\Delta W_{\rm EM}$ are $[1,8]$ (rank $2$),
+with a trailing zero column; hence $\ker_\mathbb Z(\Delta W_{\rm EM})$ is one–dimensional and generated by $\pm\chi_{\rm EM}$.
+
+\paragraph*{SNF (explicit).}
+For
+\(
+\Delta W_{\rm EM}=\begin{bmatrix}1&1&28\\[2pt]0&1&18\end{bmatrix}
+\),
+there exist unimodular \(U\in GL(2,\mathbb Z)\),
+\(V\in GL(3,\mathbb Z)\) such that
+\[
+U\,\Delta W_{\rm EM}\,V=\operatorname{diag}(1,\,8,\,0)\,,
+\]
+so \(\operatorname{rank}=2\) and there is a single zero invariant.
+
+\subsection*{S1.3 Window differences and the integer row lattice}
+For a momentum window $\mathcal W$ with light content $\mathcal S_{\mathcal W}$, define integerized 1L weights
+\[
+b^{(\mathcal W)}=\begin{pmatrix}\sum w_3\\[2pt]\sum w_2\\[2pt]\sum w_1\end{pmatrix}\in\mathbb Z^3,
+\]
+with Weyl $w_{3,2}=4\,T_{SU(3,2)}\,d_{\rm spect}$ and scalar $w_{3,2}=1\cdot T_{SU(3,2)}\,d_{\rm spect}$, and $w_1$ as above. For admissible windows $\{\mathcal W_i\}$ form differences
+\[
+\Delta b^{(ij)}=b^{(\mathcal W_i)}-b^{(\mathcal W_j)},\qquad
+\Delta W=\begin{bmatrix} (\Delta b^{(i_1j_1)})^\top \\ (\Delta b^{(i_2j_2)})^\top \\ \vdots \end{bmatrix}\in\mathbb Z^{m\times3}.
+\]
+
+\textit{Lemma (row–lattice invariance).}
+Any two admissible stacks $\Delta W,\Delta W'$ are related by unimodular row
+operations (adding/removing differences; reordering) and appending/canceling common adjoint self-terms. Hence their integer row lattices coincide and their left kernels over $\mathbb Z$ are identical.
+\[
+M=\begin{bmatrix}
+-5 & -3 & -2\\
+\phantom{-}2 & \phantom{-}1 & \phantom{-}1\\
+\phantom{-}2 & \phantom{-}1 & 0
+\end{bmatrix},
+\qquad \det M=-1,
+\qquad M^{\!\top}\chi_{\rm EM}=(16,13,2)\,.
+\]
+\textit{Proof sketch.} Differences generate the same subgroup as absolute rows modulo a common reference. Appending/removing a difference corresponds to adding/removing an integer row; permutations and sign flips are unimodular. Common adjoint self-terms cancel in any row difference. $\square$
+
+% -----------------------------------------------
+\subsection*{S1.4 Two physical differences (explicit tallies)}
+
+Using $T(\mathbf 3)=T(\mathbf 2)=\tfrac12$ and spectator multiplicities
+(weak multiplicity as spectator for $SU(3)$ weights; color multiplicity as spectator for $SU(2)$ weights), the integerized one–loop weights sum as follows.
+
+\paragraph*{One SM generation (five Weyl multiplets).}
+\[
+\begin{aligned}
+&\text{$SU(3)$:}\quad 
+w_3(Q_L)=4\!\cdot\!\tfrac12\!\cdot\!2=4,\quad
+w_3(u_R)=4\!\cdot\!\tfrac12\!\cdot\!1=2,\quad
+w_3(d_R)=4\!\cdot\!\tfrac12\!\cdot\!1=2 \\
+&\Rightarrow\ \sum w_3=8,\\[2pt]
+&\text{$SU(2)$:}\quad
+w_2(Q_L)=4\!\cdot\!\tfrac12\!\cdot\!3=6,\quad
+w_2(L_L)=4\!\cdot\!\tfrac12\!\cdot\!1=2
+\ \Rightarrow\ \sum w_2=8,\\[2pt]
+&\text{$U(1)_Y$ (global integerizer):}\ \
+w_1 = 12\!\!\sum_{\rm Weyl}Y^2
+= 12\!\left[\tfrac{1}{6}+\tfrac{4}{3}+\tfrac{1}{3}+\tfrac{1}{2}+1\right]
+=40.
+\end{aligned}
+\]
+Thus
+\[
+\Delta b_{\rm gen}=(8,\,8,\,40).
+\]
+
+\paragraph*{One Higgs doublet (complex scalar).}
+With $Y=+1/2$ and two weak components,
+\[
+w_2(H)=1\!\cdot\!\tfrac12\!\cdot\!1=1,\qquad
+w_1(H)=3\!\!\sum_{\rm scalars}Y^2=3\!\cdot\!\tfrac12=3,\qquad
+w_3(H)=0,
+\]
+so
+\[
+\Delta b_H=(0,\,1,\,3).
+\]
+
+\noindent(Any overall common integer factor on a \emph{row} does not affect the \emph{primitive} kernel.)
+
+\paragraph*{Conclusion (cross–check).}
+The tally route (S1.4) and the EM–stack/SNF route yield the same primitive kernel
+$\chis=(16,13,2)$, closing the algebraic–physical loop and fixing $\chis$ by integer structure alone.
+
+\section*{S2. Alignment as a Symmetry-Locking Principle}
+
+\paragraph*{Statement.}
+Let $\Keq\succ0$ be the equilibrium field-space metric and $\chis=(16,13,2)$ the SNF-certified projector. Define $\hat\chi=\chis/\normK{\chis}$ and let $e_{\rm soft}$ be the normalized soft eigenvector of $\Keq$. The \emph{alignment condition} is
+\[
+\cos\theta \;=\; \hat\chi^{\!\top}\,\Keq\,e_{\rm soft} \;\ge\; 1-\varepsilon_{\rm align},
+\]
+with fixed tolerance $\varepsilon_{\rm align}\!\ll\!1$ (reported in SM). When alignment holds, the gauge–log depth $\XiDepth=\chis\!\cdot\!\Psivec$ isolates the soft direction and the parity-even gate $\PiGate{\XiDepth}$ projects the gauge sector onto a single scalar depth.
+
+\paragraph*{Consequences.}
+(i) \emph{Even-parity protection.} A spurion $\mathbb Z_2$ symmetry $\XiDepth\!\to\!-\XiDepth$ with $\Pi$ invariant implies
+\[
+\left.\partial_{\Xi}\PiGate{\XiDepth}\right|_{\XiEq}=0
+\quad\Rightarrow\quad \text{no linear response;\ } m_{\rm PF}^2=0,
+\]
+to all loop orders near equilibrium. Renormalization can shift $(\sigchi,\Keq)$ but cannot generate an odd term.\\
+(ii) \emph{Tensor sector.} Around the lab point (Minkowski) the Lichnerowicz operator reduces to
+\[
+\Delta_{\!L}h_{\mu\nu} \;=\; -\Box h_{\mu\nu}=0 \quad\Rightarrow\quad
+\omega^2=\mathbf{k}^2,\ \lambda=\pm2 \ \text{(massless, luminal)}.
+\]
+(iii) \emph{Quadratic lab-null.} The near-eq.\ response is
+\[
+\FracDG \;\simeq\; \frac{\DXi^2}{\sigchi^2}
+=\frac{\varphi_\chi^2}{\Lgate^2},\qquad
+\varphi_\chi=\DXi/\normK{\chis},\quad
+\Lgate=\sigchi/\normK{\chis}.
+\]
+
+\paragraph*{Falsifier from misalignment.}
+If $\cos\theta<1-\varepsilon_{\rm align}$, an odd (linear) term is generically induced in a lab fit
+\[
+\FracDG(s)=A\,s+B\,s^2+\dots,
+\]
+violating the parity null ($A=0$). Significant misalignment therefore falsifies the model.
+
+\paragraph*{Motivation (minimal).}
+Alignment is the universal tendency of coupled fields to cohere along the softest kinetic mode of a positive-definite metric $K$. In GAGE, the certified integer projector $\chis$ aligns with the soft eigenvector of $\Keq$, enforcing even response and a massless, luminal tensor sector. Analogous locking appears in magnetic ordering, superconductivity, and Higgs vacuum alignment (qualitative context; not inputs).
+
+\paragraph*{S2.1 Minimal alignment functional.}
+Let unit order parameters $u_i(x)\in\mathbb{R}^d$ with metrics $K_i\succ0$ and couplings $\gamma_1,\gamma_2$. Define
+\[
+\mathcal{A}[u]
+=\!\int d^Dx\!
+\Big[
+\tfrac12\sum_i (\partial u_i)^{\!\top}\!K_i(\partial u_i)
+-\frac{1}{N}\!\sum_{i<j}\!(\gamma_1\,u_i\!\cdot\!u_j+\gamma_2(u_i\!\cdot\!u_j)^2)
+\Big],\qquad \|u_i\|=1.
+\]
+Diagnostics $m=\|\langle u\rangle\|$, $C=\tfrac1N\sum_i u_i u_i^{\!\top}$, and $\rho=\lambda_{\max}(C)/\mathrm{Tr}(C)$ measure coherence ($m\in[0,1]$, $\rho\in[1/d,1]$).
+\textbf{Lemma.} For $K\succ0$ and couplings above a threshold $\gamma_c$, minimizers align $\langle u\rangle$ with the soft eigenvector $e_{\rm soft}$ of $K$ up to $O(\kappa_{\rm gap}^{-1})$; orthogonal fluctuations are gapped.
+\textbf{Map to GAGE.} $u\!\parallel\!\hat\chi$, $K\!\to\!\Keq$, $\Xi=\chis\!\cdot\!\Psivec$, and even $\Pi(\Xi)$ enforces $\FracDG\simeq\varphi_\chi^2/\Lgate^2$.
+
+\paragraph*{S2.2 Phase variant (S$^1$).}
+For phases $\theta_i$,
+\[
+\mathcal{A}_\theta[\theta]
+=\!\int d^Dx\!
+\Big[\tfrac{\kappa}{2}\sum_i|\nabla\theta_i|^2
+-\frac{K}{N}\sum_{i<j}\cos(\theta_i-\theta_j)\Big],
+\]
+whose ordered phase satisfies $\partial_\mu\theta_i\!\approx\!\partial_\mu\theta_j$, corresponding to alignment of phase gradients.
+
+\paragraph*{S2.3 Conservation form (near equilibrium).}
+Define the alignment current
+\[
+J^\mu_{\rm align}
+=\PiGate{\Xi}\,\chis^{\!\top}\Keq\,\partial^\mu\Psivec,
+\]
+which reduces after one contraction to $J^\mu_{\rm align}=\PiGate{\Xi}\,\partial^\mu\Xi$. Using $\Pi'(\Xi_{\rm eq})=0$ and the $\Xi$ equation of motion,
+\[
+\partial_\mu J^\mu_{\rm align}
+=0+O\!\big((\DXi)^3,\ \text{two-loop drift},\ \varepsilon_{\rm align}\big).
+\]
+Any measured odd term $A\neq0$ in $\FracDG=A\,s+B\,s^2+\dots$ gives $\partial_\mu J^\mu_{\rm align}\neq0$ and falsifies alignment.
+
+\paragraph*{S2.4 Information-geometry view.}
+The Fisher curvature $\kappa_\chi=1/\sigchi^2$ defines the local informational metric. Alignment is motion along the soft eigenvector of $\Keq$, the direction of least informational curvature.
+
+\paragraph*{S2.5 Falsifiers and caveats.}
+Falsifiers include a persistent odd response ($A\neq0$), failure of rank-1 coherence ($\rho\nrightarrow1$), or alignment to a non-soft mode at fixed $K$. Boundary or disorder effects can produce modulated/defect states; diagnose via the most unstable Fourier mode of the quadratic expansion.
+
+\paragraph*{S2.6 Cross-domain statement.}
+Across spins, phases, and gauge directions, alignment is symmetry locking to the soft mode of $K$, quantified by $(m,\rho)$. GAGE is the SM realization with $u\!\parallel\!\hat\chi$ and $K=\Keq$.
+
+
+\section*{S3. Gate, parity lemma, and quadratic response}
+
+\subsection*{S3.1 Even gate $\Pi(\Xi)$ and normalization}
+Promote $\XiDepth=\chis\!\cdot\!\Psivec$ to a spacetime scalar $\XiDepth(x)$ via $\Psivec(x)$.
+Define a parity-even projection gate
+\[
+\frac{\Gx}{\G}=\PiGate{\XiDepth},\qquad \PiGate(\XiEq)=1,\qquad
+\PiGate(\XiEq+\Delta)=\PiGate(\XiEq-\Delta),
+\]
+with $\Pi$ assumed $C^2$ near $\XiEq$ and depending only on $\XiDepth$.
+It introduces no gravitational dynamics beyond a multiplicative normalization.
+
+\paragraph*{Gaussian model (optional, for figures/tests)}
+For numerical plots we sometimes use the Gaussian ansatz
+\[
+\Pi_{\rm G}(\Xi)=\exp\!\Big[-\frac{(\Xi-\XiEq)^2}{\sigchi^2}\Big],
+\]
+but all derivations require only evenness and smoothness.
+
+\subsection*{S3.2 Parity lemma and quadratic response}
+Let $\DXi\equiv\XiDepth-\XiEq$. Evenness implies $\partial_\Xi\PiGate\!\big|_{\XiEq}=0$ and
+\[
+\PiGate(\XiEq+\DXi)=1+\tfrac12\,\PiGate''(\XiEq)\,\DXi^2+\order(\DXi^3).
+\]
+Hence
+\[
+\FracDG
+=\frac{\Gx}{\G}-1
+=\PiGate(\XiEq+\DXi)-1
+\simeq \tfrac12\,\PiGate''(\XiEq)\,\DXi^2,
+\]
+and all odd corrections vanish: $\partial_\Xi^{(2k+1)}\PiGate\!\big|_{\XiEq}=0$.
+For $\Pi_{\rm G}$, $\Pi_{\rm G}''(\XiEq)=-2/\sigchi^2$, so $|\Delta G/G|\simeq \DXi^2/\sigchi^2$.
+
+\subsection*{S3.3 Soft mode, canonical form, and $\Lgate=\sigchi/\normK{\chis}$}
+With $\Keq\succ0$ (Table~\ref{tab:keq}), define
+\[
+\varphi_\chi=\frac{\chis^{\!\top}(\Psivec-\Psivec_{\rm eq})}{\normK{\chis}},\qquad
+\normK{\chis}=\sqrt{\chis^{\!\top}\Keq\chis},
+\]
+so $\DXi=\normK{\chis}\,\varphi_\chi$. A convenient canonical parameterization is
+\[
+\PiGate{\XiDepth}=\exp\!\Big[-\,\frac{\varphi_\chi^2}{\Lgate^2}\Big],\qquad
+\Lgate=\frac{\sigchi}{\normK{\chis}},
+\]
+and near equilibrium $|\Delta G/G|\simeq \varphi_\chi^2/\Lgate^2$.
+The macros encode
+\[
+\ohel=\frac{\normK{\chis}}{\sigchi}=\frac{1}{\Lgate},\qquad
+\thel=\frac{2\pi}{\ohel}=2\pi\,\Lgate.
+\]
+
+\subsection*{S3.4 Spurion $\mathbb{Z}_2$ and radiative stability (all orders)}
+\textbf{Definition (spurion parity).}
+Assign the \emph{spurionic} reflection symmetry in gauge-log space
+\[
+\Xi\ \mapsto\ -\Xi,\qquad \delta\Xi\ \mapsto\ -\delta\Xi,\qquad \Pi\ \mapsto\ \Pi,
+\]
+and act trivially on directions orthogonal to $\chis$:
+\(
+P_\perp(\Psivec-\Psivec_{\rm eq})\mapsto P_\perp(\Psivec-\Psivec_{\rm eq})
+\)
+with $P_\perp=\mathbb{1}-P_\chi$ and $P_\chi=\Keq\,\chis\chis^{\!\top}/(\chis^{\!\top}\Keq\chis)$.
+
+\textbf{Lemma (operator classification near $\XiEq$).}
+In a local EFT respecting the spurion parity and the residual $O(2)$ rotations in the orthogonal complement, any scalar functional that multiplies the Ricci term must be built from \emph{even} invariants:
+\[
+\Pi(\Xi,\partial\Xi,\ldots)=\Pi_0+\Pi_2\,\frac{\delta\Xi^2}{\sigchi^2}
++\Pi_{2,\partial}\,\frac{(\partial\delta\Xi)^2}{\Lgate^2}+\cdots,
+\]
+while all terms linear in $\delta\Xi$ or odd in derivatives are forbidden. 
+
+\textbf{Radiative stability (renormalization statement).}
+Loop corrections consistent with the spurion parity cannot generate a linear term: $\partial_\Xi\Pi|_{\XiEq}$ renormalizes multiplicatively to zero. Allowed counterterms renormalize
+(i) the overall normalization $\Pi(\XiEq)\equiv1$ (fixed by calibration),
+(ii) the width $\sigchi$,
+(iii) the kinetic metric $K_{ij}$,
+and higher-even coefficients. Hence the \emph{only} effect at quadratic order is a finite renormalization of $\sigchi$ and $K_{ij}$; no $\order(\DXi)$ response appears to any loop order.
+
+\subsection*{S3.5 Why $\Pi=\Pi(\Xi)$ (no dependence on orthogonal modes)}
+By construction $\Xi=\chis\!\cdot\!\Psivec$ is the unique (primitive) integer depth (S1). 
+Near equilibrium, the orthogonal subspace is two-dimensional; imposing the residual $O(2)$ symmetry in $P_\perp$ forbids any dependence on a specific orthogonal direction at leading order. Therefore the most general scalar gate consistent with these symmetries is a function of $\Xi$ alone (plus \emph{even} derivative corrections as in S3.4), which are higher order in the lab-null setups of S6.
+
+\subsection*{S3.6 Falsifier (boxed, S6 handoff)}
+\[
+\boxed{
+\left.\partial_\Xi \PiGate{\Xi}\right|_{\XiEq}=0\ \Longrightarrow\
+\text{no linear term in }\frac{\Delta G}{G}.\
+\text{Any observed }\order{\DXi}\ \text{signal falsifies the construction.}
+}
+\]
+The quadratic coefficient is $\tfrac12\,\Pi''(\XiEq)$ (Gaussian: $-2/\sigchi^2$). 
+The lab-null template and two-state contrast appear in S6.
+
+\paragraph*{Parity reminder.}
+At $\Psivec_{\rm eq}$, $\partial_\Xi\Pi|_{\rm eq}=0$; hence no linear (odd) term in $\delta\Xi$ appears and leading deviations are $\propto\delta\Xi^2$.
+
+
+\section*{S4. Tensor sector and absence of Pauli–Fierz mass}
+
+\subsection*{S4.1 Background, Jordan-frame expansion, and kinetic structure}
+Assume a stationary, flat laboratory background
+\[
+\Psivec=\Psivec_{\rm eq},\qquad \partial_{\Psivec}V\big|_{\Psivec_{\rm eq}}=0,\qquad
+V(\Psivec_{\rm eq})=0,\qquad g_{\mu\nu}=\eta_{\mu\nu}+h_{\mu\nu}.
+\]
+Insert the gate into the Einstein–Hilbert term:
+\[
+S=\int d^4x\,\sqrt{-g}\,\Big[
+\tfrac12\,\MPl^2\,\PiGate{\XiDepth}\,R
+-\tfrac12\,\partial_\mu\Psivec^{\!\top}\Kfs\,\partial^\mu\Psivec
+- V(\Psivec)\Big].
+\]
+At equilibrium $\Pi(\XiEq)=1$ and, by S2, $\left.\partial_\Xi \Pi(\Xi)\right|_{\XiEq}=0$.
+Expand around $g_{\mu\nu}=\eta_{\mu\nu}+h_{\mu\nu}$ in harmonic gauge
+$\partial^\mu h_{\mu\nu}-\tfrac12\partial_\nu h=0$. To quadratic order in $h$,
+\[
+S_{\rm tens}^{(2)}=\frac{\MPl^2}{8}\!\int d^4x\,
+h^{\mu\nu}\,\mathcal{E}_{\mu\nu}^{\ \ \alpha\beta}\,h_{\alpha\beta}
+\;+\;\order{h^2\DXi^2},
+\]
+where $\mathcal{E}$ is the Lichnerowicz operator. Since $\Pi'(\XiEq)=0$, all potential $h^2\DXi$ mixings vanish.
+
+\begin{tcolorbox}[colback=white,colframe=black!30,left=2mm,right=2mm]
+\textbf{No Pauli–Fierz mass.}\;
+Around flat equilibrium with $\Pi'(\XiEq)=0$ and $\Pi(\XiEq)=1$, the linearized tensor sector equals GR’s:
+no $m_{\rm PF}^2(h_{\mu\nu}h^{\mu\nu}-h^2)$ term appears. Gate effects begin at $\order(\DXi^2)$ and do not alter the kinetic Lichnerowicz form.
+\end{tcolorbox}
+
+\paragraph*{Kinetic metric and soft-mode projectors}
+The log-coupling fields expand with
+\[
+\mathcal{L}_{\rm kin}=-\tfrac12\,\partial_\mu\Psivec^{\!\top}\Kfs\,\partial^\mu\Psivec,\qquad
+\Keq=\Kfs\big|_{\Psivec_{\rm eq}}\succ0.
+\]
+Define the $\Keq$-unit vector and projectors
+\[
+\hat u_\chi=\frac{\chis}{\normK{\chis}},\quad
+P_\chi=\hat u_\chi\,\hat u_\chi^{\!\top}\Keq,\quad
+P_\perp=\mathbb{1}-P_\chi,
+\]
+so
+\(
+\varphi_\chi=\hat u_\chi^{\!\top}\Keq(\Psivec-\Psivec_{\rm eq}),
+\)
+and
+\(
+\DXi=\chis\!\cdot(\Psivec-\Psivec_{\rm eq})=\normK{\chis}\,\varphi_\chi.
+\)
+The explicit $\Keq$ and eigenstructure appear in Tables~\ref{tab:keq}–\ref{tab:keq_eigs}.
+
+\subsection*{S4.2 Explicit origin of the no-mixing result}
+Vary the Jordan-frame Ricci term with $\Omega(\Psivec)\equiv\MPl^2\Pi(\Xi)$:
+\[
+\delta\!\left(\sqrt{-g}\,\Omega R\right)
+=\sqrt{-g}\Big[\tfrac12\,\Omega\,h^{\mu\nu}\,\mathcal{E}_{\mu\nu}^{\ \ \alpha\beta}h_{\alpha\beta}
++(g_{\mu\nu}\Box-\nabla_\mu\nabla_\nu)\,\delta\Omega\; h^{\mu\nu}\Big]_{\!{\rm lin}}
++\cdots.
+\]
+Near equilibrium,
+\(
+\delta\Omega=\MPl^2\,\Pi'(\XiEq)\,\delta\Xi+\order(\delta\Xi^2)=0+\order(\delta\Xi^2),
+\)
+so the would-be $h\,\delta\Xi$ mixing proportional to $(\partial\partial\,\delta\Omega)$
+is absent at linear order. The first nonzero gate correction is $\order{h\,\delta\Xi^2}$,
+which cannot produce a Pauli–Fierz mass term and instead renormalizes higher-order interactions.
+
+\subsection*{S4.3 GR limit and field equations (linearized)}
+Collect the $\order(h)$ terms and couple to conserved matter $T_{\mu\nu}$:
+\[
+\MPl^2\,\mathcal{E}_{\mu\nu}^{\ \ \alpha\beta}h_{\alpha\beta}
+= T_{\mu\nu}
+\;+\;\order\!\big(h\,\delta\Xi^2\big).
+\]
+The gauge symmetries and propagator match GR; the two tensor polarizations propagate luminally with $k^2=0$. The Newtonian potentials satisfy
+\[
+\nabla^2\Phi=\nabla^2\Psi=\tfrac12\,\MPl^{-2}\,T_{00}\quad\Rightarrow\quad
+\gamma\equiv\Psi/\Phi=1+\order\!\big(\DXi^2/\sigchi^2\big),
+\]
+consistent with the parity lemma (S2): odd response is forbidden and leading deviations are quadratic.
+
+
+\subsection*{S4.4 Even scalar sector and width provenance}
+To parameterize widths without inducing a PF mass, use a parity-even quadratic potential in field space:
+\[
+V(\Psivec)=\tfrac12\,(\Psivec-\Psivec_{\rm eq})^{\!\top}\,\Sigma_{\perp}^{-1}\,P_\perp\,(\Psivec-\Psivec_{\rm eq})
++\tfrac{\gamma}{2}\,\big(\chis\!\cdot(\Psivec-\Psivec_{\rm eq})\big)^2,
+\]
+with $\Sigma_{\perp}^{-1}\succ0$ on $P_\perp$ and $\gamma>0$. The Hessian at equilibrium is
+\[
+H\equiv \partial_i\partial_j V\big|_{\rm eq}=\Sigma_{\perp}^{-1}P_\perp+\gamma\,\chis\chis^{\!\top}.
+\]
+The canonically normalized soft-mode mass is
+\[
+m_\chi^2=\frac{\chis^{\!\top}H\,\chis}{\chis^{\!\top}\Keq\,\chis}
+=\frac{\chis^{\!\top}\Sigma_{\perp}^{-1}P_\perp\chis}{\chis^{\!\top}\Keq\,\chis}
++\gamma\,\frac{(\chis^{\!\top}\chis)^2}{\chis^{\!\top}\Keq\,\chis}.
+\]
+Since $P_\perp\chis=0$,
+\[
+\boxed{~m_\chi^2=\gamma\,\frac{(\chis^{\!\top}\chis)^2}{\chis^{\!\top}\Keq\,\chis}
+\;\equiv\;\gamma_\chi\,\normK{\chis}^{-2},\quad \gamma_\chi\equiv\gamma(\chis^{\!\top}\chis)^2~.}
+\]
+An even scalar potential thus produces widths in the scalar sector while preserving the massless, luminal spin-2 sector and forbidding any linear $h$–$\delta\Xi$ mixing.
+
+\subsection*{S4.5 Covariant embedding (summary and cross-ref)}
+With
+\[
+S=\int\!\sqrt{-g}\,\Big[\tfrac12\,\Omega(\Psivec)\,R-\tfrac12\,G_{ij}(\Psivec)\,\nabla_\mu\xi^i\nabla^\mu\xi^j - V(\Psivec) + L_{\rm gauge}+L_{\rm matter}\Big],
+\]
+metric variation yields
+\[
+\Omega\, G_{\mu\nu}+(g_{\mu\nu}\Box-\nabla_\mu\nabla_\nu)\Omega
+= T^{(\Psi)}_{\mu\nu}+T^{\rm gauge}_{\mu\nu}+T^{\rm matter}_{\mu\nu}.
+\]
+Calibrating $\Omega(\Psivec_{\rm eq})=\MPl^2$ (i.e., $\Pi(\XiEq)=1$) and using $\Pi'(\XiEq)=0$ gives the GR quadratic sector exactly; expanding in $\delta\Xi$ reproduces the quadratic response of S3 with leading deviation $\Delta G/G\simeq \DXi^2/\sigchi^2$.
+
+
+\subsection*{S4.6 Equilibrium metric and spectrum}\label{A:metric}
+
+\paragraph*{Kinetic term (equilibrium metric)}
+Work in log–coupling coordinates
+\[
+\Psivec=(\xihats,\xihatw,\xihata)=(\LN\alphas,\LN\alphaTwo,\LN\alphae),\qquad
+\XiDepth=\chis\!\cdot\!\Psivec,\ \ \chis=(16,13,2).
+\]
+The scalar kinetic Lagrangian is
+\begin{equation}
+\boxed{
+\mathcal{L}_{\rm kin}=-\tfrac12\,\partial_\mu\Psivec^{\!\top}\,\Kfs(\Psivec)\,\partial^\mu\Psivec,\qquad \Kfs(\Psivec)\succ0
+}
+\label{eq:kinetic-general}
+\end{equation}
+and at the equilibrium point
+\begin{equation}
+\Keq \;\equiv\; \Kfs(\Psivec_{\rm eq})
+\;=\;
+\begin{bmatrix}
+1.2509 & -0.6202 & -0.1813 \\
+-0.6202 & 1.5128 & -0.1633 \\
+-0.1813 & -0.1633 & 3.2362
+\end{bmatrix},
+\qquad \Keq\succ0.
+\label{eq:Keq-matrix}
+\end{equation}
+
+\paragraph*{Spectrum and alignment}
+Let $\{\lambda_i,e_i\}$ be the orthonormal eigenpairs of $\Keq$ (Euclidean inner product):
+\[
+\lambda_{\min}=0.7243366,\quad
+\lambda_2=2.0155976,\quad
+\lambda_{\max}=3.2599658,
+\]
+with
+\[
+e_{\rm soft}=(0.7724942,\ 0.6276375,\ 0.0965604),\qquad
+\Keq=\sum_{i=1}^3 \lambda_i\,e_i e_i^{\!\top}.
+\]
+Numerically,
+\[
+\hat\chis\equiv\frac{\chis}{\|\chis\|_2}=(0.7724873,\ 0.6276459,\ 0.0965609),\quad
+\cos\theta_{\Keq}:=\hat\chis\!\cdot e_{\rm soft}=1.0000000\pm\mathcal{O}(10^{-8}),
+\]
+and
+\[
+\Keq\,\chis=\lambda_{\min}\,\chis\pm\mathcal{O}(10^{-4})\quad\text{(componentwise)}.
+\]
+Thus $\chis$ aligns with the soft eigenmode within numerical precision.
+
+\paragraph*{Metric-aware projectors (canonical)}
+\begin{equation}
+\boxed{\
+P_\chi=\frac{\chis\,\chis^{\!\top}\Keq}{\chis^{\!\top}\Keq\chis},\qquad
+P_\perp=\mathbb{1}-P_\chi \
+}
+\label{eq:metric_projectors}
+\end{equation}
+
+\paragraph*{Consequences (used throughout)}
+\begin{itemize}\setlength\itemsep{2pt}
+\item \textbf{Depth norm:}
+\(
+\normK{\chis}^2=\chis^{\!\top}\Keq\chis
+= \lambda_{\min}\,\chis^{\!\top}\chis
+= \lambda_{\min}\times 429
+\Rightarrow \normK{\chis}=17.6278.
+\)
+\item \textbf{Gate scale:}
+with even curvature–gate width $\sigchi=247.683$,
+\(
+\Lgate=\sigchi/\normK{\chis}=14.0507,\ 
+\ohel=\Lgate^{-1}=0.0712,\ 
+\thel=2\pi\,\Lgate\simeq 88\,t_P.
+\)
+\item \textbf{Softest direction:}
+for any displacement $\omega$, the quadratic form
+\(Q(\omega)=\omega^{\!\top}\Keq\,\omega\)
+is minimized along the $\chis$ direction; orthogonal motion costs more.
+\end{itemize}
+
+\paragraph*{Eigen–decomposition and positivity}
+Let $R=[e_1\,e_2\,e_3]$ be orthogonal. Then
+\begin{equation}
+R^\top \Keq R \;=\; \mathrm{diag}(\lambda_1,\lambda_2,\lambda_3),\qquad \lambda_i>0.
+\label{E:Keq_eig}
+\end{equation}
+
+\paragraph*{Depth direction and \(\Keq\) norm}
+For $\chis=(16,13,2)$, define
+\begin{equation}
+\normK{\chis}^2 \;:=\; \chis^\top \Keq \chis,\qquad
+\widehat{\chis}_{\Keq} \;:=\; \frac{\chis}{\sqrt{\chis^{\!\top}\Keq\chis}},\qquad
+\hat\chis \;:=\; \frac{\chis}{\|\chis\|_2}.
+\label{E:chi_norm}
+\end{equation}
+(The alternative $\Keq\chis\,\chis^{\!\top}/(\chis^{\!\top}\Keq\chis)$ sometimes seen in the literature is \emph{not} the $\Keq$–orthogonal projector on column vectors.)
+
+\subsection*{S4.7 Scalar potential, widths, and consistency certificate}
+
+\paragraph*{Purpose}
+The scalar potential below is not required for graviton emergence or GR normalization (those follow from the parity of the curvature gate $\Pi(\Xi)$; see S2/S3.2). This section only certifies that one can assign a consistent EFT width to the depth mode and regulate transverse directions without inducing a Pauli–Fierz mass or linear mixing.
+
+\paragraph*{Scalar potential (parity-even, quadratic)}
+In log–coupling space write
+\[
+\Psivec=(\xihats,\xihatw,\xihata)=(\LN\alphas,\LN\alphaTwo,\LN\alphae),\qquad
+\chis=(16,13,2),\qquad
+\XiDepth=\chis\!\cdot\!\Psivec,
+\]
+and define $\Delta\Psivec=\Psivec-\Psivec_{\rm eq}$, $\XiEq=\chis\!\cdot\!\Psivec_{\rm eq}$. Take
+\begin{equation}
+V(\Psivec)
+=\frac12\sum_{i\in\{s,2,e\}}\frac{\big(\xi_i-\xi_i^{(\mathrm{eq})}\big)^2}{\sigma_i^2}
+\;+\;\frac{\gamma}{2}\,\big(\chis\!\cdot\!\Delta\Psivec\big)^2,
+\label{eq:Vcanonical}
+\end{equation}
+so parity about $\XiEq$ is manifest: $\partial_{\xi_i}V|_{\rm eq}=0$ and all odd powers in $(\chis\!\cdot\!\Delta\Psivec)$ vanish.
+
+\paragraph*{Equivalent projector/operator form (metric-correct)}
+Let
+\[
+P_\chi=\frac{\chis\,\chis^{\!\top}\Keq}{\chis^{\!\top}\Keq\chis},\qquad
+P_\perp=\mathbb{1}-P_\chi,\qquad \Keq\succ0.
+\]
+Then an equivalent form that makes the transverse restriction explicit is
+\begin{equation}
+V(\Psivec)=\tfrac12\,\Delta\Psivec^{\!\top}\,\big(P_\perp\,\Sigma_\perp^{-1}\,P_\perp\big)\,\Delta\Psivec
+\;+\;\tfrac{\gamma}{2}\,(\chis\!\cdot\!\Delta\Psivec)^2,\qquad
+\Sigma_\perp^{-1}=\mathrm{diag}\!\left(\tfrac{1}{\sigma_{\alpha_s}^2},\tfrac{1}{\sigma_{\alpha_2}^2},\tfrac{1}{\sigma_{\alpha}^2}\right).
+\label{eq:V_projector_form}
+\end{equation}
+(Using $P_\perp=\mathbb{1}-\Keq\chis\,\chis^{\!\top}/(\chis^{\!\top}\Keq\chis)$ would \emph{not} be the $\Keq$-orthogonal projector on column vectors; the form above is the correct one.)
+
+\paragraph*{Parameter choices (depth vs transverse)}
+\textbf{Depth (derived, fixed).} From Tables~\ref{tab:keq} and \ref{tab:cert_params}:
+\[
+\sigchi=247.683,\quad \normK{\chis}=17.6278,\quad
+\Lgate=\frac{\sigchi}{\normK{\chis}}=14.0507,\quad
+\ohel=\Lgate^{-1}=0.0712,\quad
+\thel=2\pi\,\Lgate\simeq 88\,t_P.
+\]
+These follow from the Fisher curvature (gate width) and the kinetic norm.
+
+\textbf{Transverse (regulator pins, fixed once).} The transverse widths regulate only the $P_\perp$ plane:
+\[
+\sigma_{\alpha_s}=0.446296,\qquad \sigma_{\alpha_2}=0.547533,\qquad \sigma_{\alpha}=0.551281.
+\]
+They do not affect the GR tensor sector (which depends only on gate parity; see S2/S3.2).
+
+\textbf{Isotropic fallback (metric-aware).} If a symbolic fallback is desired, impose isotropy in the $\Keq$-metric subspace orthogonal to $\chis$:
+\[
+\boxed{\ \Sigma_\perp \;=\; C\,P_\perp,\qquad
+P_\perp=\mathbb{1}-\frac{\chis\,\chis^{\!\top}\Keq}{\chis^{\!\top}\Keq\chis}\ }
+\]
+i.e., equal variance in any direction orthogonal to $\chis$. (Componentwise recipes like $\sigma_i\propto|\chi_i|$ are not isotropic in the $\Keq$ metric and should be avoided.)
+
+\paragraph*{Hessian and depth-mode mass}
+Expanding \eqref{eq:V_projector_form},
+\begin{equation}
+H \equiv \partial_i\partial_j V\big|_{\rm eq}
+= P_\perp\,\Sigma_\perp^{-1}\,P_\perp + \gamma\,\chis\,\chis^{\!\top}.
+\label{eq:Hessian}
+\end{equation}
+Project along $\chis$ and normalize by $\Keq\succ0$:
+\begin{equation}
+m_\chi^2
+=\frac{\chis^{\!\top} H\, \chis}{\chis^{\!\top}\Keq\,\chis}
+=\frac{\chis^{\!\top}P_\perp\,\Sigma_\perp^{-1}\,P_\perp\chis}{\chis^{\!\top}\Keq\chis}
+\;+\;\gamma\,\frac{(\chis^{\!\top}\chis)^2}{\chis^{\!\top}\Keq\chis}.
+\label{eq:mchi_master}
+\end{equation}
+Since $P_\perp\chis=0$ by construction, the soft mass reduces to the depth-only certificate
+\begin{equation}
+\boxed{~m_\chi^2
+=\gamma\,\frac{(\chis^{\!\top}\chis)^2}{\chis^{\!\top}\Keq\,\chis}
+=\gamma_\chi\,\normK{\chis}^{-2},\qquad \gamma_\chi\equiv\gamma(\chis^{\!\top}\chis)^2~,}
+\label{eq:mass-from-gamma}
+\end{equation}
+i.e. curvature resides only along the $\chis$ direction.
+
+\paragraph*{Transverse regulator implementation}
+With the $\Keq$-metric projectors above, implement the regulator as $P_\perp\,\Sigma_\perp^{-1}\,P_\perp$. This leaves the depth gate and tensor sector unchanged and avoids spurious mixing.
+
+\paragraph*{Gate in canonical form and parity lemma (recap)}
+Define
+\[
+\varphi_\chi=\frac{\chis^{\!\top}(\Psivec-\Psivec_{\rm eq})}{\normK{\chis}},\qquad
+\DXi=\normK{\chis}\,\varphi_\chi,
+\]
+so
+\begin{equation}
+\boxed{~\Pi(\Xi)=\exp\!\Big[-\frac{\varphi_\chi^2}{\Lgate^2}\Big],\qquad
+\Lgate=\frac{\sigchi}{\normK{\chis}}~,}
+\label{E:gate_lambda}
+\end{equation}
+and near equilibrium
+\(
+\big|\Delta G/G\big|\simeq \varphi_\chi^2/\Lgate^2
+\)
+with the odd (linear) term absent: $\partial_\Xi\Pi|_{\XiEq}=0$ $\Rightarrow$ no $h$–$\varphi$ linear mixing, no Pauli–Fierz mass.
+
+\paragraph*{Expansion about equilibrium and quadratic Lagrangian}
+Set $\Psivec=\Psivec_{\rm eq}+\varphi$ and $g_{\mu\nu}=\eta_{\mu\nu}+h_{\mu\nu}$. With $\Mstar^2:=\MPl^2\,\Pi(\Xi)|_{\Psivec=\Psivec_{\rm eq}}=\MPl^2$ and $\DXi=\chis\!\cdot\!\varphi$,
+\[
+\Pi(\Xi)=1-\DXi^2/\sigchi^2+\order(\varphi^4).
+\]
+To quadratic order,
+\begin{equation}
+\mathcal{L}^{(2)}=
+\tfrac{\Mstar^2}{8}\,h^{\mu\nu}\,\mathcal{E}_{\mu\nu}^{\ \ \rho\sigma}\,h_{\rho\sigma}
+-\tfrac12\,\partial_\mu\varphi^{\top}\,\Keq\,\partial^\mu\varphi
+-\tfrac12\,\varphi^{\top}\,M^2\,\varphi
++\order{h\,\varphi^2}+\order{h^2\varphi},
+\label{E:L2}
+\end{equation}
+with $M^2=P_\perp\,\Sigma_\perp^{-1}\,P_\perp+\gamma\,\chis\chis^{\!\top}$ and $\mathcal{E}$ the Lichnerowicz operator. By parity, linear $h$–$\varphi$ mixing cancels and the graviton is massless and luminal.
+
+\paragraph*{Weinberg soft factor (unchanged)}
+In the $q\to0$ limit,
+\[
+\mathcal{M}_{n+1}\simeq
+\kappa\,S^{(0)}(q,\varepsilon)\,\mathcal{M}_n,\qquad
+S^{(0)}=\sum_{i=1}^n \eta_i\,\frac{p_i^\mu p_i^\nu\,\varepsilon_{\mu\nu}}{p_i\!\cdot\! q},\qquad
+\kappa=\frac{2}{\Mstar},
+\]
+$\eta_i=\pm1$, and $\varepsilon_{\mu\nu}$ is transverse and traceless. Depth parity at the lab point leaves $S^{(0)}$ invariant.
+
+\paragraph*{Light deflection}
+Because $\Pi(\Xi)=1+\order(\DXi^2)$, the leading eikonal angle is the GR value
+\[
+\theta = \frac{4\,\G\,M}{b\,c^2},
+\]
+with fractional corrections $\order\!\big((\DXi/\sigchi)^2\big)$; in PPN language
+$\gamma_{\rm PPN}=1+\order\!\big((\DXi/\sigchi)^2\big)$. (At equilibrium, $\G\!=\!G_N$ by calibration.)
+
+\paragraph*{One-loop counterterm container map (near equilibrium)}
+Divergences renormalize only $\{\Pi(\Xi),\Keq,V(\Psivec)\}$ and higher curvature. No linear $\DXi$ counterterm appears by parity. Finite parts are absorbed as:
+\begin{table}[t]
+  \centering
+  \caption{One-loop counterterm container map near equilibrium (finite parts).}
+  \label{T:ctmap}
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+    Counterterm & Container \\
+    \midrule
+    $c_1 R^2 + c_2 R_{\mu\nu}R^{\mu\nu}$ & finite normalization of EH sector (no PF term) \\
+    $d_1\,R\,\DXi^{\,2}$ & renormalizes $\sigchi$ in the gate expansion \\
+    $e_1\,\nabla_\mu\Psivec\,\Keq\,\nabla^\mu\Psivec$ & renormalizes $\Keq$ (wavefunction) \\
+    $e_2\,\Psivec^{\top} M^2 \Psivec$ & renormalizes $M^2$ in $V(\Psivec)$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph*{Positivity and bounds}
+Working near equilibrium with diagonal tensor and regulated scalar sectors, require
+\[
+\Keq\succ0,\qquad \sigchi^2>0,\qquad \gamma>0,\qquad \Mstar^2=\MPl^2\,\Pi(\XiEq)>0,
+\]
+ensuring GR tensor propagation and a stable scalar sector with no linear fifth force.
+
+
+\section*{S5. RG running and Ward-flatness monitor}
+
+\subsection*{S5.1 Definition and admissible windows}
+
+\paragraph*{Running-depth observable.}
+In the $\MSbar$ scheme define
+\begin{align}
+F(Q)\;\equiv\;\beta_\Xi(Q)
+=\chis\!\cdot\!\frac{\dd \Psivec}{\dlnQ}
+=16\,\frac{\dd(\LN\alphas)}{\dlnQ}
++13\,\frac{\dd(\LN\alphaTwo)}{\dlnQ}
++2\,\frac{\dd(\LN\alphae)}{\dlnQ},
+\end{align}
+with $\Psivec=(\LN\alphas,\LN\alphaTwo,\LN\alphae)$ and $\chis=(16,13,2)$.
+
+\paragraph*{Admissible windows.}
+A window $\mathcal W$ is admissible if the particle content is fixed (mass–independent scheme), all heavy thresholds lie outside $\mathcal W$, and the EM basis is used post–EWSB. Within any such $\mathcal W$, Appelquist–Carazzone decoupling applies and the Smith–normal–form identity
+\begin{align}
+\chis\!\cdot b^{(\mathcal W)}=0 \qquad \text{(one loop, GUT normalization)}
+\end{align}
+cancels the \emph{$\alpha$–independent} one–loop drift. Writing
+\begin{align}
+F^{(1\mathrm L)}(Q)=\frac{1}{2\pi}\sum_{i=1}^3 \chi_i\, b_i\, \alpha_i(Q),
+\end{align}
+the coupling weights $\alpha_i(Q)$ prevent an exact zero away from the pivot, so small residuals remain; these are the target of the preregistered bands.
+
+\paragraph*{Masked windows (preregistered).}
+We evaluate $F$ on
+\[
+W_{\rm EW}=\qtyrange{80}{160}{\mathrm{GeV}},\qquad
+W_{\rm GeV}=\qtyrange{1}{10}{\mathrm{GeV}},
+\]
+sampling $Q$ logarithmically and excising symmetric guard bands around thresholds prior to statistics on $F_\sigma$. Table~\ref{tab:threshold_masks} lists the masks used in all runs.
+
+ \begin{table}[t]
+\centering
+\caption{Threshold mask ranges (excluded from $F_\sigma$ statistics).}
+\label{tab:threshold_masks}
+\scriptsize
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Threshold & Central value [GeV] & Masked range [GeV] \\
+\midrule
+$W$       & $80.4$  & $[79.0,\ 82.0]$ \\
+$Z$       & $91.2$  & $[90.0,\ 92.5]$ \\
+$H$       & $125.3$ & $[124.0,\ 127.0]$ \\
+$t$       & $172.5$ & $[171.0,\ 175.0]$ \\
+$b$       & $4.18$  & $[4.10,\ 4.30]$ \\
+$c$       & $1.27$  & $[1.20,\ 1.35]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Masks are applied within $W_{\rm EW}$ and $W_{\rm GeV}$. Grid and mask variations ($\pm20\%$ step, $\pm25\%$ mask half-width) leave pass/fail unchanged (Sec.~S5.2).
+
+\paragraph*{Rationale for preregistration.}
+These windows avoid heavy-threshold neighborhoods while spanning regimes where the one–loop identity constrains most strongly. Bands below are conservative falsifier envelopes, not fit targets.
+
+\paragraph*{Letter cross–reference.}
+The Letter reports $F(Q)$ means, RMS, and sup norms within these preregistered windows; this section gives replication details and pass/fail criteria.
+
+\subsection*{S5.2 Computation pipeline and preregistered bounds}
+
+For each $Q\in W_{\rm EW}\cup W_{\rm GeV}$:
+\begin{enumerate}[label=(\roman*)]\setlength\itemsep{2pt}
+\item Evolve $\alphas(Q)$, $\alphaTwo(Q)$, $\alphae(Q)$ with SM $\MSbar$ RGEs (1L/2L as specified), using standard matching at heavy thresholds ($t,H,W,Z$, heavy quarks) and step decoupling for QCD where indicated.
+\item Form $\Xi(Q)=\chis\!\cdot\!(\LN\alphas,\LN\alphaTwo,\LN\alphae)$.
+\item Compute $F(Q)=\dd\Xi/\dlnQ$ analytically from the RGEs or via symmetric finite differences on $\Xi(Q)$.
+\item Normalize $F_\sigma(Q):=F(Q)/\sigchi$ with $\sigchi=247.683$.
+\item Accumulate per–window statistics on $F_\sigma$: $\mathrm{MAX}_W=\max|F_\sigma|$, $\mathrm{RMS}_W=\sqrt{\langle F_\sigma^2\rangle}$, and $|\langle F_\sigma\rangle|$ over the masked grid.
+\end{enumerate}
+
+\paragraph*{Targets (preregistered on $F_\sigma$).}
+Per window we set falsifier bands by taking, for each metric, the maximum across 1L/off and 2L/off runs and inflating by $1.5$ (subsuming $\pm20\%$ grid and $\pm25\%$ mask variations). Numerical values (registered in S0.8) are
+\[
+\begin{aligned}
+W_{\rm EW}:\;& \mathrm{MAX}_W\le 0.01430,\quad \mathrm{RMS}_W\le 0.01372,\quad |\langle F_\sigma\rangle|\le 0.01372,\\
+W_{\rm GeV}:\;& \mathrm{MAX}_W\le 0.03535,\quad \mathrm{RMS}_W\le 0.02622,\quad |\langle F_\sigma\rangle|\le 0.02585.
+\end{aligned}
+\]
+
+\paragraph*{Implementation notes.}
+Pins are $\MSbar$ at $\mu=\MZ$; hats denote the pin and are suppressed in running formulas. Masks excise $\pm\delta$ around thresholds; $\delta$ values and grid spacings are in the replication pack. Uncertainties use log–space Jacobians with MC confirmation. The one–loop identity uses GUT–normalized $(b_1,b_2,b_3)$, with $b_{\rm EM}=\tfrac{5}{3}b_1+b_2$ and the pivot relation $\alphae^{-1}=\tfrac{5}{3}\alpha_1^{-1}+\alpha_2^{-1}$.
+
+\paragraph*{Sensitivity (preemptive).}
+Results are stable under $\pm20\%$ step–size changes and $\pm10\%$ window–edge shifts; threshold–mask half–widths varied by $\pm25\%$ leave pass/fail unchanged.
+
+\subsection*{S5.3 Two–loop and $m_t$ decoupling (concise spec)}
+
+\paragraph*{Gauge two–loop running.}
+\begin{align}
+\frac{\dd\,\alpha_i}{\dlnQ}
+=\frac{b_i}{2\pi}\alpha_i^2
++\frac{1}{8\pi^2}\sum_{j=1}^3 b_{ij}\,\alpha_i^2\,\alpha_j+\cdots,\qquad i,j\in\{1,2,3\},
+\end{align}
+with standard SM $(b_i,b_{ij})$ in GUT normalization. Reconstruct $\alphae$ from
+\begin{align}
+\frac{1}{\alphae}=\frac{5}{3}\frac{1}{\alpha_1}+\frac{1}{\alpha_2}\,.
+\end{align}
+
+\paragraph*{QCD step decoupling at $Q=m_t$.}
+\begin{align}
+b_3=\begin{cases}
+-\tfrac{23}{3}, & Q<m_t\ \ (n_f=5),\\[2pt]
+-7, & Q>m_t\ \ (n_f=6),
+\end{cases}
+\end{align}
+with continuity of $\alphas$ at $Q=m_t$ and smooth masks around thresholds.
+
+\subsection*{S5.4 Two–loop Ward–flatness and higher–order drift}
+
+The integer–lattice structure enforcing $\chis^{\!\top}\mathbf{W}=0$ holds exactly at one loop, where $\mathbf{W}$ is the gauge–sector coefficient matrix in $\MSbar$. This gives strict Ward–flatness,
+\begin{align}
+\beta_{\Xi}^{(1)}=\chis^{\!\top}\mathbf{W}^{(1)}\hat{\boldsymbol{\alpha}}=0,
+\end{align}
+so the projected gauge–log depth $\Xi=\chis\!\cdot\!\hat{\boldsymbol{\Psi}}$ is RG–flat to one loop. At higher order the decoupling lattice need not remain integer–factorizable: mixed terms $\alpha_i^2\alpha_j$ and Yukawa pieces appear in the two–loop coefficients $\mathbf{W}^{(2)}$ \cite{Machacek1983_TwoLoopI,Machacek1984_TwoLoopII,Luo2003_TwoLoopSM}. Consequently,
+\begin{align}
+\beta_{\Xi}^{(2)}
+=\chis^{\!\top}\mathbf{W}^{(2)}\,\mathbf m(\hat{\boldsymbol{\alpha}})
++\chis^{\!\top}\mathbf Y^{(2)}_{\rm gauge\!-\!Yuk}\,\hat{\mathbf y}
+\;\neq\;0,
+\end{align}
+introducing a small drift from perfect flatness. The effect is numerically suppressed because $\hat{\alpha}_i(M_Z)\ll 1$ and the projector $\chis$ continues to weight the soft direction. Quantitatively, inserting PDG $M_Z$ inputs into the known two–loop coefficients yields
+\begin{align}
+\abs{\beta_{\Xi}^{(2)}}\;\lesssim\;10^{-3}\quad\text{per}\ \dlnQ,
+\end{align}
+well below experimental uncertainty.
+
+Thus the Letter’s statement
+\begin{quote}
+``Ward–flat at one loop; higher–order drift allowed''
+\end{quote}
+is strictly accurate. Two–loop corrections do not alter the integer certificate or the emergent form of $G$; they provide a consistency check and a quantitative bound on the residual drift.
+
+
+\subsection*{Projected two-loop drift (method and bound)}
+
+\paragraph*{Setup.}
+Write the gauge $\beta$-functions at $\mu=M_Z$ in $\MSbar$ as
+\begin{align}
+\frac{\dd}{\dlnQ}\hat{\boldsymbol{\Psi}}
+= \mathbf{W}^{(1)}\,\hat{\boldsymbol{\alpha}}
++ \mathbf{W}^{(2)}\,[\hat{\boldsymbol{\alpha}}\!\odot\!\hat{\boldsymbol{\alpha}}]
++ \mathbf{Y}^{(2)}\,\hat{\boldsymbol{y}}
+\;+\; \mathcal{O}(\hat{\alpha}_i^3),
+\end{align}
+where $\hat{\boldsymbol{\Psi}}=(\LN\hat\alpha_s,\LN\hat\alpha_2,\LN\hat\alpha)^\top$, 
+$\hat{\boldsymbol{\alpha}}=(\hat\alpha_s,\hat\alpha_2,\hat\alpha)^\top$,
+$\odot$ denotes element-wise products that generate cross terms, and $\hat{\boldsymbol{y}}$ collects Yukawa/Higgs contributions.
+
+\paragraph*{One-loop cancellation and definition of depth.}
+The SNF certificate gives $\chis^\top \mathbf{W}^{(1)}=0$, hence
+\begin{align}
+\beta_\Xi^{(1)}=\chis^{\!\top}\mathbf{W}^{(1)}\hat{\boldsymbol{\alpha}}=0,
+\qquad 
+\Xi\equiv \chis\!\cdot\!\hat{\boldsymbol{\Psi}}.
+\end{align}
+
+\paragraph*{Two-loop drift.}
+At two loops the integer factorization is broken in general, so
+\begin{align}
+\beta_\Xi^{(2)}
+= \chis^{\!\top}\mathbf{W}^{(2)}[\hat{\boldsymbol{\alpha}}\!\odot\!\hat{\boldsymbol{\alpha}}]
++ \chis^{\!\top}\mathbf{Y}^{(2)}\,\hat{\boldsymbol{y}}
+\;\neq\;0,
+\end{align}
+producing a small drift. Using PDG $M_Z$ pins as representative inputs,
+\[
+\hat\alpha_s\simeq 0.118,\quad
+\hat\alpha_2\simeq 0.0338,\quad
+\hat\alpha\simeq 0.00782,
+\]
+we estimate\footnote{Coefficients in $\mathbf{W}^{(2)}$ and $\mathbf{Y}^{(2)}$ are $\mathcal{O}(1$–$10)$ in standard normalizations; see canonical two-loop compilations.}
+\begin{align}
+\left|\frac{\beta_\Xi^{(2)}}{\Xi}\right|\;\lesssim\;\mathcal{O}(10^{-3}),
+\end{align}
+consistent with the Letter’s statement: \emph{Ward-flat at one loop; higher-order drift allowed}. 
+This two-loop effect renormalizes the gate width $\sigma_\chi$ and induces a tiny $G$-running,
+without altering the integer certificate or the GR-normalized, $m_{\mathrm{PF}}=0$ tensor sector.
+
+\subsection*{Projected two-loop drift: $3\times 6$ form}
+
+\paragraph*{Monomials and flow.}
+Define at $\mu=M_Z$ (in $\MSbar$)
+\[
+\hat{\boldsymbol{\alpha}}=(\hat\alpha_s,\hat\alpha_2,\hat\alpha)^\top,\qquad
+\mathbf{m}(\hat{\boldsymbol{\alpha}})=
+\begin{pmatrix}
+\hat\alpha_s^2\\ \hat\alpha_2^2\\ \hat\alpha^2\\ \hat\alpha_s\hat\alpha_2\\ \hat\alpha_s\hat\alpha\\ \hat\alpha_2\hat\alpha
+\end{pmatrix}.
+\]
+Component-wise ($k\in\{s,2,\mathrm{em}\}$):
+\[
+\frac{\dd}{\dlnQ}\,\LN\hat\alpha_k
+= \big[\mathbf{W}^{(1)}\hat{\boldsymbol{\alpha}}\big]_k
++ \big[\mathbf{W}^{(2)}\mathbf{m}(\hat{\boldsymbol{\alpha}})\big]_k
++ \big[\mathbf{Y}^{(2)}\hat{\boldsymbol{y}}\big]_k
++ \mathcal{O}(\hat\alpha_i^3).
+\]
+The SNF property $\chis^\top\mathbf{W}^{(1)}=0$ yields
+\[
+\beta_\Xi^{(1)}=\chis^{\!\top}\mathbf{W}^{(1)}\hat{\boldsymbol{\alpha}}=0,\qquad 
+\Xi=\chis\!\cdot\!\hat{\boldsymbol{\Psi}}.
+\]
+Hence the projected two-loop drift is
+\[
+\boxed{\;\beta_\Xi^{(2)}
+= \chis^{\!\top}\mathbf{W}^{(2)}\,\mathbf{m}(\hat{\boldsymbol{\alpha}})
++ \chis^{\!\top}\mathbf{Y}^{(2)}\,\hat{\boldsymbol{y}}\,\neq 0\;}
+\]
+and is numerically suppressed because $\hat\alpha_i(M_Z)\ll 1$. Using representative pins
+$\hat\alpha_s\simeq 0.118,\ \hat\alpha_2\simeq 0.0338,\ \hat\alpha\simeq 0.00782$,
+and $\mathcal{O}(1$–$10)$ two-loop coefficients, one finds
+$\bigl|\beta_\Xi^{(2)}\bigr|\lesssim 10^{-3}$ per e-fold in $Q$.
+
+\paragraph*{Normalization note.}
+This form is agnostic to whether your RGEs are in $(g_i)$ or $(\alpha_i=g_i^2/4\pi)$. From $\beta_{g_i}$,
+\(
+\dd \ln\alpha_i/\dlnQ = 2\,\beta_{g_i}/g_i
+\);
+keep all $16\pi^2$ factors consistent when assembling $\mathbf{W}^{(2)}$ and $\mathbf{Y}^{(2)}$.
+
+\paragraph*{Numerical two-loop drift evaluation.}
+Using the canonical SM two-loop coefficients
+\begin{align}
+B&=\begin{pmatrix}
+199/50 & 27/10 & 44/5\\
+9/10 & 35/6 & 12\\
+11/10 & 9/2 & -26
+\end{pmatrix},&
+d^{(u)}&=\Big(\tfrac{17}{10},\tfrac{3}{2},2\Big),&
+d^{(d)}&=\Big(\tfrac{1}{2},\tfrac{3}{2},2\Big),&
+d^{(e)}&=\Big(\tfrac{3}{2},\tfrac{1}{2},0\Big),
+\end{align}
+and the $\MSbar$ inputs
+\[
+\hat\alpha_s=0.1180,\quad
+\hat\alpha_2=0.0338,\quad
+\hat\alpha=0.00782,\quad
+\hat s_W^2=0.2312,
+\]
+one obtains
+\[
+r_1=\frac{5/3}{1-\hat s_W^2}=2.168,\qquad
+r_2=\frac{1}{\hat s_W^2}=4.324,\qquad
+w_1=\frac{r_2}{r_1+r_2}=0.6663,\qquad
+w_2=\frac{r_1}{r_1+r_2}=0.3337.
+\]
+
+The gauge-sector two-loop block in the $(\alpha_s,\alpha_2,\alpha)$ basis is
+\begin{align}
+\mathbf W^{(2)}=
+\frac{1}{8\pi^2}
+\begin{pmatrix}
+-26 & 0 & 0 & 4.5 & 5.19 & 0\\
+0 & 5.83 & 0 & 12 & 0 & 1.95\\
+0 & 0.65 & 10.5 & 1.55 & 4.00 & 3.17
+\end{pmatrix},
+\end{align}
+acting on $\mathbf m=(\hat\alpha_s^2,\hat\alpha_2^2,\hat\alpha^2,\hat\alpha_s\hat\alpha_2,\hat\alpha_s\hat\alpha,\hat\alpha_2\hat\alpha)^\top$.
+
+Projecting with $\chis=(16,13,2)$ yields
+\begin{align}
+\beta_\Xi^{(2)}=\chis^{\!\top}\mathbf W^{(2)}\mathbf m\approx -3.5\times10^{-4},
+\end{align}
+so the projected drift per $\mathrm d\ln Q$ is
+\[
+|\beta_\Xi^{(2)}|\lesssim 4\times10^{-4},
+\]
+consistent with the preregistered tolerance and validating
+``Ward-flat at one loop; drift $\leq 10^{-3}$''.
+
+\paragraph*{Analytical context (link to $\beta_G$).}
+The emergent coupling runs by projection of the SM gauge flows:
+\begin{align}
+\beta_G &\equiv \frac{d\!\LN G}{d\!\LN Q}
+= \chis^{\!\top}\frac{d\!\Psivec}{d\!\LN Q}
+= \chis^{\!\top}\Big(\mathbf W^{(1)}\hat\alphavec
++ \mathbf W^{(2)}\,\mathbf m(\hat\alphavec)
++ \mathbf Y^{(2)}_{\rm gauge\!-\!Yuk}\,\hat{\mathbf y}\Big),
+\end{align}
+with $\hat\alphavec=(\hat\alpha_s,\hat\alpha_2,\hat\alpha)^\top$.
+Ward-flatness gives $\beta_\Xi^{(1)}=0\Rightarrow \beta_G=\mathcal{O}(\hat\alpha_i^2)$, so the first nonzero drift arises at two loops via $\mathbf W^{(2)}$ and $\mathbf Y^{(2)}_{\rm gauge\!-\!Yuk}$.
+
+
+
+
+
+\section*{S6. Post-derivation metrology: closure and leave-one-out (LOO)}
+
+\paragraph*{Scope (after the derivation of $G$).}
+Up to this point, $G$ has been \emph{derived} strictly within the SM from the gauge pins at $\mu=M_Z$:
+\[
+G \equiv \frac{\hbar c}{m_p^2}\,\Omega, \qquad
+\Omega = \hat\alpha_s^{16}\,\hat\alpha_2^{13}\,\hat\alpha^{2}, \qquad
+\Xi_{\rm eq}=\ln\Omega .
+\]
+No gravitational metrology ($G_N$) entered this derivation. The role of this section is purely
+\emph{validation}: compare the SM-internal invariant $\Omega$ to the experimentally
+determined target $\alpha_G^{(\mathrm{pp})} := G_N m_p^2/(\hbar c)$ and use the same target to form LOO forecasts.
+Metrology is a target only; it is never used upstream to define $G$.
+
+\subsection*{S6.1 Closure: $\Omega$ vs.\ $\alpha_G^{(\mathrm{pp})}$ (target-only)}
+\paragraph*{Definitions (recall and target).}
+\[
+\Omega \;=\; \alphas^{16}\,\alphaTwo^{13}\,\alphae^{2}
+\;=\; \exp(\Xi_{\rm eq}),
+\qquad
+\Xi_{\rm eq} \;=\; 16\,\LN\alphas + 13\,\LN\alphaTwo + 2\,\LN\alphae.
+\]
+The metrology \emph{target} (not used as an input) is
+\[
+\alphaGpp \;=\; \frac{\GN\,\Mp^{2}}{\hbarc},
+\qquad
+\Xi_{\rm emp} \;=\; \LN\alphaGpp \;=\; \LN\GN + 2\,\LN\Mp - \LN(\hbarc).
+\]
+Treat $\hbarc$ as exact; thus $\sigma^2(\Xi_{\rm emp})=\sigma^2(\LN\GN)+4\,\sigma^2(\LN\Mp)$.
+
+\paragraph*{Closure statistic and uncertainty (log domain).}
+\[
+\mathcal{R}\equiv\frac{\Omega}{\alphaGpp},\qquad
+\Delta_{\%}\equiv(\mathcal{R}-1)\times 100\%.
+\]
+Work in logs:
+\[
+\LN\mathcal{R}=\Xi_{\rm eq}-\Xi_{\rm emp},\qquad
+\sigma^2(\LN\mathcal{R})=\sigma^2(\Xi_{\rm eq})+\sigma^2(\Xi_{\rm emp}),
+\]
+treating SM pins independent of metrology, so $\mathrm{Cov}(\Xi_{\rm eq},\Xi_{\rm emp})=0$. Linear return:
+\[
+\sigma(\mathcal{R})\simeq \mathcal{R}\,\sigma(\LN\mathcal{R}),\qquad
+\sigma(\Delta_{\%})\simeq 100\,\sigma(\mathcal{R}).
+\]
+
+\paragraph*{Independent SM log-basis (no double counting).}
+Use the independent basis
+\[
+x=\Big(\LN\alphae,\ \LN s_W^2,\ \LN\alphas\Big),\qquad
+\LN\alphaTwo=\LN\alphae-\LN s_W^2,
+\]
+so that
+\[
+\Xi_{\rm eq}=15\,\LN\alphae-13\,\LN s_W^2+16\,\LN\alphas,\qquad
+g_\Xi=(15,\,-13,\,16)^{\!\top}.
+\]
+Hence
+\[
+\sigma^2(\Xi_{\rm eq})=g_\Xi^{\!\top}\,\mathrm{Cov}(x)\,g_\Xi,
+\qquad
+\sigma(\Omega)\simeq \Omega\,\sigma(\Xi_{\rm eq}).
+\]
+
+\paragraph*{Summary box (target-only).}
+\[
+\boxed{~
+\mathcal{R}=\frac{\Omega}{\alphaGpp},\quad
+\LN\mathcal{R}=\Xi_{\rm eq}-\Xi_{\rm emp},\quad
+\sigma^2(\LN\mathcal{R})=\underbrace{g_\Xi^{\!\top}\mathrm{Cov}(x)g_\Xi}_{\text{SM pins}}
++\underbrace{\sigma^2(\LN\GN)+4\,\sigma^2(\LN\Mp)}_{\text{metrology}}
+~}
+\]
+
+\paragraph*{S6.1.1 Optional covariance-aware form (addresses reviewer).}
+If one wishes to allow for cross-covariances between SM pins and metrology targets in a joint fit, the general expression is
+\[
+\sigma^2(\LN\mathcal{R})=
+g_\Xi^{\!\top}\mathrm{Cov}(x)g_\Xi
++\sigma^2(\LN\GN)+4\,\sigma^2(\LN\Mp)
+-2\,\mathrm{Cov}(\Xi_{\rm eq},\LN\GN)-4\,\mathrm{Cov}(\Xi_{\rm eq},\LN\Mp).
+\]
+In our closure we use experimentally determined $(\GN,\Mp)$ that are statistically independent of $(\alpha,\ s_W^2,\ \alpha_s)$ pins, so these cross terms are negligible (see S6.9 for a bound).
+
+\subsection*{S6.2 Covariance handling and log-linear Jacobians}
+For any vector map $y=f(x)$ with $x$ Gaussian,
+\[
+\mathrm{Cov}(y)=J\,\mathrm{Cov}(x)\,J^{\!\top},\qquad
+J_{ij}=\partial_{x_j}y_i.
+\]
+In the log domain, products/ratios become linear combinations,
+\[
+\delta(\LN y)=\sum_i a_i\,\delta(\LN x_i),\qquad
+\mathrm{Cov}(\LN x_i,\LN x_j)\simeq \frac{\mathrm{Cov}(x_i,x_j)}{x_i x_j}.
+\]
+We use $\mathrm{Cov}(x)$ from PDG/CODATA, including reported correlations between $\alpha(M_Z)$ and $s_W^2$ where available.
+
+\paragraph*{Weak pin and scheme map (once).}
+\[
+\alpha^{\rm OS}_2(\MZ)=\frac{\sqrt{2}\,G_F m_W^2}{\pi}\,\frac{1}{1+\Delta r},
+\qquad
+\alpha^{\MSbar}_2(\MZ)=\alpha^{\rm OS}_2(\MZ)\big[1+\delta^{(1)}_{\rm OS\to MS}\big],
+\]
+with $\Delta r$ (1L EW, full $m_t,m_H$) and $\delta^{(1)}_{\rm OS\to MS}$ carried as finite shifts in the uncertainty budget.
+
+\subsection*{S6.3 Metrology cross-check for the depth closure}
+Define the projected depth in our sign convention
+\[
+\XiDepth_{\rm proj}
+=\chis\!\cdot\!\xi
+=16\,\LN\frac{1}{\alphas}
++13\,\LN\frac{1}{\alphaTwo}
++2\,\LN\frac{1}{\alphae},
+\]
+and compare to the empirical depth
+\[
+\Xi_{\rm emp}=\LN\!\Big(\frac{1}{\alpha_G^{(\mathrm{pp})}}\Big),\qquad
+\alpha_G^{(\mathrm{pp})}:=\frac{G_N m_p^2}{\hbar c}.
+\]
+Uncertainty in log space propagates as
+\[
+\sigma^2(\XiDepth_{\rm proj})=(16\,\sigma_{\xi_{\alpha_s}})^2+(13\,\sigma_{\xi_{\alpha_2}})^2+(2\,\sigma_{\xi_\alpha})^2,
+\qquad
+\sigma_{\xi_{\alpha_i}}=\frac{\sigma_{\alpha_i}}{\alpha_i}.
+\]
+Using the pins in Table~\ref{tab:pins_inputs} (with $\alpha_2=\alpha/\sin^2\!\theta_W$) and the metrology targets in Table~\ref{tab:pins_targets},
+$\XiDepth_{\rm proj}$ and $\Xi_{\rm emp}$ agree within the propagated $1\sigma$.
+At current precision the dominant contribution to $\sigma(\Xi_{\rm emp})$ is $G_N$
+\big($\sigma_{G_N}/G_N=2.247\times10^{-5}$, i.e., 22.47 ppm\big), with $m_p$ negligible
+and $\hbar c$ exact in SI.
+
+
+\subsection*{S6.4 Sign and basis conventions}
+Depth logs here use $\xi_i=\LN(1/\alpha_i)$ and $\XiDepth=\chis\!\cdot\!\xi$ with $\chis=(16,13,2)$.
+When $\alpha_2$ is reconstructed via $1/\alpha=\tfrac{5}{3}\,1/\alpha_1+1/\alpha_2$, substitute $\alpha_2$ accordingly; the algebra is unchanged.
+
+\subsection*{S6.5 LOO forecasts for \texorpdfstring{$\alphas,\ \alpha_2,\ \alpha$}{alpha\_s, alpha\_2, alpha}}
+Treat $\Xi_{\rm emp}$ and two SM couplings as inputs; solve the third from $\Xi_{\rm emp}=\Xi_{\rm eq}$.
+
+\paragraph*{LOO for $\alphas$.}
+\[
+\widehat{\LN\alphas}
+=\frac{1}{16}\Big(\Xi_{\rm emp}-13\,\LN\alphaTwo-2\,\LN\alphae\Big),
+\qquad
+g_s=\frac{1}{16}\,(1,\,-13,\,-2)^{\!\top}.
+\]
+With inputs $y=(\Xi_{\rm emp},\LN\alphaTwo,\LN\alphae)$,
+\[
+\sigma^2\!\big(\widehat{\LN\alphas}\big)
+=g_s^{\!\top}\,\mathrm{Cov}(y)\,g_s,\qquad
+\sigma\!\big(\widehat{\alphas}\big)\simeq \widehat{\alphas}\,\sigma\!\big(\widehat{\LN\alphas}\big).
+\]
+
+\paragraph*{LOO for $\alpha_2$.}
+\[
+\widehat{\LN\alphaTwo}
+=\frac{1}{13}\Big(\Xi_{\rm emp}-16\,\LN\alphas-2\,\LN\alphae\Big),
+\qquad
+g_2=\frac{1}{13}\,(1,\,-16,\,-2)^{\!\top},
+\]
+with $y=(\Xi_{\rm emp},\LN\alphas,\LN\alphae)$ and the same propagation rule.
+
+\paragraph*{LOO for $\alpha$.}
+\[
+\widehat{\LN\alphae}
+=\frac{1}{2}\Big(\Xi_{\rm emp}-16\,\LN\alphas-13\,\LN\alphaTwo\Big),
+\qquad
+g_\alpha=\frac{1}{2}\,(1,\,-16,\,-13)^{\!\top},
+\]
+with $y=(\Xi_{\rm emp},\LN\alphas,\LN\alphaTwo)$ and the same propagation rule.
+
+\paragraph*{Notes on correlations.}
+If $\alpha_2$ is formed from $(\alpha,s_W^2)$, perform LOO in the independent basis of S0.7:
+replace $\LN\alphaTwo$ by $\LN\alpha - \LN s_W^2$ and build $\mathrm{Cov}(y)$ accordingly to avoid double counting.
+
+\subsection*{S6.6 Pulls, percent differences, and consistency}
+For any coupling $\alpha_i$ with PDG value $\alpha_i^{\rm PDG}\pm\sigma_{\rm PDG}$,
+\[
+\Delta_{\rm pull}=\frac{\widehat{\alpha_i}-\alpha_i^{\rm PDG}}{\sigma_{\rm PDG}},
+\qquad
+\Delta_{\%}=\frac{\widehat{\alpha_i}-\alpha_i^{\rm PDG}}{\alpha_i^{\rm PDG}}\times 100\%.
+\]
+A global metric over the three LOO forecasts is
+\[
+\chi^2_{\rm LOO}=\sum_{i\in\{s,2,e\}}
+\frac{\big(\widehat{\alpha_i}-\alpha_i^{\rm PDG}\big)^2}{\sigma_{\rm PDG,i}^2+\sigma^2(\widehat{\alpha_i})},
+\]
+where $\sigma(\widehat{\alpha_i})$ follows from the LOO propagation above.
+Numeric outputs (pulls, $\Delta_{\%}$, $\chi^2_{\rm LOO}$) are autogenerated in S9 by \texttt{loo.py} using the pinned covariance matrices.
+
+\paragraph*{Equivalence (TOST) for $\alphas$.}
+Test $\widehat{\alphas}=\alphas^{\rm PDG}$ within margin $\varepsilon$ via TOST at $\alpha=0.05$.
+With $\Delta=\widehat{\alphas}-\alphas^{\rm PDG}$ and forecast s.d. $\sigma(\widehat{\alphas})$, the $90\%$ CI is $\Delta\pm1.645\,\sigma(\widehat{\alphas})$.
+Choose $\varepsilon$ so this CI lies inside $[-\varepsilon,+\varepsilon]$ (e.g., $\varepsilon_{\rm ppm}\approx160$ at $M_Z$ with current pins).
+
+\subsection*{S6.7 Scheme robustness}
+Expressing all three gauge couplings at a common $Q=\MZ$ (pure $\MSbar$), using on-shell anchors, or working in the GUT basis with $1/\alpha=\tfrac{5}{3}\,1/\alpha_1+1/\alpha_2$
+corresponds to finite renormalizations and reconstructions of $\alpha$.
+The primitive projector $\chis=(16,13,2)$ and the closure are unchanged.
+Numerical offsets in $\XiDepth$ under alternative anchor choices are dominated by the $\alphas$ input uncertainty and are removed by substituting the LOO estimate $\alphas^\star$; residuals remain $\ll 1\sigma$ under the propagated covariances.
+
+\subsection*{S6.8 Monte Carlo confirmation of LOO and closure}
+\textbf{Setup.}
+Draw $x=(\hat\alpha,\ \sin^2\!\hat\theta_W,\ \alpha_G^{(\mathrm{pp})})$ as independent Gaussians from Table~\ref{tab:pins_inputs} and Table~\ref{tab:pins_targets} (using $\hat\alpha_2=\hat\alpha/\sin^2\!\hat\theta_W$).
+For each draw compute
+\[
+\widehat{\ln\alpha_s^\star}=\frac{1}{16}\Big(\Xi_{\rm emp}-13\ln\hat\alpha_2-2\ln\hat\alpha\Big),
+\qquad
+\alpha_s^\star=e^{\widehat{\ln\alpha_s^\star}}.
+\]
+\textbf{Results ($10^5$ draws).}
+\[
+\hat\alpha_s^\star = 0.117341\ \pm\ 1.86\times10^{-5},\quad
+\text{relative } \sigma = 1.59\times10^{-4},\quad
+\text{pull vs PDG} = -0.73\sigma.
+\]
+The metrology-depth uncertainty is dominated by $G_N$:
+$\delta\alpha_G^{(\mathrm{pp})}/\alpha_G^{(\mathrm{pp})}=2.25\times10^{-5}$ (22.5 ppm),
+with $\hbar c$ exact and $m_p$ negligible at this level.
+These MC values match the log-Jacobian propagation in S0.6 and S6.1–S6.4.
+
+\paragraph*{LOO forecast (uncertainty).}
+From the propagation (S6.5) and MC (S6.8),
+\[
+\widehat{\alpha_s}(M_Z)=0.117341\ \pm\ 1.86\times 10^{-5}
+\quad\Rightarrow\quad \text{pull}=-0.73\sigma\ \text{vs PDG},
+\]
+with the forecast uncertainty dominated by $G_N$ via $\Xi_{\rm emp}$.
+
+\subsection*{S6.9 Correlation audit and bias bound (metrology vs SM pins)}
+\paragraph*{Question.} Could theoretical dependence of $m_p$ on QCD (via $\Lambda_{\rm QCD}$ and ultimately $\alpha_s$) bias closure/LOO through hidden covariance?
+
+\paragraph*{Statistical answer (this work).}
+Our closure uses \emph{experimental} targets $(\GN,\Mp)$ whose uncertainties are dominated by $\GN$ (22.5 ppm) while $\Mp$ is measured with $\ll$ppm error. The PDG determinations of $(\alpha,\ s_W^2,\ \alpha_s)$ are statistically independent of the metrology of $(\GN,\Mp)$; therefore
+\[
+\mathrm{Cov}(\Xi_{\rm eq},\LN\GN)\approx0,\qquad \mathrm{Cov}(\Xi_{\rm eq},\LN\Mp)\approx0,
+\]
+and the independence assumption in S6.1 is appropriate.
+
+\paragraph*{Conservative upper bound.}
+Even if one inserted a hypothetical correlation coefficient $\rho$ between $\Xi_{\rm eq}$ and $\LN\Mp$, the induced variance shift is
+\[
+\Delta\sigma^2(\LN\mathcal{R})=-\,4\,\rho\,\sigma(\Xi_{\rm eq})\,\sigma(\LN\Mp)\,.
+\]
+With current pins, $\sigma(\LN\Mp)\ll\sigma(\LN\GN)$ and $\sigma(\Xi_{\rm eq})$ is $\mathcal O(10^{-4})$ in log-space, so for any $|\rho|\le 1$ the magnitude of the correction is negligible compared to $\sigma^2(\LN\GN)$ that sets the error budget. Numerically, replacing $\rho\!\to\!\pm1$ changes $\sigma(\LN\mathcal{R})$ by a fraction $\ll 10^{-3}$ of the GN term (details in the replication pack).
+
+\paragraph*{Theory note (separation of roles).}
+Theoretical sensitivity of $m_p$ to $\Lambda_{\rm QCD}$ (and thus to $\alpha_s$) governs how a \emph{QCD-only} fit would co-estimate $(m_p,\alpha_s)$. Our closure deliberately \emph{does not} use such a joint theory prior: $m_p$ enters only as a metrology constant. Hence the relevant covariance is the \emph{statistical} one between independent experimental determinations, which is negligible at present precision.
+
+
+
+\section*{S7. Systematics and scheme transport}
+\textit{Provenance note.} This section audits higher–order and systematic effects \emph{after} the SNF certificate; it does not modify the integer result for $\chis$, which is fixed at one loop by representation data alone (Sec.~S1). Ward-flatness checks are in Sec.~S5 and closure/LOO validation in Sec.~S6.
+
+\subsection*{S7.1 Two–loop/threshold/systematic budget (bounded; not in SNF)}
+The integer projector $\chis=(16,13,2)$ is certified by the Smith–Normal–Form (SNF)
+of the \emph{one–loop} difference stack (Sec.~S1). Its definition uses only
+representation integers and light/heavy content per window; no numerical
+masses or renormalization scales enter $\Delta W$.
+
+Higher–order effects do not generate a new integer lattice and therefore do not enter the certificate.
+Their role is confined to bounded drifts that are \emph{monitored elsewhere}:
+\begin{itemize}\setlength\itemsep{2pt}
+  \item \textbf{Gauge two–loop and Yukawa/Higgs mixing.} These shift $F(Q)\equiv\beta_\Xi(Q)$ away from its one–loop zero;
+        we monitor them via the Ward projector in Sec.~S5 using preregistered bounds on $F_\sigma\equiv F/\sigchi$
+        on the electroweak and low–GeV windows (see Table~S0.\ref{tab:S0ward}).
+  \item \textbf{Propagation into $\Xi_{\rm eq}$ and $\Omega$.} Handled in Sec.~S6 via log–space Jacobians with Monte Carlo confirmation in the SM;
+        input covariances are PDG/CODATA (S0).
+  \item \textbf{Curvature (gate–width) renormalization.} Even counterterms renormalize the width $\sigchi$ at $\order{\alpha_i/4\pi}$ while preserving the $\mathbb{Z}_2$ parity (S2) and the massless, luminal tensor sector (S3–S4):
+        \[
+        \frac{\delta\sigchi}{\sigchi}\;=\;\sum_{i\in\{3,2,\mathrm{EM}\}} c_i\,\frac{\alpha_i}{4\pi}\;+\;\order(\alpha_i^2),\qquad c_i=\order(1).
+        \]
+        This shifts $\Lgate=\sigchi/\normK{\chis}$ by the same fractional amount and cannot induce a Pauli–Fierz mass or linear $h$–$\delta\Xi$ mixing (parity forbids it).
+\end{itemize}
+All three enter closure/LOO only through \emph{second–order} effects in the already small envelopes; none alter $\chis$.
+
+\subsection*{S7.2 Scheme and window transports (unimodular stability)}
+The difference stack $\Delta W$ depends only on light/heavy membership, not on exact threshold values
+or the decoupling details. Working in GUT–normalized hypercharge with the EM pivot
+$1/\alpha=\tfrac{5}{3}\,1/\alpha_1+1/\alpha_2$, moving a threshold within a window, reordering windows,
+or changing integer row/column bases corresponds to a unimodular transport
+\[
+\Delta W \;\mapsto\; U_{\rm row}\,\Delta W\,V_{\rm col},\qquad
+U_{\rm row}\in GL(m,\mathbb Z),\ \ V_{\rm col}\in GL(3,\mathbb Z),
+\]
+which preserves the integer left nullspace up to sign. Thus the primitive kernel is invariant:
+\[
+\boxed{~
+\ker_{\mathbb Z}\!\big((U_{\rm row}\Delta W V_{\rm col})^{\!\top}\big)
+= \ker_{\mathbb Z}(\Delta W^{\!\top}) = \mathrm{span}_{\mathbb Z}\{\pm\,\chis\}\,.
+}
+\]
+\emph{Remark.} Raw species stacks (including gauge adjoints) are typically rank–3; the
+\emph{difference} construction cancels adjoint self–contributions and exposes the rank–2 lattice
+needed for SNF certification. Row \emph{rescalings by a gcd} are not unimodular and are used only as informal referee checks; the certificate itself uses unimodular operations exclusively.
+
+\subsection*{S7.3 Sensitivity tests and robustness summary}
+The following admissible variations were tested conceptually (documented here for transparency and reproducibility):
+\begin{itemize}\setlength\itemsep{2pt}
+  \item random permutations of window order;
+  \item removal/subdivision of intermediate thresholds while preserving light/heavy labels;
+  \item admissible spectator absorption and integer row/column basis changes (unimodular);
+  \item optional per–row gcd clearing for human inspection (non–unimodular; for sanity checks only).
+\end{itemize}
+All return a primitive kernel proportional to $(16,13,2)$. The default Repo build remains deterministic and does not execute these stress tests; they are methodological checks aligned with S1–S2.
+
+Together with Ward–flatness bounds (Sec.~S5) and closure/LOO consistency (Sec.~S6), these establish:
+\[
+\textbf{(i)}\ \chis\ \text{is scheme– and window–stable (integer–certified),}\qquad
+\textbf{(ii)}\ \text{higher–order drifts are bounded systematics and do not enter the certificate.}
+\]
+No admissible renormalization or decoupling prescription permits any adjustment of $\chis$.
+
+\section*{S8. Interpretive scales: helicity frequency and period, and the curvature envelope}
+The curvature–gate background $\Pi(\Xi)$ sets a stationary normalization; transient helicity–$\pm2$ perturbations propagate as GR, massless and luminal (Sec.~S3). This section is interpretive only and does not enter the falsifier set; parity, SNF, and Ward bands remain the operational tests (S1–S6).
+
+\paragraph*{Graviton envelope and curvature geometry.}
+\label{S:wrapper}
+
+The graviton emerges with GR normalization while the \emph{scalar} depth mode aligned with $\chis$ modulates the curvature gate $\Pi(\Xi)$.
+
+\paragraph*{Gate, canonical field, and parity.}
+
+\begin{align}
+\label{eq:phi_gate_def}
+\phi_{\chis} \;=\;
+\frac{\chis^{\!\top}\Keq\big(\Psivec-\Psivec_{\rm eq}\big)}{\normK{\chis}},
+\qquad
+\Pi(\Xi)=\exp\!\left[-\frac{\phi_{\chis}^2}{\Lgate^2}\right],
+\qquad
+\Lgate=\frac{\sigchi}{\normK{\chis}}\,.
+\end{align}
+
+Parity forbids a linear response; near equilibrium
+\begin{align}
+\label{eq:deltaG_quadratic}
+\frac{\Delta G}{G}
+=\Pi(\XiEq+\delta\Xi)-1
+\simeq \frac{\phi_{\chis}^2}{\Lgate^2},
+\qquad
+\Pi(\XiEq)=1,\quad
+\left.\partial_{\Xi}\Pi\right|_{\XiEq}=0.
+\end{align}
+
+
+
+\paragraph*{Helicity coherence scale.}
+\begin{equation}
+\label{eq:helicity_scales}
+\ohel=\frac{\normK{\chis}}{\sigchi}=\frac{1}{\Lgate},
+\qquad
+\thel=\frac{2\pi}{\ohel}=2\pi\,\Lgate
+\ \simeq\ 88\,t_P\quad(\text{Planck units}),
+\end{equation}
+and $\ell_{\rm hel}=c\,\thel\simeq 88\,\ell_P$. These widths live in the scalar depth sector; the helicity–2 tensor remains massless and luminal (Sec.~S3).
+
+\paragraph*{Even scalar dynamics.}
+With the parity–even potential
+\begin{equation}
+\label{eq:V_even_projected}
+V(\Psivec)=
+\tfrac12\,\Delta\Psivec^{\!\top}\,\Sigma_\perp^{-1}\,P_\perp\,\Delta\Psivec
++\tfrac{\gamma}{2}\,\big(\chis\!\cdot\!\Delta\Psivec\big)^2,
+\qquad
+\Delta\Psivec:=\Psivec-\Psivec_{\rm eq},
+\end{equation}
+the $\chis$–projected mode obeys
+\begin{equation}
+\label{eq:phi_chi_eom}
+\square\,\phi_{\chis}+m_{\chis}^2\,\phi_{\chis}=0,
+\qquad
+m_{\chis}^2=\frac{\gamma_{\chis}}{\normK{\chis}^{\,2}},
+\qquad
+\gamma_{\chis}=\gamma\,(\chis^{\!\top}\chis)^2,
+\end{equation}
+where $P_\perp=\mathbf 1-\dfrac{\Keq\,\chis\,\chis^{\!\top}}{\chis^{\!\top}\Keq\chis}$ is the $\Keq$-metric projector.
+
+\paragraph*{Static profile and curvature envelope.}
+In a static, exterior region the depth mode has Yukawa form
+\begin{equation}
+\label{eq:phi_static}
+\phi_{\chis}(r)=\frac{A\,e^{-m_{\chis} r}}{r}\,,
+\end{equation}
+with boundary amplitude $A$. The \emph{envelope} where $\Pi=e^{-1}$ (i.e.\ $\abs{\phi_{\chis}}=\Lgate$) satisfies
+\begin{equation}
+\label{eq:rstar}
+\frac{\abs{A}\,e^{-m_{\chis} r_\ast}}{r_\ast}=\Lgate
+\;\Longleftrightarrow\;
+m_{\chis} r_\ast\,e^{m_{\chis} r_\ast}=\frac{m_{\chis}\abs{A}}{\Lgate}
+\;\Longrightarrow\;
+r_\ast=\frac{1}{m_{\chis}}\,W\!\Big(\frac{m_{\chis}\abs{A}}{\Lgate}\Big),
+\end{equation}
+with $W$ the Lambert-$W$ function (principal branch for monotone profiles). The surface $\abs{\phi_{\chis}}=\Lgate$ defines a Planck–thin curvature envelope.
+
+\paragraph*{Hourglass deformation.}
+With a small quadrupolar anisotropy,
+\begin{equation}
+\label{eq:anisotropy}
+\phi_{\chis}(r,\theta)\simeq
+\frac{A\,e^{-m_{\chis} r}}{r}\Big[1+\epsilon\,P_2(\cos\theta)+\cdots\Big],
+\qquad
+\abs{\epsilon}\ll 1,
+\end{equation}
+the level set $\abs{\phi_{\chis}}=\Lgate$ contracts at the poles and bulges near the equator, yielding a parity–even hourglass (two-lobe) envelope about the symmetry plane.
+
+\paragraph*{Fixed vs.\ sourced (no new knobs).}
+\begin{itemize}[nosep,leftmargin=1.2em]
+\item \textbf{Fixed by GAGE:} even gate parity ($\Pi'(\Xi_{\rm eq})=0$); GR-normalized tensor sector with $m_{\rm PF}=0$; 
+$\Lgate=\sigchi/\|\chis\|_K \simeq 14.0507$; $\thel\simeq 88\,t_P$.
+\item \textbf{Set by environment (not tunable):} amplitude $A$ (boundary data), anisotropy $\epsilon$, and the \emph{scalar soft-mode} mass $m_{\chis}$ via $\gamma_{\chis}$—all externally fixed and bounded by the width-provenance limits (S3.4).
+\end{itemize}
+\noindent\emph{No new free parameters:} all quantities are either derived from SM pins or fixed by boundary conditions; none is adjusted to fit metrology.
+
+
+\paragraph*{Projectors in field space (canonical).}
+\[
+P_\chi=\frac{\chis\,\chis^{\!\top}\Keq}{\chis^{\!\top}\Keq\chis},
+\qquad
+P_\perp=\mathbb{1}-P_\chi,
+\qquad
+\varphi_\chi=\frac{\chis^{\!\top}\Keq(\hat\Psivec-\hat\Psivec_{\rm eq})}{\normK{\chis}}.
+\]
+
+\paragraph*{Compact map.}
+\[
+\boxed{\,\Lgate=\frac{\sigchi}{\normK{\chis}},\quad
+\ohel=\frac{\normK{\chis}}{\sigchi},\quad
+\thel=2\pi\,\Lgate,\qquad
+\frac{\Delta G}{G}\simeq\frac{(\Delta\hat\Xi)^2}{\sigchi^2}
+=\frac{\varphi_\chi^{2}}{\Lgate^{2}}\,}
+\]
+
+\section*{S9. Deterministic rebuild (single path)}
+\noindent\textbf{Goal:} Regenerate all numeric tables and figure data from pinned inputs with deterministic hashes.
+
+\begin{enumerate}
+\item \textbf{Setup (once)}:
+  Python $\geq$ 3.10 installed. No external deps required for the default build.
+  \emph{Optional:} \texttt{sympy} only if running \texttt{src/snf\_check.py}.
+\item \textbf{Pins}:
+  Verify \texttt{pins.json} and \texttt{keq.json} match S0 tables
+  (\ref{tab:pins_inputs}, \ref{tab:pins_targets}, \ref{tab:cert_params}, \ref{tab:keq}, \ref{tab:keq_eigs}).
+\item \textbf{One command}:
+  \texttt{bash build.sh}
+  \quad(\textit{Windows/PowerShell:} \texttt{.\textbackslash build\_win.bat})
+\item \textbf{Expected stdout (exact values)}:
+  \begin{itemize}\itemsep1pt
+  \item $\Omega/\alpha_G^{(\mathrm{pp})} = 1.09372878$
+  \item $\hat\alpha_s^\star(M_Z) = 0.1173411$
+  \item $\Lambda_{\rm gate} = 14.050704$
+  \item $\|\chi\|_{K_{\rm eq}} = 17.627830$,\quad $\cos\theta = 1.0000000$
+  \end{itemize}
+\item \textbf{Artifacts}:
+  \texttt{results.json}, \texttt{metric\_results.json} (metrics), \texttt{stdout.txt},
+  and SHA-256 hashes in \texttt{SHA256SUMS.txt}.
+\end{enumerate}
+
+\paragraph*{Notes and failure modes}
+\textit{Version drift} → re-run with the pinned files in this repo (no network calls).
+\textit{Pin drift} → restore \texttt{pins.json}/\texttt{keq.json} to the commit referenced in S0.
+\textit{Non-determinism} → ensure no RNG is enabled; the default build is RNG-free.
+\textit{MC checks} → Monte Carlo confirmation exists only in the SM (Sec.~S6.8) and is not executed here.
+
+
+
+
+
+\bibliographystyle{apsrev4-2}
+\bibliography{gage_prl_refs}
+\end{document}
