@@ -1,0 +1,20 @@
+{
+  "K_eq": [
+    [
+      1.2509,
+      -0.6202,
+      -0.1813
+    ],
+    [
+      -0.6202,
+      1.5128,
+      -0.1633
+    ],
+    [
+      -0.1813,
+      -0.1633,
+      3.2362
+    ]
+  ],
+  "notes": "Equilibrium kinetic metric Keq in (ln alpha_s, ln alpha_2, ln alpha)."
+}

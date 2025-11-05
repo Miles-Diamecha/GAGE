@@ -1,0 +1,14 @@
+alpha2(MZ) = 0.033789820
+Omega_chi = 6.459725598437e-39
+alphaG_pp = 5.906149417424e-39
+closure Omega_chi/alphaG_pp = 1.09372878
+alpha_s* (LOO) = 0.117341100
+Lambda_chi = 14.050704
+K_eq eigenvalues (asc): 0.7243366, 2.0155976, 3.2599658
+Soft-mode eigenvector: (0.7724942, 0.6276375, 0.0965603)
+||chi||_K (computed): 17.627830
+||chi||_K (pinned) : 17.627800
+Lambda_chi (calc) : 14.050680
+Lambda_chi (pins) : 14.050704
+Lambda diff : -2.412683e-05
+Alignment cos(theta): 1.0000000

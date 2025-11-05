@@ -1,0 +1,43 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# --- LaTeX build byproducts ---
+*.aux
+*.bbl
+*.blg
+*.brf
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+*.synctex*
+*.fls
+*.fdb_latexmk
+
+# --- OS & editors ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Outputs (binary assets ignored; data kept) ---
+outputs/**/*
+!outputs/**/*.csv
+!outputs/**/*.tsv
+!outputs/**/*.json
+
+# --- Figures (if you generate them locally) ---
+figures/**/*.pdf
+figures/**/*.png
+figures/**/*.jpg
+figures/**/*.svg
+
+# --- Archives ---
+*.zip
+*.tar
+*.tar.gz
