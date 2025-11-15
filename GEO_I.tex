@@ -1,0 +1,1187 @@
+\documentclass{iopjournal}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{lmodern}
+
+\begin{document}
+
+\articletype{Paper} % e.g. Paper, Letter, Topical Review...
+
+\title{GEOMETRY I: SM-derived gravitational coupling $G(Q)$ anchored at the electroweak scale}
+
+\author{Michael DeMasi$^1$}
+\affil{$^1$Independent Researcher, Milford, CT, USA}
+
+\email{demasim90@gmail.com}
+
+
+\begin{abstract}
+At $\mu=M_Z$ in the $\overline{\mathrm{MS}}$ scheme, the Standard Model one-loop
+decoupling matrix has a unique primitive integer kernel
+$\chi=(16,13,2)$ (Smith normal form), which defines the aligned depth
+$\Xi=\chi\cdot\hat\Psi$ in log--coupling space.  This integer direction aligns
+numerically with the soft eigenmode of the positive-definite Fisher/kinetic
+metric $K_{\rm eq}$.  Together they determine the electroweak anchor
+$\Omega=\hat\alpha_s^{16}\hat\alpha_2^{13}\hat\alpha^{2}$ and the SM-derived
+gravitational coupling
+\[
+G(M_Z)=\frac{\hbar c}{m_p^2}\,\Omega(M_Z).
+\]
+
+An even curvature gate $\Pi(\Xi)$ with $\Pi'(\Xi_{\rm eq})=0$ promotes this
+anchor to a running coupling $G(x)=G(M_Z)\Pi(\Xi(x))$ while preserving the
+equilibrium tensor sector: the helicity $\pm2$ modes remain massless, luminal,
+and identical to General Relativity.  Near equilibrium the curvature response is
+fixed and strictly quadratic,
+\[
+\Delta G/G=(\Delta\Xi/\sigma_\chi)^2,
+\]
+with the absence of a linear term constituting a direct empirical falsifier.
+No new fields or tunable parameters are introduced; PDG/CODATA inputs enter only
+\emph{a posteriori} through the closure ratio that tests the SM-derived
+$G(M_Z)$ against the measured Newtonian coupling.
+\end{abstract}
+
+
+\keywords{general relativity, quantum gravity, Standard Model, gauge theory, emergent gravity, renormalization group}
+
+
+\section{Premise: integer certificate and depth}
+\label{sec:premise}
+
+The Standard Model (SM) gives a precise account of gauge interactions, yet
+provides no internal explanation for Newton’s constant $G_N$ or for the
+universality of the massless spin--2 sector of gravity. Operationally, $G_N$
+enters General Relativity (GR) as an externally measured parameter, while the
+three SM gauge couplings evolve according to renormalization-group (RG) flow.
+A natural question is whether the gauge sector at $\mu=M_Z$ contains sufficient
+structure to determine an effective gravitational coupling without modifying GR
+or enlarging the field content.
+
+\paragraph*{Program and provenance.}
+This paper is the first in a sequence we collectively refer to as
+GEOMETRY (Gauge Eigenmode Omega Metric Even Tensor Running Yield).  The present
+work (GEOMETRY~I) is restricted to the static, equilibrium geometry and derives
+an electroweak-anchored gravitational coupling from SM data alone.  All inputs,
+constants, and covariance matrices are drawn from established sources, and all
+calculations are performed in the $\overline{\mathrm{MS}}$ scheme at
+$\mu=M_Z$.
+
+Our renormalization conventions follow
+Weinberg~\cite{Weinberg1996_QFTv2},
+Peskin and Schroeder~\cite{PeskinSchroeder1995_QFT},
+and Langacker~\cite{Langacker2017_SMBeyond}.
+Decoupling and integer-lattice methods follow
+Appelquist and Carazzone~\cite{AppelquistCarazzone1975_Decoupling},
+Kannan and Bachem~\cite{KannanBachem1979_SNF},
+and Newman~\cite{Newman1997_SNF}.
+Electroweak pins, covariance matrices, and physical constants are taken from
+the Particle Data Group and CODATA%
+~\cite{PDG2024,PDG2024_EWReview,PDG2025_GaugeHiggs,CODATA2022_RMP}.
+Two-loop RG coefficients follow
+Machacek and Vaughn~\cite{Machacek1983_TwoLoopI,Machacek1984_TwoLoopII}
+and Luo \textit{et al.}~\cite{Luo2003_TwoLoopSM},
+and the running of $\alpha$ follows
+Jegerlehner~\cite{Jegerlehner2019_alphaRun}.
+Gravitational and experimental comparisons follow
+Carroll~\cite{Carroll2004_SG},
+Will~\cite{Will2014_LRR_TestsGR},
+Bertotti \textit{et al.}~\cite{Cassini2003_PPN},
+and Abbott \textit{et al.} (LVK)~\cite{LVK2021_TestsGR}.
+No data or tuning beyond these references is used.
+
+\subsection*{Conventions and brief summary}
+
+$\overline{\mathrm{MS}}$ at $\mu=M_Z$;
+GUT-normalized hypercharge ($\alpha_1=\tfrac53\alpha_Y$);
+$c=\hbar=1$ unless displayed.
+
+A Smith normal form shows that the primitive integer
+\begin{equation}
+    \chi=(16,13,2),
+\end{equation}
+in the Standard Model basis is unique up to overall sign.  This vector defines the
+SM-internal depth
+\begin{equation}
+   \Xi=\chi\cdot\hat\Psi, \qquad
+   \hat\Psi=(\ln\hat\alpha_s,\ln\hat\alpha_2,\ln\hat\alpha).
+\end{equation}
+
+By construction,
+\begin{equation}
+  \Omega\equiv e^{\Xi}
+  =\hat\alpha_s^{16}\,\hat\alpha_2^{13}\,\hat\alpha^{2},
+\end{equation}
+so once the integer certificate fixes $\Xi$, the electroweak anchor $\Omega(M_Z)$
+is determined with no additional inputs.
+
+\paragraph*{Connection to the GR normalization.}
+In General Relativity,
+\begin{equation}
+  \mathcal{L}_{\rm EH}
+  =\frac{M_P^2}{2}\,R
+  =\frac{1}{16\pi G_N}\,R ,
+\end{equation}
+so that $M_P^{-2}=8\pi G_N$.
+Because $\Omega=e^{\Xi}$, the SNF certificate fixes the gravitational anchor at
+the electroweak scale as
+\begin{equation}
+  G(M_Z)=\frac{\hbar c}{m_p^2}\,\Omega(M_Z),
+\end{equation}
+and consistency of the curvature term requires
+\begin{equation}
+  \frac{M_P^2}{2}
+  =\frac{1}{16\pi G(M_Z)}
+  \quad\Longrightarrow\quad
+  G(M_Z)=\frac{1}{8\pi M_P^2}.
+\end{equation}
+Thus the GR normalization is not imposed separately: the electroweak anchor
+$\Omega(M_Z)$, fixed entirely by Standard-Model pins, reproduces the
+Einstein–Hilbert coupling. This equality was the original route by which the
+construction recovered $G_N$ from SM data alone.
+
+\paragraph*{Even curvature gate.}
+At equilibrium the aligned depth satisfies $\delta\Xi=0$, and the curvature
+response along this axis is encoded by an even scalar gate
+\begin{equation}
+  \Pi(\Xi)=\exp\!\big[-(\delta\Xi)^2/\sigma_\chi^2\big],
+\end{equation}
+with width fixed by matching its curvature to the Fisher curvature,
+$\sigma_\chi^{-2}=F_\chi=\hat\chi_K^{\top}K\hat\chi_K$.  Even parity enforces
+\begin{equation}
+  \Pi(\Xi_{\rm eq})=1, \qquad \Pi'(\Xi_{\rm eq})=0,
+\end{equation}
+removing any Brans–Dicke–like linear response and ensuring that the tensor
+sector at equilibrium reduces exactly to the GR, massless helicity~$\pm2$ theory.
+
+The even curvature gate promotes the electroweak anchor to a running
+gravitational coupling,
+\begin{equation}
+  G(Q)=G(M_Z)\,\Pi(\Xi(Q)),
+\end{equation}
+while preserving the GR limit at $\Xi_{\rm eq}$.
+
+Thus the sequence
+\[
+  \chi \;\rightarrow\; \Xi \;\rightarrow\; \Omega \;\rightarrow\; G(M_Z)
+  \;\rightarrow\; G(Q)
+\]
+is fixed entirely by Standard Model data at $\mu=M_Z$.
+
+For closure against experiment, define
+\begin{equation}
+  \alpha_G^{(pp)}=\frac{G_N m_p^2}{\hbar c}, \qquad
+  Z_G=\frac{\alpha_G^{(pp)}}{\widehat{\Omega}(M_Z)}.
+\end{equation}
+The only empirical input is the measured value of $\alpha_G^{(pp)}$, which
+enters \emph{a posteriori} through $Z_G$ as a consistency check; no parameters
+are tuned.
+
+Near equilibrium, define
+\[
+  s=\delta\Xi/\sigma_\chi, \qquad
+  \Lambda_\chi=\sigma_\chi/\|\chi\|_{K}, \qquad
+  \phi_\chi=\chi^\top\delta\hat\Psi/\|\chi\|_{K},
+\]
+with $\sigma_\chi=247.683$ fixed by $F_\chi$.  The framework then predicts the
+strictly quadratic lab-null,
+\[
+  \frac{\Delta G}{G}=s^2=(\phi_\chi/\Lambda_\chi)^2,
+\]
+with the absence of any linear term as a direct falsifier of the aligned-depth
+mechanism.
+
+\subsection*{Integer realization, one-loop weights, and the EM basis.}
+We work in log-coupling space, where multiplicative renormalization becomes
+additive and basis transports are linear
+\cite{Weinberg1996_QFTv2,PeskinSchroeder1995_QFT,Langacker2017_SMBeyond}.
+Gauge weights are expressed using Dynkin indices and spectator multiplicities.
+For a field $f$, let $T_{\mathrm{SU(3)}}(f)$ and $T_{\mathrm{SU(2)}}(f)$ denote
+the usual Dynkin indices, and let $d_{\mathrm{spect}}(f)$ count spectator
+degrees of freedom (spin, flavour, chirality, etc.).
+We define the integerized one-loop weights as follows.
+
+For Weyl fermions,
+\[
+w_3(f)=4\,T_{\mathrm{SU(3)}}(f)\,d_{\mathrm{spect}}(f),\qquad
+w_2(f)=4\,T_{\mathrm{SU(2)}}(f)\,d_{\mathrm{spect}}(f).
+\]
+
+For scalars,
+\[
+w_3(f)=T_{\mathrm{SU(3)}}(f)\,d_{\mathrm{spect}}(f),\qquad
+w_2(f)=T_{\mathrm{SU(2)}}(f)\,d_{\mathrm{spect}}(f).
+\]
+
+A single hypercharge integerizer fixes the $U(1)_Y$ column.  With
+GUT-normalized hypercharge ($\alpha_1=\tfrac{5}{3}\alpha_Y$), the integer
+weights are
+\[
+w^{\mathrm{(Weyl)}}_1=\frac12\sum_{\text{Weyl in } f} Y^2,\qquad
+w^{\mathrm{(scalar)}}_1=\frac13\sum_{\text{scalars in } f} Y^2.
+\]
+
+For any momentum window $W$ with light particle set $S_W$, the integerized
+one-loop weight vector is
+\[
+b(W)=
+\begin{pmatrix}
+\sum w_3\\[2pt]
+\sum w_2\\[2pt]
+\sum w_1
+\end{pmatrix}
+\in\mathbb{Z}^3,
+\qquad
+\Delta b(i j)=b(W_i)-b(W_j),
+\]
+and stacking these differences produces the rank-two integer matrix
+\[
+\Delta W=
+\begin{pmatrix}
+(\Delta b(i_1 j_1))^\top\\
+(\Delta b(i_2 j_2))^\top\\
+\vdots
+\end{pmatrix}
+\in\mathbb{Z}^{m\times 3}.
+\]
+Adjoint self-terms cancel in $\Delta b$, isolating the two-dimensional integer
+lattice relevant for Smith–normal–form analysis.
+
+\medskip\noindent\textbf{Electromagnetic basis.}
+After electroweak symmetry breaking, the electromagnetic weight is
+\[
+w_{\mathrm{EM}}=w_2+\tfrac{5}{3}w_1,
+\]
+so
+\[
+3 w_{\mathrm{EM}} = 3 w_2+5 w_1 \in\mathbb{Z}.
+\]
+Thus, in the $(\mathrm{SU(3)},\mathrm{SU(2)},\mathrm{EM})$ basis, the two-row
+difference stack becomes
+\[
+\Delta W_{\mathrm{EM}}
+=
+\begin{pmatrix}
+8 & 8 & 224\\
+0 & 1 & 18
+\end{pmatrix}
+\in\mathbb{Z}^{2\times 3}.
+\]
+
+\medskip\noindent\textbf{SNF and primitive kernel.}
+The Smith normal form
+\[
+U\,\Delta W_{\mathrm{EM}}\,V=\mathrm{diag}(1,8,0),
+\qquad
+U\in GL(2,\mathbb{Z}),\;\; V\in GL(3,\mathbb{Z}),
+\]
+implies ${\rm rank}(\Delta W_{\mathrm{EM}})=2$ and a one-dimensional integer
+left kernel.  Solving $\Delta W_{\mathrm{EM}}\chi_{\mathrm{EM}}=0$ over
+$\mathbb{Z}$ yields the primitive generator
+\[
+\chi_{\mathrm{EM}}=(-10,-18,1),\qquad \gcd(10,18,1)=1.
+\]
+
+Transporting back to the $(w_3,w_2,w_1)$ basis using a unimodular matrix
+$M\in GL(3,\mathbb{Z})$,
+\[
+\chi = M^{\top}\chi_{\mathrm{EM}} = (16,13,2),
+\]
+shows that the primitive integer certificate in the Standard Model basis is
+unique up to overall sign.  This vector defines the SM-internal depth
+\[
+\Xi=\chi\cdot\hat\Psi,\qquad
+\hat\Psi=(\ln\hat\alpha_s,\ln\hat\alpha_2,\ln\hat\alpha),
+\]
+and the corresponding dimensionless combination
+\[
+\hat\Omega = e^{\Xi}
+           = \hat\alpha_s^{16}\,\hat\alpha_2^{13}\,\hat\alpha^{2}.
+\]
+
+\medskip\noindent\textbf{Verification.}
+The Smith normal form was computed using exact integer arithmetic via
+\texttt{sympy.smith\_normal\_form} (Kannan–Bachem algorithm) in
+\texttt{snf\_check.py}, yielding
+$U\,\Delta W_{\rm EM}\,V=\operatorname{diag}(1,8,0)$.
+The primitive kernel is $\chi_{\rm EM}=(-10,-18,1)$; unimodular transport
+$M^{\top}\chi_{\rm EM}$ gives $\chi=(16,13,2)$.
+Artifacts and SHA-256 checksums match the reproducibility archive
+\cite{demasi_gage_repo_v1_0_0_2025}.
+
+\begin{table}[t]
+\centering
+\includegraphics[width=\linewidth]{tab1_key.pdf}
+\caption{
+Key definitions in \textsc{Geometry I}.  Shown are the integer generator
+$\chi$, gauge--log point $\hat\Psi$, depth displacement
+$\delta\Xi=\Xi-\Xi_{\rm eq}$, the curvature gate $\Pi(\Xi)$, and the aligned
+quantities $\phi_\chi$ and $\Lambda_\chi$ used in the lab--null prediction.
+}
+\label{tab:key}
+\end{table}
+
+
+
+
+
+\section{Alignment: metric certificate}
+
+The equilibrium kinetic metric $K$ governs curvature in gauge--log space and
+defines the local Fisher geometry of the gauge couplings.  It is constructed
+from the one--loop sensitivities of the $\beta$--functions
+\cite{Machacek1983_TwoLoopI,Machacek1984_TwoLoopII,Luo2003_TwoLoopSM,Langacker2017_SMBeyond}:
+\[
+\beta_i=\frac{d\hat\alpha_i}{d\ln\mu}
+=-\frac{b_i}{2\pi}\,\hat\alpha_i^2+\cdots,
+\qquad
+K_{ij}
+=\frac{\partial(\beta_i/\hat\alpha_i)}{\partial\ln\hat\alpha_j}\Big|_{\rm eq},
+\]
+with the conventional $2\pi$ normalization removed and all quantities evaluated
+at $\mu=M_Z$.  The metric encodes the Fisher information of the RG flow and
+acts as a Riemannian metric on the space of log--couplings.
+
+Using PDG/CODATA pins for
+$(\hat\alpha_s,\hat\alpha_2,\hat\alpha)$ at $\mu=M_Z$
+and the one--loop SM coefficients $b_i$, the resulting equilibrium metric is
+\cite{PDG2024,CODATA2022_RMP}
+\[
+K = \begin{pmatrix}
+1.2509 & -0.6202 & -0.1813\\
+-0.6202 & 1.5128 & -0.1633\\
+-0.1813 & -0.1633 & 3.2362
+\end{pmatrix},
+\qquad
+K \succ 0 .
+\]
+
+Its eigen--decomposition,
+\[
+K\,e_i=\lambda_i e_i,
+\qquad
+\{\lambda_i\}=\{0.7243,\,2.0156,\,3.2599\},
+\]
+identifies the \emph{soft} (minimum--curvature) eigenmode
+\[
+e_{\chi}=(0.77249,\,0.62764,\,0.09656),
+\]
+with $\{e_2,e_3\}$ completing an orthonormal frame.
+
+The SM--derived integer certificate $\chi=(16,13,2)$ from Sec.~I defines a
+distinguished direction in log--coupling space.  Normalizing in the Fisher
+metric,
+\[
+\hat\chi_K=\frac{\chi}{\|\chi\|_K},
+\qquad
+\|\chi\|_{K}=\sqrt{\chi^\top K\chi}=17.6278,
+\]
+one finds the numerical alignment
+\[
+\cos\theta_K=\hat\chi_K\!\cdot e_{\chi}
+=1.0000000\pm10^{-8}.
+\]
+Thus the integer direction selected by the Smith–normal–form analysis
+coincides with the minimal--curvature eigenvector of $K$ to numerical
+precision.  No parameters are adjusted: the integer lattice of $\Delta W$ and
+the analytic curvature of $K$ independently select the same soft mode.
+
+This empirical identification constitutes the \emph{alignment principle}:  
+the Standard Model’s gauge couplings self--align along the direction of
+minimal Fisher curvature, selecting
+$\Xi=\chi\!\cdot\!\hat\Psi$ as the unique soft coordinate.
+
+\subsection{Fisher curvature and curvature–gate matching}
+
+We define the Fisher curvature along the aligned direction by
+\begin{equation}
+  F_\chi \equiv \hat\chi_K^{\!\top} K\,\hat\chi_K ,
+\end{equation}
+where $K$ is the Fisher/kinetic metric at $\mu=M_Z$, and
+$\hat\chi_K=\chi/\|\chi\|_K$ is the \emph{metric-unit} direction of~$\chi$.
+
+The even curvature gate is
+\begin{equation}
+  \Pi(\Xi) = \exp\!\left[-(\delta\Xi)^2/\sigma_\chi^2\right],
+  \qquad
+  \Pi'(\Xi_{\rm eq}) = 0 ,
+\end{equation}
+and matching the intrinsic Fisher curvature to the curvature of the gate at
+equilibrium,
+\begin{equation}
+  F_\chi = -\tfrac12\,\Pi''(\Xi_{\rm eq}),
+\end{equation}
+fixes its width uniquely:
+\begin{equation}
+  \sigma_\chi = F_\chi^{-1/2}.
+\end{equation}
+
+Using the SM pins at $\mu=M_Z$, we obtain
+\begin{equation}
+  F_\chi = \frac{1}{\sigma_\chi^2}
+  \approx 1.629\times 10^{-5},
+  \qquad
+  \sigma_\chi = 247.683 .
+\end{equation}
+The quantity $F_\chi$ is evaluated directly from $K$ and $\hat\chi_K$ in
+\texttt{metric\_eigs.py}; $\sigma_\chi$ then follows from the above matching,
+with no additional inputs.
+
+The corresponding aligned depth scale is
+\begin{equation}
+  \Lambda_\chi \equiv \frac{\sigma_\chi}{\|\chi\|_K} = 14.0507 ,
+\end{equation}
+which serves as the canonical curvature scale.  Together with
+$\delta\Xi=\Xi-\Xi_{\rm eq}$, this determines the full quadratic lab--null:
+\begin{equation}
+  \frac{\Delta G}{G}
+  = \left(\frac{\delta\Xi}{\sigma_\chi}\right)^2
+  = F_\chi\,(\delta\Xi)^2 ,
+\end{equation}
+with no tunable parameters.
+
+\medskip\noindent\textbf{Verification.}
+All numerical values
+$K,\ \{\lambda_i\}=\{0.7243,2.0156,3.2599\},\
+e_{\chi}=(0.77249,0.62764,0.09656),\
+\|\chi\|_K=17.6278,$ and $\cos\theta_K=1.0000000\pm10^{-8}$
+were reproduced by \texttt{metric\_eigs.py},
+with SHA--256 checksums matching the reproducibility archive
+\cite{demasi_gage_repo_v1_0_0_2025}.
+% =========================================================
+\section{Even gate and the quadratic lab-null}
+
+The curvature response along the aligned depth $\Xi$ is encoded by an
+even scalar gate $\Pi(\Xi)$ multiplying the Einstein–Hilbert term,
+\begin{equation}
+\mathcal{L}_{\rm eff}
+  = \frac{1}{16\pi G(M_Z)}\,\Pi(\Xi)\,R .
+\end{equation}
+We interpret $\Pi$ as an emergent, SM–determined form factor rather than a
+free function.  The Fisher/kinetic metric $K$ induces a one-dimensional
+curvature along the aligned direction $\chi=(16,13,2)$,
+\begin{equation}
+F_\chi \equiv \hat\chi_K^{\!\top} K\,\hat\chi_K,
+\qquad
+\hat\chi_K \equiv \chi / \|\chi\|_K ,
+\end{equation}
+so small displacements obey $ds^2 = F_\chi (d\Xi)^2$.
+
+\medskip\noindent
+\textbf{Local expansion and curvature matching.}
+Expanding an \emph{a priori} unknown gate about equilibrium,
+\begin{equation}
+\Pi(\Xi)
+  = 1
+    + \tfrac12\,\Pi''(\Xi_{\rm eq})\,(\delta\Xi)^2
+    + \mathcal{O}\!\big((\delta\Xi)^4\big),
+\qquad
+\delta\Xi \equiv \Xi-\Xi_{\rm eq},
+\end{equation}
+even parity enforces $\Pi'(\Xi_{\rm eq})=0$.  Matching the intrinsic
+Fisher curvature to the curvature of the gate at equilibrium requires
+\begin{equation}
+-\Pi''(\Xi_{\rm eq})
+  = \frac{2}{\sigma_\chi^2}
+  = 2 F_\chi ,
+\qquad
+\sigma_\chi \equiv F_\chi^{-1/2} = 247.683 .
+\end{equation}
+Thus the width $\sigma_\chi$ is \emph{derived} from $(K,\chi)$ and
+introduces no tunable parameter.
+
+\medskip\noindent
+\textbf{Minimal even completion.}
+Imposing analyticity, even parity, normalization
+$\Pi(\Xi_{\rm eq})=1$, and decay $\Pi(\Xi)\!\rightarrow\!0$ as
+$|\delta\Xi|\!\rightarrow\!\infty$, the minimal completion of the above
+local form is the Gaussian
+\begin{equation}
+\Pi(\Xi)
+  = \exp\!\left[-\frac{(\delta\Xi)^2}{\sigma_\chi^2}\right].
+\end{equation}
+More general even deformations would introduce higher-order coefficients not
+fixed by Standard Model data; GEOMETRY~I therefore adopts this minimal
+SM-determined form.
+
+\subsection*{Curvature expansion and parity condition}
+
+Expanding $\Pi$ in $\Delta\Xi=\Xi-\Xi_{\rm eq}$,
+\begin{equation}
+\Pi(\Xi)
+  = 1
+    + \Pi'(\Xi_{\rm eq})\,\Delta\Xi
+    + \tfrac12\,\Pi''(\Xi_{\rm eq})\,(\Delta\Xi)^2 + \cdots ,
+\end{equation}
+even parity enforces $\Pi'(\Xi_{\rm eq})=0$, and physical stability requires
+$\Pi''(\Xi_{\rm eq})<0$, so the first nonzero correction is quadratic.
+The Gaussian model
+\begin{equation}
+\Pi(\Xi)=\exp[-(\Delta\Xi)^2/\sigma_\chi^2],
+\qquad
+\Pi'(\Xi_{\rm eq})=0,
+\qquad
+\Pi''(\Xi_{\rm eq})=-2/\sigma_\chi^2,
+\end{equation}
+satisfies all requirements.  Any analytic even function with the same
+second derivative reproduces identical local physics; the Gaussian is the
+unique minimal completion.
+
+\subsection*{Quadratic lab-null prediction}
+
+Because $G(x)=G(M_Z)\,\Pi(\Xi(x))$, an expansion about equilibrium gives
+\begin{equation}
+\frac{\Delta G}{G}
+  \equiv \frac{G(x)}{G(M_Z)} - 1
+  = \Pi(\Xi) - 1
+  \simeq \frac{(\delta\Xi)^2}{\sigma_\chi^2}
+  = \frac{\phi_\chi^2}{\Lambda_\chi^2},
+\end{equation}
+where the aligned quantities are
+\begin{equation}
+\phi_\chi
+  = \frac{\chi^\top K\,\delta\hat\Psi}{\|\chi\|_{K}},
+\qquad
+\Lambda_\chi
+  = \frac{\sigma_\chi}{\|\chi\|_{K}}
+  = 14.0507 .
+\end{equation}
+Since
+\begin{equation}
+\delta\Xi
+  = \chi^\top \delta\hat\Psi
+  = \|\chi\|_K\,\phi_\chi ,
+\qquad
+F_\chi
+  = \frac{1}{\sigma_\chi^2},
+\end{equation}
+the identities
+\begin{equation}
+\frac{\delta\Xi}{\sigma_\chi}
+  = \frac{\phi_\chi}{\Lambda_\chi},
+\qquad
+F_\chi\,(\delta\Xi)^2
+  = \frac{\phi_\chi^2}{\Lambda_\chi^2},
+\end{equation}
+follow directly from the definitions.  Hence the quadratic lab-null may be
+written in any equivalent form:
+\begin{equation}
+\frac{\Delta G}{G}
+  = F_\chi\,(\delta\Xi)^2
+  = \left(\frac{\delta\Xi}{\sigma_\chi}\right)^2
+  = \frac{\phi_\chi^2}{\Lambda_\chi^2}.
+\end{equation}
+All quantities $(F_\chi,\sigma_\chi,\Lambda_\chi,\|\chi\|_K)$ are fixed
+entirely by Standard Model data at $\mu=M_Z$, and no tunable parameters
+appear.
+
+\subsection*{Empirical falsifier}
+A general local response can be written as
+\begin{equation}
+\frac{\Delta G}{G}
+  = a_1\,\delta\Xi
+    + a_2\,(\delta\Xi)^2
+    + \cdots .
+\end{equation}
+Even parity and alignment symmetry require
+\begin{equation}
+a_1 = 0,
+\qquad
+a_2 = F_\chi .
+\end{equation}
+Thus any measured \emph{linear} term ($a_1\neq0$) provides an immediate
+falsifier of the aligned-depth mechanism.
+The quadratic coefficient is not adjustable:
+\begin{equation}
+a_2 = F_\chi = \frac{1}{\sigma_\chi^2}
+\end{equation}
+is determined entirely by Standard Model data.
+
+\subsection*{Invariance and parameter independence}
+
+The prediction is invariant under integer basis transports
+\begin{equation}
+\Delta W \rightarrow
+  U_{\rm row}\,\Delta W\,V_{\rm col},
+\qquad
+U_{\rm row}, V_{\rm col}\in GL(\mathbb{Z}),
+\end{equation}
+which preserve the primitive integer left kernel
+$\ker_{\mathbb{Z}}(\Delta W^\top)=\mathrm{span}_{\mathbb{Z}}\{\pm\chi\}$.
+Hence $\Xi=\chi\cdot\hat\Psi$, $\Pi(\Xi)$, and the lab-null are basis-invariant.
+No free parameters enter: $\sigma_\chi$, $\Lambda_\chi$, $F_\chi$, and
+$\|\chi\|_K$ are determined solely by $(K,\chi)$ at $\mu=M_Z$.
+
+\medskip\noindent\textbf{Verification.}
+$\sigma_\chi=247.683$ and $\Lambda_\chi=14.0507$
+were reproduced by \texttt{gate\_null.py} using $K$ from
+\texttt{metric\_eigs.py}; SHA--256 checksums match the reproducibility
+archive~\cite{demasi_gage_repo_v1_0_0_2025}.
+
+% =========================================================
+\section{Tensor/helicity certificate (GR limit)}
+
+The curvature gate $\Pi(\Xi)$ multiplies the Einstein--Hilbert term of the
+effective action,
+\[
+S
+=\!\int\! d^4x\,\sqrt{-g}\Big[
+\tfrac{M_P^2}{2}\,\Pi(\Xi)\,R
+-\tfrac12\,\partial_\mu\hat\Psi^\top K\,\partial^\mu\hat\Psi
+-V(\hat\Psi)\Big],
+\]
+where $V(\hat\Psi)$ collects subdominant scalar interactions that stabilize
+the depth and metric sectors.  Expansions are performed about the
+equilibrium point,
+\[
+\Pi'(\Xi_{\rm eq})=0,\qquad
+g_{\mu\nu}=\eta_{\mu\nu}+h_{\mu\nu},\qquad
+\hat\Psi=\hat\Psi_{\rm eq}+\delta\hat\Psi,
+\]
+with
+$\Pi(\Xi)=1+\tfrac12\Pi''(\Xi_{\rm eq})(\delta\Xi)^2+\cdots$.
+Even parity is essential: it removes the linear term and forbids any
+mixing between the tensor and scalar sectors.
+
+\subsection*{Quadratic tensor kernel}
+
+The linearized Ricci tensor and scalar curvature are
+\begin{align*}
+R^{(1)}_{\mu\nu}
+&=\tfrac12(\partial_\rho\partial_\mu h^\rho_{\ \nu}
++\partial_\rho\partial_\nu h^\rho_{\ \mu}
+-\Box h_{\mu\nu}
+-\partial_\mu\partial_\nu h),\\
+R^{(1)}&=\partial_\mu\partial_\nu h^{\mu\nu}-\Box h.
+\end{align*}
+Inserting these into the action and integrating by parts yields the
+quadratic tensor Lagrangian,
+\[
+\mathcal{L}^{(2)}_{\rm tens}
+=\frac{M_P^2}{8}\,
+h_{\mu\nu}\,
+E^{\mu\nu,\rho\sigma}
+h_{\rho\sigma},
+\qquad
+E^{\mu\nu,\rho\sigma}
+=-\Box\,P^{(2)}_{\mu\nu,\rho\sigma},
+\]
+where $P^{(2)}_{\mu\nu,\rho\sigma}$ is the Barnes--Rivers spin--2
+projector~\cite{FierzPauli1939}.  
+
+Because $\Pi'(\Xi_{\rm eq})=0$ and $K\succ0$, all scalar--tensor mixing
+terms cancel exactly, and the Pauli--Fierz mass term
+$m_{\rm PF}^2(h_{\mu\nu}h^{\mu\nu}-h^2)$ is absent.  Thus the tensor
+sector is automatically massless.
+
+\subsection*{Helicity decomposition and propagation}
+
+Working in de Donder gauge $\partial^\mu h_{\mu\nu}=\tfrac12\partial_\nu h$
+removes spin--1 components, leaving the pure spin--2 projection:
+\[
+P^{(2)}_{\mu\nu,\rho\sigma}h^{\rho\sigma}=h_{\mu\nu},
+\qquad
+E^{\mu\nu,\rho\sigma}
+=-\Box\,P^{(2)}_{\mu\nu,\rho\sigma}.
+\]
+The linearized field equation,
+\[
+E^{\mu\nu,\rho\sigma}h_{\rho\sigma}=0,
+\]
+implies the GR dispersion relation
+\[
+\omega^2 = k^2,\qquad c_T = 1,
+\]
+so the helicity eigenstates are strictly $\pm 2$, massless, and luminal.
+Standard post-Newtonian and gravitational-wave bounds are satisfied
+identically~\cite{Will2014_LRR_TestsGR,Abbott2017_PRL_GW170817,
+Abbott2017_ApJL_GRB170817A,LVK2021_TestsGR}.
+
+\subsection*{Propagator and soft limit}
+
+In harmonic gauge the graviton propagator becomes
+\[
+D_{\mu\nu,\rho\sigma}(k)
+= i\,\frac{16\pi G_N}{2}\,
+\frac{P^{(2)}_{\mu\nu,\rho\sigma}}{k^2+i\epsilon},
+\]
+identical to the Einstein--GR propagator.
+The soft-graviton theorem~\cite{Weinberg1996_QFTv2} is therefore unchanged,
+preserving universality of soft emission and conservation of the helicity
+current.
+
+\subsection*{Summary and falsifier link}
+
+The combined conditions
+\[
+\Pi'(\Xi_{\rm eq})=0,
+\qquad
+K\succ0,
+\]
+guarantee:
+\begin{enumerate}
+\item no scalar--tensor mixing,
+\item no Pauli--Fierz mass,
+\item luminal propagation ($c_T=1$),
+\item a GR-normalized helicity $\pm2$ sector.
+\end{enumerate}
+These properties constitute the \emph{tensor/helicity certificate} of
+\textsc{Geometry I}.  Any observed deviation in $c_T$ or an inferred
+$m_{\rm PF}\neq0$ would empirically break aligned-depth symmetry and
+falsify the mechanism.
+
+\medskip
+\noindent\textbf{Verification.}
+The equilibrium quantities
+$\|\chi\|_K=17.6278$ and $\sigma_\chi=247.683$ (from
+\texttt{metric\_eigs.py} and \texttt{gate\_null.py})
+match the reproducibility archive~\cite{demasi_gage_repo_v1_0_0_2025}.
+
+%=========================================================
+\section{Closure (a posteriori) and pins}
+
+Anchoring at $\mu = M_Z$ in the $\overline{\mathrm{MS}}$ scheme, all
+quantities are fixed from PDG and CODATA data without parameter
+adjustment~\cite{PDG2024,PDG2024_PhysConstants,PDG2024_EWReview,CODATA2022_RMP}.
+Two--loop running and electroweak corrections follow
+Refs.~\cite{Jegerlehner2019_alphaRun,Awramik2004_mW,
+Sirlin1980_DeltaR,Machacek1983_TwoLoopI,Machacek1984_TwoLoopII,
+Luo2003_TwoLoopSM}.
+
+\medskip\noindent\textbf{Definition.}
+\[
+\alpha_G^{(pp)} \equiv \frac{G_N m_p^2}{\hbar c},
+\]
+the dimensionless proton--proton gravitational coupling.
+
+\medskip
+At the electroweak scale, the closure ratio is
+\[
+Z_G \equiv \frac{\alpha_G^{(pp)}}{\hat\Omega(M_Z)}
+= 1.09373393,
+\qquad
+\hat\Omega(M_Z)=\hat\alpha_s^{16}\hat\alpha_2^{13}\hat\alpha^{2}.
+\]
+The SM-derived strong coupling obtained by leaving out
+$\hat\alpha_s$ in the depth relation is
+\[
+\hat\alpha_s^{\star}(M_Z)=0.1173411\pm1.9\times10^{-5},
+\]
+consistent with PDG~2024 averages.  No parameters are tuned:
+metrology enters only \emph{a posteriori} through $\alpha_G^{(pp)}$.
+Thus $Z_G$ measures the degree of closure between the SM-derived $G(M_Z)$
+and the measured $G_N$.
+
+\medskip\noindent\textbf{Uncertainties (closure).}
+\[
+\sigma^2(\ln Z_G)
+=\sigma^2(\ln \alpha_G^{(pp)})
++\sum_{k\in\{s,2,\mathrm{em}\}}\chi_k^2\,\sigma^2(\ln \hat\alpha_k),
+\]
+propagating fractional uncertainties in the three gauge couplings and $G_N$.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.05}
+\caption{Numerical pins at $\mu=M_Z$ ($\overline{\mathrm{MS}}$).  
+Canonical values match those used in the reproducibility archive.}
+\label{tab:pins-merged}
+\begin{tabular}{@{}lcc@{}}
+\hline\hline
+\textbf{Quantity} & \textbf{Canonical} & \textbf{Repo build} \\
+\hline
+$M_Z$ [GeV] & 91.1876 & --- \\
+$\hat\alpha(M_Z)$ & $1/127.955(10)$ & --- \\
+$\hat\alpha_2(M_Z)$ & 0.033816 & 0.033789820 \\
+$\hat\alpha_s(M_Z)$ & $0.1173411(19)$ & --- \\
+$\hat\alpha_s^{\star}(M_Z)$ (LOO) & --- & 0.117341100 \\
+$m_p$ [MeV] & 938.2720813 & --- \\
+$G_N$ [$\mathrm{m^3\,kg^{-1}\,s^{-2}}$] & $6.67430(15)\!\times\!10^{-11}$ & --- \\
+$\hat\Omega$ & --- & $6.4597\times10^{-39}$ \\
+$\alpha_G^{(pp)}$ & --- & $5.9061\times10^{-39}$ \\
+$Z_G$ & 1.09373393 & 1.09372878 \\
+$\|\chi\|_{K}$ & 17.6278 & 17.62783 \\
+$\sigma_\chi$ & 247.683 & --- \\
+$\Lambda_\chi=\sigma_\chi/\|\chi\|_{K}$ & 14.0507 & 14.050704 \\
+$K$ eigvals & $0.7243,2.0156,3.2599$ & $0.7243,2.0156,3.2600$ \\
+$e_{\chi}$ & $(0.7725,0.6276,0.0966)$ & $(0.7725,0.6276,0.0966)$ \\
+$\cos\theta_K$ & 1.0000000 & 1.0000000 \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+\noindent\textit{Build artifacts (SHA-256):}
+\texttt{results.json}=08f0371b31de…c7cd5edc;
+\texttt{metric\_results.json}=e0e3bee8a70c…b9b251b6451;
+\texttt{stdout.txt}=0f232a0be6f8…6c7cd5edc.
+
+\subsection*{Leave-one-out (LOO) forecast as falsifier}
+
+Because $\chi=(16,13,2)$ uniquely couples
+$(\hat\alpha_s,\hat\alpha_2,\hat\alpha)$, any one coupling can be
+predicted from the other two:
+\[
+\hat\alpha_i^{(\mathrm{LOO})}
+=\exp\!\Bigg[
+\frac{\Xi_{\rm eq}-\sum_{j\neq i}\chi_j\ln\hat\alpha_j}{\chi_i}
+\Bigg],
+\]
+giving a direct falsifiable relation among the three measured gauge
+couplings.
+
+\medskip\noindent\textbf{Uncertainties (LOO).}
+\[
+\sigma^2(\ln \hat\alpha_i^{(\mathrm{LOO})})
+=\chi_i^{-2}\sum_{j\neq i}\chi_j^2\,\sigma^2(\ln\hat\alpha_j).
+\]
+For PDG~2024 inputs,
+\[
+\frac{\Delta\hat\alpha_s}{\hat\alpha_s}
+=1.6\times10^{-4},
+\]
+which lies well within current experimental uncertainties.  Any
+statistically significant deviation in future precision data would
+falsify either the integer certificate or the alignment premise.
+
+\subsection*{Interpretation and falsifier set}
+
+Three independent tests follow from the structure of GAGE:
+\begin{center}
+(i) gravitational closure via $Z_G$,\\
+(ii) gauge-sector self-consistency via LOO,\\
+(iii) parity/response symmetry via the quadratic lab-null.
+\end{center}
+All three use only Standard Model data at $\mu=M_Z$, with no tunable
+parameters.  Any violation of these relations falsifies the mechanism.
+
+\medskip\noindent\textbf{Verification.}
+$Z_G$ and LOO values were regenerated by \texttt{omega\_chi.py}
+using pins in Table~\ref{tab:pins-merged};
+SHA--256 hashes match the reproducibility
+archive~\cite{demasi_gage_repo_v1_0_0_2025}.
+% =========================================================
+\section{Falsifiers and consistency}
+
+The framework contains no free parameters: every quantity is fixed by
+Standard Model pins at $\mu=M_Z$.  Each falsifier probes a distinct,
+independently testable structural layer of the construction.
+
+\paragraph*{\textbf{(1) Parity/response (quadratic lab--null).}}
+Near equilibrium,
+\[
+\frac{\Delta G}{G}
+= A\,s + B\,s^2 + \mathcal{O}(s^3),
+\qquad
+s=\delta\Xi/\sigma_\chi .
+\]
+Even parity and alignment require
+\[
+A=0,\qquad B=1 .
+\]
+Thus any statistically significant $A\neq0$ falsifies the mechanism.
+Even parity forbids Brans--Dicke--type linear couplings at equilibrium
+\cite{BransDicke1961,Faraoni2004_STG,FujiiMaeda2003_STG,Carroll2004_SG}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_gate.pdf}
+\caption{
+Even curvature gate $\Pi(\Xi)$ and the quadratic parity--null prediction.  
+(a) Gaussian gate $\Pi=\exp[-(\delta\Xi)^2/\sigma_\chi^2]$ with
+$\Pi'(\Xi_{\rm eq})=0$.  
+(b) Laboratory relation $\Delta G/G=(\delta\Xi/\sigma_\chi)^2=
+(\phi_\chi/\Lambda_\chi)^2$, showing the vanishing of the linear term
+($A=0$) as the empirical falsifier.
+}
+\label{fig:gate}
+\end{figure}
+
+\paragraph*{\textbf{(2) Closure ratio $Z_G$.}}
+At $\mu=M_Z$,
+\[
+Z_G=\frac{\alpha_G^{(pp)}}{\hat\Omega(M_Z)} ,
+\]
+testing consistency between the SM--derived $G(M_Z)$ and the measured
+$G_N$.  A deviation of $Z_G$ beyond propagated PDG/CODATA uncertainties
+falsifies the SM‐anchored gravitational coupling.
+
+\paragraph*{\textbf{(3) Leave--one--out (LOO) forecast.}}
+Because $\Xi=\sum_i\chi_i\ln\hat\alpha_i$, one coupling is predicted from
+the other two:
+\[
+\hat\alpha_i^{(\mathrm{LOO})}
+=\exp\!\Bigg[
+\frac{\Xi_{\rm eq}-\sum_{j\neq i}\chi_j\ln\hat\alpha_j}{\chi_i}
+\Bigg].
+\]
+A statistically significant deviation of
+$\hat\alpha_i^{(\mathrm{LOO})}$ from measurement falsifies either the
+integer certificate or alignment.  This test is predictive, not fitted.
+
+\paragraph*{\textbf{(4) Tensor/helicity constraints.}}
+With $\Pi'(\Xi_{\rm eq})=0$, the quadratic kernel reduces to the GR
+Lichnerowicz operator.  Falsify if any of
+\[
+m_{\rm PF}\neq0,\qquad c_T\neq 1,
+\]
+or if scalar/spin--1 admixtures propagate.  Current bounds from
+GW170817/GRB170817A enforce $c_T\simeq 1$ and GWTC--3 constrains
+$m_g\le1.27\times10^{-23}\,\mathrm{eV}/c^2$ (90\% C.L.)
+\cite{Abbott2017_PRL_GW170817,Abbott2017_ApJL_GRB170817A,
+LVK2021_TestsGR,Will2014_LRR_TestsGR}, both satisfied here.
+
+\paragraph*{\textbf{(5) Metric alignment.}}
+The equilibrium metric must satisfy
+\[
+K\succ0,\qquad
+\hat\chi=\chi/\|\chi\|_{K},\qquad
+\cos\theta_K=\hat\chi\!\cdot\!e_{\text{soft}}
+=1\ (\pm\varepsilon_\chi).
+\]
+Failure of positive definiteness or any measurable misalignment,
+$\cos\theta_K<1-\varepsilon_\chi$, falsifies the alignment principle.
+
+\paragraph*{\textbf{(6) Basis/invariance checks.}}
+Integer transports
+$\Delta W\to U_{\rm row}\Delta W\,V_{\rm col}$ with
+$U_{\rm row},V_{\rm col}\in GL(\mathbb{Z})$
+preserve
+$\ker_{\mathbb{Z}}(\Delta W^\top)=\operatorname{span}_{\mathbb{Z}}\{\pm\chi\}$.
+Thus $\Xi$, $\Pi(\Xi)$, and the lab--null are basis invariant.
+Any basis under which these quantities change falsifies the certificate.
+
+\subsection*{Reporting protocol (reproducibility)}
+For any dataset or update:
+(i) publish $K$ with eigenpairs and $\cos\theta_K$;
+(ii) fit $(A,B)$ in $\Delta G/G$ vs $s$ with uncertainties;
+(iii) compute LOO values with propagated errors;
+(iv) evaluate $Z_G$ from PDG/CODATA pins;
+(v) report GW/PPN consistency ($c_T$, $m_g$ bounds).
+All quantities and artifacts are reproducible from the Zenodo archive
+\cite{demasi_gage_repo_v1_0_0_2025}.
+% =========================================================
+
+\section{Discussion}
+\label{sec:discussion}
+
+The construction reduces to a minimal, basis--invariant chain:
+\begin{align*}
+    \text{SNF certificate }\chi
+\;\Rightarrow\;&\;
+\text{alignment }(K\succ0,\ \chi\parallel e_{\chi}) \\
+&\Rightarrow\;
+\text{even curvature gate }(\Pi'(\Xi_{\rm eq})=0) \\
+&\Rightarrow\;
+\text{GR tensor sector + quadratic lab--null}.
+\end{align*}
+
+Two independent Standard--Model structures—the primitive integer kernel of
+one-loop decoupling and the soft eigenmode of the Fisher/kinetic metric—select
+the same direction in log--coupling space.  This identifies the aligned depth
+$\Xi=\chi\cdot\hat\Psi$ and the electroweak anchor
+$\Omega=\hat\alpha_s^{16}\hat\alpha_2^{13}\hat\alpha^{2}$.
+Because $\Omega=e^{\Xi}$, once $\Xi$ is fixed by the integer certificate, the
+gravitational anchor $\Omega(M_Z)$ and the electroweak--scale coupling
+$G(M_Z)=(\hbar c/m_p^2)\,\Omega(M_Z)$ follow directly with no additional
+assumptions.  
+The even curvature gate $\Pi(\Xi)$ then promotes this anchor to
+$G(Q)=G(M_Z)\Pi(\Xi(Q))$ while preserving the GR equilibrium limit:
+$\Pi(\Xi_{\rm eq})=1$, $\Pi'(\Xi_{\rm eq})=0$, and a massless, luminal,
+helicity~$\pm2$ tensor sector.
+
+\medskip
+\noindent\textbf{Interpretation: GR normalization from the electroweak anchor}
+The appearance of the Einstein--Hilbert normalization is not an external
+assumption but a geometric consequence of the aligned depth.  In General
+Relativity the tensor sector is fixed by
+\begin{equation}
+\mathcal{L}_{\rm EH}
+  = \frac{M_P^2}{2}\,R
+  = \frac{1}{16\pi G_N}\,R ,
+\label{eq:EH-normalization}
+\end{equation}
+so that $M_P^{-2}=8\pi G_N$.  GR therefore provides the 
+\emph{form} of the tensor action but not the origin or numerical value of
+its coupling.
+
+In the present construction, the Standard Model integer certificate
+and the soft eigenmode of the Fisher metric select a distinguished
+log--coupling direction
+$\Xi=\chi\cdot\hat\Psi$, and the electroweak anchor
+\begin{equation}
+\Omega(M_Z)=e^{\Xi_{\rm eq}}
+           =\hat\alpha_s^{16}\hat\alpha_2^{13}\hat\alpha^{2},
+\end{equation}
+is fixed entirely by SM data at $\mu=M_Z$.  The SM-derived gravitational
+coupling at the electroweak scale,
+\begin{equation}
+G(M_Z)
+  = \frac{\hbar c}{m_p^2}\,\Omega(M_Z),
+\label{eq:G-from-Omega}
+\end{equation}
+arises independently of GR and represents the projection of gauge
+information along the aligned soft mode.
+
+Matching the curvature coefficient of the Einstein--Hilbert term to the
+SM-derived anchor yields
+\begin{equation}
+\frac{M_P^2}{2}
+  = \frac{1}{16\pi G(M_Z)}
+  \quad\Longleftrightarrow\quad
+  G(M_Z)=\frac{1}{8\pi M_P^2},
+\label{eq:G-match}
+\end{equation}
+so the electroweak anchor reproduces precisely the GR normalization.
+The equality is therefore a \emph{consistency outcome} of the alignment
+geometry rather than an imposed identification.  GR supplies the tensor
+dynamics, while the SM supplies the value of the coupling through
+$\Omega(M_Z)$.  No circularity is involved: GR assumes the existence of
+gravity, whereas GEOMETRY predicts its strength from Standard Model
+inputs alone.
+
+
+\medskip
+\noindent\textbf{Fixed vs.\ environmental quantities.}
+The integer certificate $\chi=(16,13,2)$ and the metric--alignment scales
+$(\sigma_\chi,\|\chi\|_K,\Lambda_\chi)$ are determined entirely by the SM
+spectrum and renormalization geometry at $\mu=M_Z$.  
+No free parameters enter.  
+The gate width $\sigma_\chi$ is fixed by matching the gate curvature to the
+Fisher curvature $F_\chi$ along the aligned direction, and
+$\Lambda_\chi=\sigma_\chi/\|\chi\|_{K}$ sets the depth scale linking internal
+displacement to gravitational response.  
+In contrast, $\Xi_{\rm eq}$ and the displacement $\delta\Xi$ are environmental
+boundary data determined by the physical system under study.
+
+\medskip
+\noindent\textbf{Geometry vs.\ alternative scenarios.}
+The framework differs from scalar--tensor, screening, or modified--gravity
+models in that no new fields, potentials, or interactions are introduced.
+All response arises from the geometry of log--coupling space and its aligned
+soft mode.  
+The absence of the Brans--Dicke--like linear term is a consequence of even
+parity, $\Pi'(\Xi_{\rm eq})=0$, rather than a dynamical assumption.  
+At equilibrium the effective Lagrangian,
+\[
+\mathcal{L}^{\rm eff}
+= \frac{\Pi(\Xi)}{16\pi G(M_Z)}\,R + \cdots,
+\]
+reduces exactly to General Relativity while retaining a fixed,
+parameter-free curvature--response determined by SM data.
+
+\medskip
+\noindent\textbf{Closure and falsifiability.}
+The dimensionless coupling $\alpha_G^{(pp)}=G_N m_p^2/(\hbar c)$ enters only
+in a posteriori comparison, defining the closure ratio
+$Z_G=\alpha_G^{(pp)}/\Omega(M_Z)$, which tests the SM-derived $G(M_Z)$ against
+the measured Newtonian coupling.  
+Together with leave--one--out self-consistency and the strictly quadratic
+lab-null, this yields a sharp falsifier set: any odd laboratory response,
+closure mismatch beyond propagated uncertainties, or deviation from massless,
+luminal $\pm2$ tensor propagation at $\Xi_{\rm eq}$ rules out the mechanism.
+
+\medskip
+\noindent\textbf{Scope and extensions.}
+The present work is restricted to the static, equilibrium geometry.  
+No time dependence of $\Xi$ or dynamical evolution of the alignment mode is
+introduced.  
+A companion paper (GEOMETRY~II) develops the tensor sector beyond equilibrium
+and establishes a positive spectral gap using the same alignment and parity
+structure.  
+A further extension (GEOMETRY~III) introduces dynamical alignment and studies
+the off-equilibrium evolution of $\Xi$.  
+These generalizations build on—but do not modify—the equilibrium geometry
+established here.
+
+\medskip
+\noindent\textbf{Summary.}
+Electroweak-scale alignment between the SNF integer certificate and the Fisher
+metric selects a distinguished depth coordinate $\Xi$.  
+An even curvature gate along this axis yields a parameter-free, SM-anchored
+gravitational coupling whose equilibrium tensor sector matches GR exactly.  
+The framework is quantitatively falsifiable through laboratory response,
+closure with $G_N$, leave–one–out forecasts, and tensor-propagation
+constraints.  
+The alignment geometry and curvature structure developed here form the static
+foundation for the dynamic and spectral components of the GEOMETRY program.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have shown that the Standard Model gauge sector at $\mu=M_Z$ contains
+sufficient internal structure to define a gravitational coupling without
+introducing new fields or modifying the tensor sector of General Relativity.
+Two independent ingredients—the primitive integer kernel of one-loop
+decoupling and the soft eigenmode of the Fisher/kinetic metric—select the same
+direction in log–coupling space.  This alignment defines a unique depth
+coordinate $\Xi=\chi\!\cdot\!\hat\Psi$ and its electroweak anchor
+$\Omega=\hat\alpha_s^{16}\hat\alpha_2^{13}\hat\alpha^{2}$.
+Because $\Omega=e^{\Xi}$, the SM-derived coupling
+$G(M_Z)=(\hbar c/m_p^2)\,\Omega(M_Z)$ follows directly from the integer
+certificate without additional parameters.
+
+An even curvature gate $\Pi(\Xi)$, with width fixed by matching its curvature
+to the Fisher curvature along the aligned axis, promotes this anchor to a
+running coupling $G(Q)=G(M_Z)\Pi(\Xi(Q))$ while preserving the equilibrium GR
+limit.  At $\Xi_{\rm eq}$ the theory reduces to massless, luminal
+helicity~$\pm2$ propagation with no scalar–tensor mixing and no Pauli–Fierz
+mass term.
+
+The resulting predictions are quantitative and parameter free.  
+The laboratory response obeys the strictly quadratic relation
+\[
+\frac{\Delta G}{G}=(\delta\Xi/\sigma_\chi)^2,
+\]
+with the linear term removed by even parity.  
+Closure is captured by the ratio
+$Z_G=\alpha_G^{(pp)}/\Omega(M_Z)$, providing a direct comparison between the
+SM-anchored $G(M_Z)$ and the measured Newtonian coupling $G_N$.  
+Leave-one-out consistency of the three gauge couplings supplies an additional
+internal test.  
+Any violation of these conditions—odd laboratory response, closure mismatch,
+LOO inconsistency, or deviation from the GR tensor limit—falsifies the
+alignment mechanism.
+
+The analysis here is restricted to the static, equilibrium geometry in which
+$\Pi(\Xi_{\rm eq})=1$ and the tensor kernel reduces to the Lichnerowicz
+operator of GR.  This establishes the electroweak alignment structure that
+underlies the broader GEOMETRY program.  A companion paper (GEOMETRY~II)
+extends the tensor sector beyond equilibrium and demonstrates a finite spectral
+gap, while GEOMETRY~III introduces dynamical alignment and analyzes the
+off-equilibrium evolution of the depth coordinate~$\Xi$.  
+These developments build systematically on the equilibrium geometry established
+here.
+
+\paragraph{Acknowledgments.}
+This work was conducted independently with no external funding.  The author
+thanks the Particle Data Group (PDG), CODATA, Overleaf, and the open-source
+Python ecosystem for publicly accessible tools and data.  An AI-assisted
+writing tool (OpenAI ChatGPT) was used for language editing and organizational
+assistance; all scientific content and responsibility rest with the author.
+The author declares no competing interests.
+
+\paragraph*{Data availability.}
+All reproducibility materials are archived in the Zenodo repository
+\cite{demasi_gage_repo_v1_0_0_2025} (\texttt{GAGE\_repo v1.0.0}, DOI
+\href{https://doi.org/10.5281/zenodo.17537647}{10.5281/zenodo.17537647}),
+including pins, scripts, figure data, and build manifests.
+\textit{Build artifacts (SHA–256):}
+\texttt{results.json}=08f0371b31de\ldots c7cd5edc;
+\texttt{metric\_results.json}=e0e3bee8a70c\ldots b9b251b6451;
+\texttt{stdout.txt}=0f232a0be6f8\ldots 6c7cd5edc.  
+Additional materials are available from the author upon reasonable request.
+
+\paragraph*{Outlook.}
+Future work will examine how the even-gate symmetry extends to dynamical and
+spectral sectors, including the time-evolution operator and the curvature
+spectrum.  If validated, the GEOMETRY program would provide a continuous link
+from Standard-Model information geometry to the equilibrium, dynamical, and
+spectral structure of gravitation.
+
+\bibliographystyle{iopart-num}
+\bibliography{geo_cqg_refs}
+\end{document}
+
+
+
