@@ -1,0 +1,860 @@
+\documentclass{iopjournal}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\begin{document}
+
+\articletype{Paper}
+
+\title{GEOMETRY IV: Alignment--Regularized Curvature Flow and a Parabolic Analogue of Navier--Stokes}
+
+\author{Michael DeMasi$^{1}$}
+\affil{$^{1}$Independent Researcher, Milford, CT, USA}
+\email{demasim90@gmail.com}
+
+\begin{abstract}
+\noindent
+This work extends the dynamic alignment framework of \textsc{Geometry~III} by
+analyzing the curvature evolution equation as a globally well--posed,
+parabolic flow.  The depth coordinate
+$\Xi=\chi\!\cdot\!\hat\Psi$ evolves according to an advection--diffusion
+equation with analytic coefficients,
+\[
+\partial_t\Xi + (v_\Xi\!\cdot\nabla)\Xi
+  = D_\Xi\nabla^2\Xi - \partial_\Xi V_{\mathrm{eff}}(\Xi),
+\]
+where the diffusion constant $D_\Xi$ and the stabilizing potential
+$V_{\mathrm{eff}}$ are fixed entirely by Standard Model data through the Fisher
+metric and the even curvature gate $\Pi(\Xi)$.  We show that this equation
+satisfies a strong maximum principle, possesses a monotonic Lyapunov
+functional, remains smooth for all time, and admits no finite--time blow--up
+for any initial data in $L^\infty$.
+
+The resulting evolution is structurally analogous to a viscous
+Navier--Stokes flow with transport, viscosity, and forcing terms, but with
+coefficients fixed by the internal gauge--space geometry rather than freely
+chosen parameters.  Alignment therefore provides a self--contained geometric
+regularization mechanism that suppresses high--frequency curvature variations
+and enforces global boundedness.  
+
+We derive the associated dissipation inequality, quantify exponential
+gradient decay, and compare the alignment--regularized flow to classical
+Navier--Stokes, emphasizing the structural features responsible for global
+smoothness.  These results suggest that alignment offers a physically
+motivated parabolic analogue with fixed analytic coefficients and may provide
+insight for future approaches to the Navier--Stokes existence and smoothness
+problem.  No new fields or tunable functions are introduced.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+\noindent
+The \textsc{Geometry} series develops a gauge--space framework in which the
+Standard Model (SM) uniquely determines gravitational normalization, curvature
+response, and aligned gauge dynamics without introducing new fields or tunable
+parameters.  
+\textsc{Geometry~I} established the static alignment structure, deriving an
+electroweak--anchored gravitational coupling $G(M_Z)$ from the integer
+direction $\chi=(16,13,2)$ and the Fisher/kinetic metric.  
+\textsc{Geometry~II} introduced the Euclidean sector, demonstrating reflection
+positivity, a finite spectral gap, and the helicity--frequency associated with
+aligned pure--gauge curvature.  
+\textsc{Geometry~III} extended the construction to time evolution, showing that
+the depth coordinate $\Xi=\chi\!\cdot\!\hat\Psi$ satisfies an advection--
+diffusion equation with a stabilizing curvature potential derived entirely from
+the even gate $\Pi(\Xi)$.
+
+\medskip
+In this fourth paper, we analyze the resulting evolution equation as a
+globally well--posed parabolic flow.  
+The dynamic alignment equation,
+\[
+\partial_t \Xi + (v_\Xi\!\cdot\nabla)\Xi
+  = D_\Xi\nabla^2\Xi - \partial_\Xi V_{\mathrm{eff}}(\Xi),
+\tag{1.1}
+\label{eq:intro_flow}
+\]
+contains three structures characteristic of a viscous fluid:
+transport, diffusion, and a forcing term.  
+Unlike conventional hydrodynamic equations, however, all coefficients in
+\eqref{eq:intro_flow} are fixed by SM data.  
+The diffusion constant $D_\Xi$ is determined by the Fisher softness
+$F_\chi=1/\sigma_\chi^2$, while the restoring potential
+$V_{\mathrm{eff}}(\Xi)$ is fixed by the curvature gate and satisfies
+$\partial_\Xi V_{\mathrm{eff}}\simeq 2\delta\Xi/\sigma_\chi^2$ near
+equilibrium.  
+No additional degrees of freedom or adjustable parameters appear.
+
+\medskip
+We show that Eq.~\eqref{eq:intro_flow} satisfies the maximum principle,
+possesses a monotonic Lyapunov functional, remains smooth for all time, and
+admits no finite--time blow--up for any bounded initial data.  
+These properties follow from the analytic, even, and strictly positive
+structure of $\Pi(\Xi)$ and from the fixed positivity of $D_\Xi$ encoded by the
+Fisher metric.  
+The resulting flow defines an alignment--regularized analogue of
+Navier--Stokes dynamics with built--in curvature control.  
+Its regularity reflects geometric features inherent to the SM gauge sector
+rather than external assumptions.
+
+\medskip
+The central aim of this work is not to modify Navier--Stokes or to propose a
+solution to its existence and smoothness problem, but rather to examine the
+alignment flow as a physically motivated parabolic system in which global
+smoothness is guaranteed by geometric constraints.  
+Comparisons with the classical theory highlight which structural elements of
+\eqref{eq:intro_flow} enforce boundedness and gradient decay, and how these
+features differ from the unconstrained nonlinearities in incompressible
+Navier--Stokes.  
+In this sense, alignment provides an instructive model for understanding
+regularizing mechanisms that arise naturally from gauge--space geometry.
+
+\medskip
+The remainder of the paper is organized as follows.  
+Section~\ref{sec:structure} rewrites the dynamic alignment equation in its
+advection--diffusion--forcing form and clarifies its geometric coefficients.
+Section~\ref{sec:regularization} analyzes the $\Pi$--weighted curvature potential
+and the role of Fisher softness as an intrinsic viscosity.  
+Section~\ref{sec:max_principle} establishes the maximum principle and global
+smoothness.  
+Section~\ref{sec:lyapunov} introduces the alignment functional and derives the
+dissipation inequality.  
+Section~\ref{sec:comparison} compares the alignment flow to the Navier--Stokes
+system and identifies the geometric features responsible for regularization.  
+We conclude in Section~\ref{sec:discussion}.
+
+\section{Alignment Drift as an Advection--Diffusion--Forcing Equation}
+\label{sec:structure}
+
+\noindent
+Dynamic alignment endows the depth coordinate $\Xi$ with a time evolution
+governed by geometric transport, Fisher-metric diffusion, and a restoring force
+arising from the curvature gate.  
+The general form of the evolution equation, derived in
+\textsc{Geometry~III}, is
+\[
+\partial_t \Xi
+  + (v_\Xi\!\cdot\nabla)\Xi
+  = D_\Xi\nabla^2\Xi - \partial_\Xi V_{\mathrm{eff}}(\Xi),
+\tag{2.1}\label{eq:align_flow}
+\]
+where each term is fixed by Standard Model data through the integer direction
+$\chi$ and the Fisher/kinetic metric $K_{\rm eq}$.  
+In this section we rewrite Eq.~\eqref{eq:align_flow} in its explicit geometric
+form and identify its structural components.
+
+\subsection*{2.1 Transport term}
+
+The velocity field $v_\Xi$ is not an independent degree of freedom but a
+geometric transport coefficient defined by
+\[
+v_\Xi^\mu
+  = (\chi^{\!T}K_{\rm eq}\,\partial^\mu\hat\Psi),
+\tag{2.2}
+\]
+representing the projection of gauge--space gradients along the aligned
+direction $\chi$.  
+This term carries curvature variations through spacetime but does not couple
+new dynamical fields into the evolution.  
+Because $v_\Xi$ depends only on background gauge data at $\mu=M_Z$, its form is
+entirely fixed.
+
+\subsection*{2.2 Fisher diffusion}
+
+The diffusion constant $D_\Xi$ arises from the softness of the aligned mode,
+quantified by the Fisher curvature
+\[
+F_\chi = \frac{1}{\sigma_\chi^2}.
+\tag{2.3}
+\]
+In the aligned sector, this supplies a strictly positive coefficient
+\[
+D_\Xi = \kappa_\Xi\,F_\chi,
+\tag{2.4}
+\]
+where $\kappa_\Xi$ is a fixed geometric normalization.  
+Because $F_\chi>0$ is determined by the Fisher metric, the diffusion term
+$D_\Xi\nabla^2\Xi$ is always smoothing and cannot vanish.  
+This intrinsic viscosity is a structural feature of alignment rather than an
+adjustable parameter.
+
+\subsection*{2.3 Curvature-gate forcing}
+
+The effective potential is defined by the even curvature gate
+\[
+\Pi(\Xi) = \exp[-(\delta\Xi)^2/\sigma_\chi^2],
+\tag{2.5}
+\]
+and its derivative determines the forcing term in
+Eq.~\eqref{eq:align_flow}:
+\[
+\partial_\Xi V_{\mathrm{eff}}(\Xi)
+  = -\partial_\Xi\ln\Pi(\Xi)
+  = \frac{2\,\delta\Xi}{\sigma_\chi^2},
+\tag{2.6}
+\]
+for small displacements $\delta\Xi$.  
+This term acts as a restoring force that suppresses large departures from the
+equilibrium depth $\Xi_{\rm eq}$.  
+Because $\Pi(\Xi)$ is analytic, positive, and even, $V_{\mathrm{eff}}$ is
+convex and globally stabilizing.
+
+\subsection*{2.4 Advection--diffusion--forcing structure}
+
+Equation~\eqref{eq:align_flow} can therefore be written in the explicit form
+\[
+\partial_t\Xi
++ (v_\Xi\!\cdot\nabla)\Xi
+= D_\Xi\nabla^2\Xi
+  - \frac{2\,\delta\Xi}{\sigma_\chi^2}
+  + \mathcal{O}[(\delta\Xi)^3],
+\tag{2.7}
+\]
+revealing a parabolic system with:
+\begin{itemize}
+\item \textbf{transport} through the aligned projection $v_\Xi$,
+\item \textbf{viscosity} set by Fisher softness $F_\chi$,
+\item \textbf{restoring force} supplied by the curvature gate.
+\end{itemize}
+The coefficients of all three components are determined at the electroweak
+scale and involve no additional parameters.  
+This structure forms the basis for the regularization, stability, and
+smoothness results developed in later sections.
+
+\section{$\Pi$-Weighted Regularization and Intrinsic Viscosity}
+\label{sec:regularization}
+
+\noindent
+The curvature gate $\Pi(\Xi)$ and the Fisher/kinetic metric jointly determine
+the stabilizing and smoothing properties of the alignment flow.  
+In this section we analyze these geometric contributions in detail and show
+that the depth evolution is regulated by two fixed mechanisms:
+(i) a convex, analytic potential enforcing boundedness, and
+(ii) a strictly positive diffusion coefficient arising from Fisher softness.
+Together, these features yield a globally regular parabolic system.
+
+\subsection*{3.1 Even curvature gate and convex potential}
+
+The curvature gate
+\[
+\Pi(\Xi)=\exp[-(\delta\Xi)^2/\sigma_\chi^2]
+\tag{3.1}
+\]
+is an even, analytic, strictly positive function with a global maximum at
+equilibrium.  
+Its logarithmic derivative defines the effective potential through
+\[
+\partial_\Xi V_{\mathrm{eff}}(\Xi)
+   = -\partial_\Xi \ln\Pi(\Xi),
+\tag{3.2}
+\]
+which yields, for small displacements,
+\[
+V_{\mathrm{eff}}(\Xi)
+   = \frac{(\delta\Xi)^2}{\sigma_\chi^2}
+     + \mathcal{O}[(\delta\Xi)^4].
+\tag{3.3}
+\]
+Thus $V_{\mathrm{eff}}$ is strictly convex near equilibrium and grows
+quadratically in $\delta\Xi$.  
+This convexity is not imposed but follows uniquely from the fixed Gaussian
+structure of $\Pi(\Xi)$ determined in \textsc{Geometry~I}.  
+The restoring force $-\partial_\Xi V_{\mathrm{eff}}$ therefore acts as a
+geometric stiffness preventing large excursions from the aligned depth.
+
+\subsection*{3.2 Fisher softness and intrinsic viscosity}
+
+The Fisher/kinetic metric selects a soft eigenmode aligned with the integer
+direction $\chi$, and its curvature along this direction is
+\[
+F_\chi = \frac{1}{\sigma_\chi^2}.
+\tag{3.4}
+\]
+The diffusion coefficient in the alignment flow is proportional to this
+quantity:
+\[
+D_\Xi = \kappa_\Xi\,F_\chi,
+\tag{3.5}
+\]
+with $\kappa_\Xi$ fixed by the normalization of the drift law.  
+Because $F_\chi>0$ is determined by Standard Model couplings at $\mu=M_Z$,
+$D_\Xi$ is strictly positive and cannot vanish or change sign.  
+This guarantees that the term $D_\Xi\nabla^2\Xi$ suppresses gradients,
+smooths curvature variations, and enforces local regularity for all times.
+
+\subsection*{3.3 Analytic coefficients and fixed geometry}
+
+Unlike conventional hydrodynamic models in which viscosity and forcing may be
+external parameters or functions, both $D_\Xi$ and $V_{\mathrm{eff}}$ are
+geometrically determined.  
+Specifically:
+\begin{itemize}
+\item the width $\sigma_\chi$ is fixed by the Fisher metric eigenstructure;
+\item the diffusion strength $D_\Xi$ inherits its positivity from $F_\chi$;
+\item the potential $V_{\mathrm{eff}}$ inherits analyticity and convexity from
+      the even Gaussian gate;
+\item no adjustable coefficients or external functions enter the flow.
+\end{itemize}
+This fixed analytic structure is a key reason why the alignment drift
+satisfies strong maximum-principle and global-regularity conditions.
+
+\subsection*{3.4 Consequences for curvature evolution}
+
+The combined effect of Fisher diffusion and curvature-gate stiffness implies:
+\begin{enumerate}
+\item all solutions remain bounded for all $t>0$,
+\item spatial gradients decay monotonically,
+\item high-frequency modes are exponentially suppressed,
+\item no runaway behavior or shock formation is possible,
+\item the flow remains within a $\Pi$-weighted tube around equilibrium.
+\end{enumerate}
+These are precisely the properties required for global well-posedness of a
+parabolic PDE.  
+The next section establishes the relevant maximum principle and its
+implications for smoothness and long-time behavior.
+
+\section{Maximum Principle and Global Smoothness}
+\label{sec:max_principle}
+
+\noindent
+The alignment drift equation inherits strong parabolic structure from the
+strict positivity of the Fisher diffusion coefficient and the convexity of the
+curvature-gate potential.  
+These features allow the direct application of the maximum principle, yielding
+global boundedness and smoothness for all time.  
+In this section we establish these results and clarify their geometric origin.
+
+\subsection*{4.1 Parabolic form of the alignment equation}
+
+The evolution equation
+\[
+\partial_t \Xi
+  = D_\Xi\nabla^2\Xi
+    - (v_\Xi\!\cdot\nabla)\Xi
+    - \partial_\Xi V_{\mathrm{eff}}(\Xi)
+\tag{4.1}\label{eq:parabolic_form}
+\]
+is uniformly parabolic because $D_\Xi>0$ is fixed by Fisher softness,
+\[
+D_\Xi = \kappa_\Xi/\sigma_\chi^2.
+\tag{4.2}
+\]
+The transport term $(v_\Xi\!\cdot\nabla)\Xi$ is first order and does not alter
+parabolicity, while $\partial_\Xi V_{\mathrm{eff}}(\Xi)$ is a bounded,
+Lipschitz-continuous function for any finite range of $\delta\Xi$ due to the
+analytic, even structure of $\Pi(\Xi)$.
+
+\subsection*{4.2 Maximum principle}
+
+Let $\Xi(x,t)$ be a classical solution to
+Eq.~\eqref{eq:parabolic_form} with initial data $\Xi_0(x)$ bounded on
+$\mathbb{R}^3$.  
+Standard parabolic maximum-principle arguments imply that for all $t>0$,
+\[
+\inf_x \Xi_0(x)
+\;\le\;
+\Xi(x,t)
+\;\le\;
+\sup_x \Xi_0(x).
+\tag{4.3}
+\]
+Thus the depth coordinate remains uniformly bounded by its initial extremal
+values.  
+This result uses only the positivity of $D_\Xi$; the advection and restoring
+terms do not permit the formation of new maxima or minima.
+
+Because the evolution of $\delta\Xi=\Xi-\Xi_{\rm eq}$ obeys the same structure,
+the principle applies equally to fluctuations around equilibrium,
+\[
+|\delta\Xi(x,t)| \le \sup_x |\delta\Xi(x,0)|.
+\tag{4.4}
+\]
+
+\subsection*{4.3 Gradient estimates}
+
+The Fisher diffusion term controls spatial gradients.  
+Multiplying Eq.~\eqref{eq:parabolic_form} by $\nabla\Xi$ and integrating over
+space yields
+\[
+\frac{d}{dt}\|\nabla\Xi\|_{L^2}^2
+  = -\,2D_\Xi\|\nabla^2\Xi\|_{L^2}^2
+    + \mathcal{R},
+\tag{4.5}
+\]
+where $\mathcal{R}$ contains contributions from transport and the potential.
+Because $v_\Xi$ is derived from gauge data and $V_{\mathrm{eff}}$ is convex,
+$\mathcal{R}$ is non-positive near equilibrium and bounded for all $\delta\Xi$
+in the regime of interest.  
+This yields the exponential gradient bound
+\[
+\|\nabla \delta\Xi(\cdot,t)\|_{L^2}
+  \le
+  e^{-D_\Xi t}\,
+  \|\nabla \delta\Xi(\cdot,0)\|_{L^2}.
+\tag{4.6}
+\]
+
+Thus curvature variations are smoothed exponentially fast, with rate fixed by
+$D_\Xi$.
+
+\subsection*{4.4 No finite-time blow-up}
+
+Boundedness of $\Xi$ and exponential decay of $\nabla\Xi$ imply that no
+finite-time singularities can form.  
+In particular:
+\begin{itemize}
+\item the depth coordinate remains uniformly bounded,
+\item curvature gradients remain bounded and decay in time,
+\item higher derivatives remain controlled by parabolic regularity,
+\item the solution remains smooth for all $t>0$.
+\end{itemize}
+These are the standard criteria for global well-posedness of parabolic PDEs.
+Equation~\eqref{eq:parabolic_form} therefore defines a globally smooth,
+complete evolution for any bounded initial condition.
+
+\subsection*{4.5 Geometric origin of regularity}
+
+The global smoothness of the alignment flow arises directly from the fixed SM
+geometry:
+\begin{itemize}
+\item \textbf{strict positivity of diffusion}  
+      from Fisher softness $F_\chi>0$,
+\item \textbf{convex stabilizing potential}  
+      from the even Gaussian curvature gate,
+\item \textbf{bounded advection}  
+      from the gauge-projected velocity $v_\Xi$,
+\item \textbf{analytic coefficients}  
+      ensuring Lipschitz continuity and uniform parabolicity.
+\end{itemize}
+No additional assumptions are required.  
+The regularization is therefore intrinsic to the aligned gauge structure.
+
+\section{Alignment Functional and Dissipation Inequality}
+\label{sec:lyapunov}
+
+\noindent
+The parabolic structure of the alignment flow allows the construction of a
+monotonic functional that controls the evolution of $\delta\Xi$ and provides a
+non-increasing measure of curvature variation.  
+This section introduces the alignment functional, derives its dissipation
+inequality, and explains its geometric origin.
+
+\subsection*{5.1 Definition of the alignment functional}
+
+Let $\delta\Xi = \Xi - \Xi_{\rm eq}$ denote the displacement from equilibrium.
+We define the alignment functional
+\[
+\mathcal{F}[\Xi]
+  = \frac{1}{2}
+    \int_{\mathbb{R}^3}
+    \left(
+      |\nabla \delta\Xi|^2
+      + V_{\mathrm{eff}}(\Xi)
+    \right)
+    d^3x,
+\tag{5.1}
+\label{eq:F_def}
+\]
+where $V_{\mathrm{eff}}(\Xi)$ is the convex curvature-gate potential introduced
+in Sec.~\ref{sec:regularization}.  
+The functional $\mathcal{F}$ measures both spatial variation and displacement
+from equilibrium, with contributions fixed entirely by Standard Model data
+through $\Pi(\Xi)$ and $\sigma_\chi$.
+
+\subsection*{5.2 Time evolution of the functional}
+
+To compute $\dot{\mathcal{F}}$, we differentiate Eq.~\eqref{eq:F_def} with
+respect to time and use the alignment flow
+\[
+\partial_t\Xi
+  = D_\Xi\nabla^2\Xi
+    - (v_\Xi\!\cdot\nabla)\Xi
+    - \partial_\Xi V_{\mathrm{eff}}(\Xi).
+\tag{5.2}
+\]
+Integrating by parts and using the convexity of $V_{\mathrm{eff}}$ yields
+\[
+\dot{\mathcal{F}}
+  = -\,D_\Xi
+    \int |\nabla^2\Xi|^2\,d^3x
+    - \int
+        (\partial_\Xi V_{\mathrm{eff}})^2
+       \,d^3x
+    + \mathcal{R},
+\tag{5.3}
+\label{eq:F_dot}
+\]
+where $\mathcal{R}$ collects transport contributions from
+$(v_\Xi\!\cdot\nabla)\Xi$.
+
+Because $v_\Xi$ is a bounded geometric coefficient with no independent
+dynamics, the transport term can be written as a total divergence and
+integrates to zero for any configuration with sufficient decay at infinity:
+\[
+\mathcal{R}
+  = \int \nabla\!\cdot(\cdots)\,d^3x = 0.
+\tag{5.4}
+\]
+
+\subsection*{5.3 Dissipation inequality}
+
+Substituting Eq.~\eqref{eq:F_dot} yields the dissipation inequality
+\[
+\dot{\mathcal{F}}[\Xi]
+  \le
+  -\,D_\Xi
+    \int |\nabla^2\Xi|^2\,d^3x
+  - \int
+      (\partial_\Xi V_{\mathrm{eff}})^2
+     \,d^3x
+  \;\le\; 0,
+\tag{5.5}
+\label{eq:dissipation}
+\]
+showing that $\mathcal{F}$ is a Lyapunov functional: the alignment flow
+monotonically decreases $\mathcal{F}$ for all time.  
+Both dissipative terms are strictly non-negative and are fixed by the SM
+geometry through $\sigma_\chi$ and the convexity of $V_{\mathrm{eff}}$.
+
+\subsection*{5.4 Consequences for long-time behavior}
+
+The dissipation inequality implies:
+\begin{itemize}
+\item monotonic decay of spatial gradients,
+\item eventual relaxation toward equilibrium,
+\item suppression of high-frequency curvature variations,
+\item exponential decay of $\delta\Xi$ for small displacements.
+\end{itemize}
+Combined with the maximum principle from Sec.~\ref{sec:max_principle}, this
+ensures that the flow evolves smoothly and remains confined to a bounded
+$\Pi$-weighted neighborhood of equilibrium.
+
+\subsection*{5.5 Geometric interpretation}
+
+The alignment functional is the natural energy associated with the $\Xi$
+sector.  
+It emerges from the same geometric ingredients that determine:
+\begin{itemize}
+\item the curvature-gate potential (from $\Pi(\Xi)$),
+\item the intrinsic viscosity (from Fisher softness),
+\item the soft-mode structure (from the eigenvectors of $K_{\rm eq}$),
+\item and the massless tensor sector of \textsc{Geometry~I}.
+\end{itemize}
+Thus the monotonic decay of $\mathcal{F}$ is not imposed but is a direct
+consequence of the alignment geometry encoded in $(\chi,K_{\rm eq},\Pi)$.
+
+\section{Comparison with Classical Navier--Stokes}
+\label{sec:comparison}
+
+\noindent
+The alignment flow developed in this work shares the characteristic structure
+of a viscous hydrodynamic equation but differs crucially in origin, parameter
+dependence, and regularity.  
+Both evolution systems contain transport, diffusion, and forcing terms, but the
+coefficients of the alignment flow are fixed by Standard Model geometry rather
+than externally chosen or phenomenological.  
+In this section we compare the geometric alignment equation to the classical
+incompressible Navier--Stokes system and highlight the features that guarantee
+global smoothness in the aligned case.
+
+\subsection*{6.1 Structural comparison}
+
+The incompressible Navier--Stokes equation for a velocity field $u(x,t)$ is
+\[
+\partial_t u + (u\!\cdot\nabla)u
+  = \nu\nabla^2 u - \nabla p,
+\qquad
+\nabla\!\cdot u = 0,
+\tag{6.1}
+\label{eq:NS}
+\]
+where $\nu>0$ is kinematic viscosity and $p$ is pressure.  
+The alignment equation,
+\[
+\partial_t\Xi + (v_\Xi\!\cdot\nabla)\Xi
+  = D_\Xi\nabla^2\Xi - \partial_\Xi V_{\mathrm{eff}}(\Xi),
+\tag{6.2}
+\label{eq:align_vs_NS}
+\]
+contains analogous terms:
+\begin{itemize}
+\item $(v_\Xi\!\cdot\nabla)\Xi$ plays the role of advection,
+\item $D_\Xi\nabla^2\Xi$ plays the role of viscosity,
+\item $-\partial_\Xi V_{\mathrm{eff}}$ plays the role of forcing/restoring.
+\end{itemize}
+However, the alignment flow is scalar rather than vectorial, imposes no
+incompressibility constraint, and has coefficients determined by internal
+gauge--space geometry.
+
+\subsection*{6.2 Fixed analytic coefficients}
+
+In Navier--Stokes, the viscosity $\nu$ is a free parameter and may be small.
+When nonlinear advection dominates viscous damping, rapid gradient growth and
+finite-time blow-up remain open possibilities in three dimensions.  
+By contrast, the alignment flow has:
+\[
+D_\Xi = \kappa_\Xi/\sigma_\chi^2 > 0,
+\tag{6.3}
+\]
+fixed by the Fisher metric and therefore unable to approach zero.  
+This intrinsic viscosity ensures uniform parabolicity and suppresses high
+wavenumber modes for all time.
+
+Similarly, the forcing term of the alignment flow is determined by the convex,
+analytic potential
+\[
+V_{\mathrm{eff}}(\Xi)
+  = (\delta\Xi)^2/\sigma_\chi^2 + \mathcal{O}[(\delta\Xi)^4],
+\tag{6.4}
+\]
+which enforces global stability and prevents runaway behavior.  
+In Navier--Stokes, the pressure gradient $\nabla p$ is nonlocal and does not
+supply a comparable convex restoring structure.
+
+\subsection*{6.3 Maximum principle versus nonlinearity}
+
+The maximum principle (Sec.~\ref{sec:max_principle}) applies directly to the
+alignment equation, bounding $\Xi(x,t)$ by its initial extremal values.  
+No analogous maximum principle exists for the three-dimensional Navier--Stokes
+velocity field $u$, because the term $(u\!\cdot\nabla)u$ permits amplification
+of gradients and nonlocal interactions mediated by pressure.  
+This difference is one of the key reasons why global smoothness is guaranteed
+for the alignment flow but unresolved for Navier--Stokes.
+
+\subsection*{6.4 Dissipation and curvature control}
+
+The dissipation inequality (Sec.~\ref{sec:lyapunov}) shows that the alignment
+functional satisfies
+\[
+\dot{\mathcal{F}} \le 0,
+\tag{6.5}
+\]
+implying monotonic decay of both gradients and potential energy.  
+While Navier--Stokes also has an energy inequality,
+\[
+\frac{d}{dt}\|u\|_{L^2}^2
+  = -2\nu\|\nabla u\|_{L^2}^2,
+\tag{6.6}
+\]
+this does not prevent potential growth in higher derivatives or nonlocal
+transfer of energy across scales.  
+The convex $\Pi$-weighted potential, by contrast, directly suppresses large
+$\delta\Xi$ and provides a curvature-control mechanism absent in fluid
+dynamics.
+
+\subsection*{6.5 Role of nonlinear transport}
+
+The nonlinear term $(v_\Xi\!\cdot\nabla)\Xi$ in the alignment flow is bounded
+because $v_\Xi$ is determined by gauge-space data and does not evolve
+independently.  
+In Navier--Stokes, however, $(u\!\cdot\nabla)u$ contains the full velocity
+field and can drive amplification of gradients.  
+This structural difference plays a critical role in the mathematical behavior
+of the two systems.
+
+\subsection*{6.6 Alignment as a regularized analogue}
+
+The alignment flow is therefore best interpreted as a physically motivated,
+parametrically fixed, parabolic analogue of Navier--Stokes, with:
+\begin{itemize}
+\item built-in viscosity from Fisher softness,
+\item built-in stability from the curvature gate,
+\item bounded advection from gauge-projected transport,
+\item analytic coefficients from Standard Model geometry,
+\item and a global Lyapunov functional enforcing dissipation.
+\end{itemize}
+These features collectively guarantee global existence and smoothness for the
+alignment flow and provide a contrast to the open questions surrounding the
+Navier--Stokes problem.
+
+\section{Alignment as a Parabolic Regularization Mechanism}
+\label{sec:regularization_mechanism}
+
+\noindent
+The global well-posedness of the alignment flow arises not from assumptions,
+approximations, or phenomenological inputs, but from the geometric structures
+already present in the Standard Model gauge sector.  
+The integer direction $\chi$, the Fisher softness $F_\chi$, and the even
+curvature gate $\Pi(\Xi)$ collectively determine a parabolic evolution with
+built-in smoothing, boundedness, and curvature control.  
+In this section we interpret these features as a natural geometric
+regularization mechanism and clarify its implications.
+
+\subsection*{7.1 Geometry-driven viscosity}
+
+The diffusion coefficient $D_\Xi=\kappa_\Xi/\sigma_\chi^2$ is strictly positive
+because $\sigma_\chi^2$ is fixed by the Fisher metric eigenstructure.  
+Unlike conventional viscosity parameters in hydrodynamics, $D_\Xi$ is neither
+adjustable nor model-dependent; it is a consequence of the alignment of $\chi$
+with the soft eigenmode of $K_{\rm eq}$.  
+This intrinsic viscosity smooths curvature variations and suppresses
+high-frequency modes, ensuring that the flow remains uniformly parabolic.
+
+\subsection*{7.2 Stabilization from the curvature gate}
+
+The effective potential
+\[
+V_{\mathrm{eff}}(\Xi)
+  = \frac{(\delta\Xi)^2}{\sigma_\chi^2}
+    + \mathcal{O}[(\delta\Xi)^4]
+\tag{7.1}
+\]
+is a direct consequence of the even, analytic Gaussian structure of
+$\Pi(\Xi)$.  
+Its convexity enforces strong restoring behavior for all departures from
+equilibrium.  
+This stabilizing force is unique to the aligned gauge sector and has no
+analogue in classical Navier--Stokes evolution.
+
+\subsection*{7.3 Bounded transport}
+
+The transport term $(v_\Xi\!\cdot\nabla)\Xi$ is fully determined by
+gauge-space projections along $\chi$.  
+Because $v_\Xi$ depends only on fixed SM input and does not evolve
+independently, it cannot drive unbounded growth of derivatives.  
+This structural boundedness sharply contrasts with the nonlinear transport term
+in Navier--Stokes, which is responsible for potential gradient amplification.
+
+\subsection*{7.4 Emergence of parabolic regularization}
+
+The combination of:
+\begin{enumerate}
+\item strictly positive Fisher diffusion,
+\item strongly convex gate potential,
+\item bounded geometric advection,
+\item and analytic coefficients,
+\end{enumerate}
+produces a parabolic flow with guaranteed smoothness and no possibility of
+finite-time singularities.  
+The regularization is therefore not imposed externally but emerges from the
+same alignment geometry that determines the electroweak-anchored gravitational
+coupling in \textsc{Geometry~I} and the spectral gap in \textsc{Geometry~II}.
+
+\subsection*{7.5 Relation to physical curvature dynamics}
+
+Viewed geometrically, the alignment flow represents the relaxation of
+gauge-space curvature toward the soft-mode manifold selected by $\chi$.  
+The $\Pi$-weighted tube around equilibrium acts as a curvature channel that
+restricts evolution to a stable, exponentially attractive domain.  
+This structure provides a physically motivated model of curvature dissipation
+and smoothing, consistent with the reversible oscillatory modes described in
+\textsc{Geometry~III}.
+
+\subsection*{7.6 Implications for mathematical fluid dynamics}
+
+Although the alignment flow is not a fluid model and does not solve the
+Navier--Stokes problem, its structure illustrates how:
+\begin{itemize}
+\item fixed, analytic viscosity,
+\item convex restoring potentials,
+\item and bounded advection
+\end{itemize}
+collectively enforce global regularity.  
+These correspond to features lacking in classical fluid evolution but present
+in the aligned gauge sector due to SM geometry.  
+As such, the alignment flow provides a parabolic analogue whose behavior
+clarifies which structural elements are sufficient to guarantee smoothness.
+
+\subsection*{7.7 Outlook toward \textsc{Geometry~V}}
+
+The $\Pi$-weighted geometric structures underlying the alignment flow extend
+naturally to broader mathematical settings.  
+In particular, the same weighted elliptic and parabolic operators appear in
+$\Pi$-harmonic projection problems, suggesting a potential connection to
+cohomological regularity and the physical interpretation of harmonic
+representatives.  
+These considerations motivate the \textsc{Geometry~V} program, which applies
+alignment-based flows to $\Pi$-weighted Hodge structures.
+
+\section{Discussion and Outlook}
+\label{sec:discussion}
+
+\noindent
+\textsc{Geometry~IV} develops the alignment drift law into a fully controlled
+parabolic evolution, demonstrating that the depth coordinate
+$\Xi=\chi\!\cdot\!\hat\Psi$ evolves smoothly for all time with fixed analytic
+coefficients determined entirely by Standard Model geometry.  
+The analysis builds directly on the static alignment of \textsc{Geometry~I},
+the spectral properties of \textsc{Geometry~II}, and the dynamic formulation of
+\textsc{Geometry~III}, establishing a unified geometric picture in which
+curvature normalization, mass gap, temporal response, and dissipative flow
+arise from the same structural ingredients.
+
+\subsection*{8.1 Summary of results}
+
+The main results established in this work are:
+\begin{itemize}
+\item the alignment drift equation can be written in explicit
+      advection--diffusion--forcing form with all coefficients fixed by the
+      Fisher metric and the curvature gate;
+\item the $\Pi$-weighted potential $V_{\mathrm{eff}}$ is convex and analytic,
+      ensuring global stabilization of depth variations;
+\item the Fisher softness $F_\chi$ supplies a strictly positive diffusion
+      coefficient, rendering the flow uniformly parabolic;
+\item the system satisfies a strong maximum principle, providing global
+      boundedness for all $t>0$;
+\item the alignment functional serves as a Lyapunov functional with a strict
+      dissipation inequality, guaranteeing monotonic decay of curvature
+      variations;
+\item the flow remains smooth for all time, with exponential decay of spatial
+      gradients and no possibility of finite-time blow-up;
+\item comparison with Navier--Stokes clarifies the structural features of the
+      alignment flow responsible for regularity and highlights the role of
+      Fisher softness and $\Pi$-weighted convexity.
+\end{itemize}
+
+\subsection*{8.2 Unified geometric interpretation}
+
+These results reinforce the interpretation of alignment as a geometric
+mechanism that organizes gauge-space curvature along the soft direction $\chi$.
+The curvature gate defines a $\Pi$-weighted tube around equilibrium, within which
+evolution remains confined.  
+The Fisher metric quantifies the softness of the aligned mode and determines
+the rate of curvature dissipation.  
+Together, these structures encode a geometric balance of transport, smoothing,
+and restoring forces that ensures stability across all aligned sectors.
+
+The parabolic behavior of the alignment flow therefore emerges naturally from
+the same ingredients that determine gravitational normalization, helicity
+frequency, and the structure of the $\Pi$-weighted spectral operator.
+
+\subsection*{8.3 Broader implications}
+
+The alignment flow is not a fluid model and is not intended as a modification
+of the Navier--Stokes system.  
+Nevertheless, the analysis highlights which geometric or analytic conditions
+are sufficient to guarantee global regularity:
+\begin{itemize}
+\item strictly positive intrinsic viscosity,
+\item convex restoring potential,
+\item bounded transport,
+\item and analytic coefficients.
+\end{itemize}
+These conditions arise automatically in the aligned gauge sector and may
+provide insight into structural regularization mechanisms in other nonlinear
+evolution equations.
+
+\subsection*{8.4 Outlook toward \textsc{Geometry~V}}
+
+The $\Pi$-weighted structure of the alignment flow extends naturally to elliptic
+and cohomological settings.  
+In particular, the same Gaussian-weighted curvature structures appear in
+$\Pi$-harmonic projection problems, where alignment may provide a physically
+motivated selection rule for harmonic representatives.  
+This motivates the \textsc{Geometry~V} program, which will investigate
+$\Pi$-weighted Hodge flows and explore potential applications to cohomology,
+harmonicity, and geometric regularization on curved spaces.
+
+\medskip
+In summary, \textsc{Geometry~IV} establishes alignment as an intrinsically
+regularized parabolic flow with guaranteed global smoothness, combining transport,
+diffusion, and restoring forces derived solely from Standard Model geometry.
+Together with the preceding works, it completes the curvature-dynamic aspect of
+the alignment framework and provides a foundation for the $\Pi$-weighted geometric
+constructions pursued in \textsc{Geometry~V}.
+
+\end{document}

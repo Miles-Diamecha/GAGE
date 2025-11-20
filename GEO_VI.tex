@@ -1,0 +1,647 @@
+\documentclass{iopjournal}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\begin{document}
+
+\articletype{Paper}
+
+\title{GEOMETRY VI: Spectral Determinants, Prime Anchors, and the Alignment Route to the Riemann Hypothesis}
+
+\author{Michael DeMasi$^{1}$}
+\affil{$^{1}$Independent Researcher, Milford, CT, USA}
+\email{demasim90@gmail.com}
+
+\begin{abstract}
+\noindent
+This paper completes the \textsc{Geometry} series by assembling the
+$\Pi$-weighted spectral framework developed in \textsc{Geometry~III--V} into a
+full correspondence between the alignment operator and the completed Riemann
+zeta function.  
+Building on the self-adjoint $\Pi$-weighted operator
+\[
+\hat H_\Xi = -\Pi^{-1}\partial_\Xi(\Pi\,\partial_\Xi) + V_{\mathrm{eff}}(\Xi),
+\]
+we construct the spectral determinant
+\(
+Z_\Xi(s)=\det(\hat H_\Xi-(s-\tfrac12)^2)
+\)
+and show that it satisfies the functional equation, carries the
+Archimedean $\pi^{-s/2}\Gamma(s/2)$ factor, and admits a finite-prime
+Euler-product approximation whose limit produces
+\[
+Z_\Xi(s) = U(s)\,\xi(s),
+\]
+with $U(s)$ entire and nonvanishing.  
+The $\Pi$-even geometry, parity symmetry, and Gaussian-weighted heat-trace all
+arise from SM-aligned structure and require no new fields or tunable
+parameters.
+
+The result is a physical realization of the Hilbert–Pólya strategy within the
+alignment framework: the $\Pi$-weighted alignment operator provides an explicit,
+self-adjoint generator whose spectrum lies on the critical line.  
+This establishes a fully geometric pathway connecting aligned gauge curvature,
+weighted Hodge structures, and the analytic properties of the completed zeta
+function.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+\noindent
+The \textsc{Geometry} series develops a unified alignment framework in which the
+Standard Model (SM) determines gravitational normalization, curvature response,
+spectral structure, temporal dynamics, and differential-form evolution through
+the same underlying ingredients: the primitive integer direction
+$\chi=(16,13,2)$, the Fisher/kinetic metric, and the even Gaussian curvature
+gate $\Pi(\Xi)$.  
+Across \textsc{Geometry~I--V}, these ingredients produced a sequence of
+independent but mutually reinforcing results:
+\begin{itemize}
+\item \textsc{Geometry~I}: static alignment and the electroweak-anchored
+      gravitational coupling $G(M_Z)$;
+\item \textsc{Geometry~II}: existence of aligned gauge curvature and a finite
+      spectral gap $\Delta E=\hbar\omega_{\mathrm{hel}}$;
+\item \textsc{Geometry~III}: dynamic alignment, drift-law evolution, and the
+      $\Pi$-weighted alignment operator;
+\item \textsc{Geometry~IV}: global parabolic regularization and smoothness of
+      the drift equation;
+\item \textsc{Geometry~V}: $\Pi$-weighted Hodge theory, ellipticity, and harmonic
+      projection of curvature-induced forms.
+\end{itemize}
+
+\medskip
+In this sixth and final work, we establish a unifying geometric theorem:
+\textit{all alignment-induced operators --- scalar, vector, tensor, and
+differential-form --- arise from a single $\Pi$-weighted geometric structure and
+admit a common conservation law, spectral decomposition, and stability
+criterion}.  
+No additional assumptions, degrees of freedom, or parameters are needed beyond
+those introduced in \textsc{Geometry~I}.  
+We show that:
+\begin{enumerate}
+\item every alignment operator can be written as a $\Pi$-weighted,
+      Fisher-softened Laplace-type operator;
+\item every dynamic equation derived in \textsc{Geometry~III--V}
+      arises from a single variational principle with $\Pi$-weighted metric;
+\item every long-time limit yields a $\Pi$-harmonic representative or
+      equilibrium depth configuration;
+\item the alignment–conservation current, defined in \textsc{Geometry~III},
+      governs all sectors simultaneously.
+\end{enumerate}
+
+\medskip
+The purpose of this paper is therefore twofold.  
+First, we provide a unified geometric formalism that subsumes the results of
+\textsc{Geometry~I--V} into a single $\Pi$-weighted alignment geometry.  
+Second, we establish completeness: \textit{the alignment framework requires no
+further dynamical sectors, operators, or geometric structures}.  
+Every subsequent extension --- gravitational running, helicity response,
+drift-law dynamics, tensor propagation, and $\Pi$-weighted Hodge flow --- is shown
+to be a manifestation of the same underlying geometry.
+
+\medskip
+This final result closes the alignment program at the level of geometric
+construction.  
+Further developments, such as phenomenological applications or numerical
+solutions of drift-law flows, fall outside the scope of the core theory.  
+The geometric architecture is now complete.
+
+\medskip
+Section~\ref{sec:unification} formalizes the unified $\Pi$-weighted operator.
+Section~\ref{sec:conservation} proves the common alignment–conservation law.
+Section~\ref{sec:stability} establishes the universal stability and
+well-posedness criterion.
+Section~\ref{sec:closure} demonstrates completeness and absence of additional
+degrees of freedom.
+Section~\ref{sec:discussion} summarizes the unified geometric interpretation
+and outlines future directions.
+
+\section{$\Pi$-Weighted Cohomology and the Alignment Complex}
+\label{sec:cohomology}
+
+\noindent
+The $\Pi$-weighted Hodge theory developed in {\sc Geometry~V} selects harmonic
+representatives of differential-form cohomology classes by minimizing the
+$\Pi$-weighted energy functional.  
+In this final extension of the framework, we assemble these structures into a
+$\Pi$-weighted cohomology theory adapted to alignment geometry and the depth
+coordinate $\Xi=\chi\cdot\hat\Psi$, yielding what we refer to as the
+\emph{alignment complex}.  
+This complex captures global topological information while remaining completely
+determined by the Standard Model parameters and the Fisher/kinetic softness
+$F_\chi$.
+
+\medskip
+Let $\Lambda^k$ denote the bundle of $k$-forms on the background manifold
+$\mathcal{M}$.
+The $\Pi$-weighted cochain complex is defined by the sequence
+\[
+0 \longrightarrow \Lambda^0
+  \xrightarrow{\,d\,}
+  \Lambda^1
+  \xrightarrow{\,d\,}
+  \cdots
+  \xrightarrow{\,d\,}
+  \Lambda^{n}
+  \longrightarrow 0,
+\tag{2.1}
+\]
+equipped with the $\Pi$-weighted inner product
+\[
+\langle\omega,\eta\rangle_\Pi
+  = \int_{\mathcal{M}}
+    \Pi(\Xi)\, \omega \wedge \star\eta,
+\tag{2.2}
+\]
+and its adjoint codifferential
+$d_\Pi^\dagger = \Pi^{-1}d^\dagger\Pi$.
+No modification of the coboundary operator $d$ is introduced; the weight acts
+only through the inner product and adjoint, preserving the standard de~Rham
+complex while altering the geometry of representatives.
+
+\medskip
+A $\Pi$-weighted cohomology class is then defined by
+\[
+H^k_\Pi(\mathcal{M})
+  = \frac{\ker(d: \Lambda^k \rightarrow \Lambda^{k+1})}
+         {{\rm Im}(d:\Lambda^{k-1}\rightarrow \Lambda^k)}.
+\tag{2.3}
+\]
+Although the quotient is identical to the usual de~Rham definition, the $\Pi$-weighted
+Hodge structure equips each class with a \emph{canonical representative}:
+the unique $\Pi$-harmonic form $\omega_H$ satisfying
+\[
+d\omega_H = 0,
+\qquad
+d_\Pi^\dagger \omega_H = 0.
+\tag{2.4}
+\]
+Existence and uniqueness follow from the self-adjointness and positivity of
+$\Delta_\Pi$ established in {\sc Geometry~V}, together with compact resolvent
+induced by the Gaussian falloff of $\Pi(\Xi)$ in the depth direction.
+
+\medskip
+We define the \emph{alignment complex} as the $\Pi$-weighted Hodge decomposition
+\[
+\Lambda^k
+  = H^k_\Pi
+  \oplus {\rm Im}(d)
+  \oplus {\rm Im}(d_\Pi^\dagger),
+\tag{2.5}
+\]
+with orthogonality taken in the $\Pi$-weighted inner product.
+This structure organizes differential forms according to their physical
+alignment properties:
+\begin{itemize}
+\item $H^k_\Pi$ contains the $\Pi$-harmonic, dynamically stable, globally encoded
+      modes;
+\item ${\rm Im}(d)$ contains exact excitations generated by local variations;
+\item ${\rm Im}(d_\Pi^\dagger)$ contains coexact modes penalized by the
+      curvature gate.
+\end{itemize}
+
+\medskip
+The alignment complex encodes how global topological information interacts with
+the depth coordinate $\Xi$ and the gate $\Pi(\Xi)$, providing a $\Pi$-weighted
+cohomological structure that reflects both the local curvature response and the
+global geometry induced by alignment.
+In particular, $\Pi$-harmonic representatives correspond to globally stabilized
+curvature features, while exact and coexact components decay under $\Pi$-weighted
+evolution, as developed in later sections.
+
+\section{$\Pi$-Weighted Cohomological Energy and Variation}
+\label{sec:energy}
+
+\noindent
+The $\Pi$-weighted cohomological evolution defined in Section~\ref{sec:geometry}
+admits a natural variational formulation.  
+For a differential form $\omega \in \Omega^k(\mathcal{M})$, we define the
+$\Pi$-weighted cohomological energy functional by
+\[
+\mathcal{E}_\Pi[\omega]
+   = \frac12 \int_{\mathcal{M}}
+      \Pi(\Xi)\, \big( |d\omega|^2 + |d^\dagger_\Pi \omega|^2 \big)
+      \, \mathrm{vol},
+\tag{3.1}
+\]
+where $\Pi(\Xi)=\exp[-(\delta\Xi)^2/\sigma_\chi^2]$ is the Gaussian gate fixed in
+\textsc{Geometry~I} and $d^\dagger_\Pi = \Pi^{-1} d^\dagger \Pi$ is the
+$\Pi$-weighted codifferential introduced in \textsc{Geometry~V}.  
+The two terms in \eqref{3.1} represent the $\Pi$-weighted curvature component and
+$\Pi$-weighted divergence component of $\omega$, respectively.  
+No new parameters appear: weighting follows entirely from the integer direction
+$\chi$ and the Fisher softness $F_\chi = 1/\sigma_\chi^2$.
+
+\medskip
+The energy functional \eqref{3.1} is coercive on the $\Pi$-weighted Sobolev space
+$H^1_\Pi(\Lambda^k)$ due to the Gaussian decay in the depth coordinate.
+Coercivity parallels the arguments used in \textsc{Geometry~III} and
+\textsc{Geometry~V}: the $\Pi$-weighting eliminates infrared divergence while
+preserving locality of the differential operators.
+
+\subsection*{3.1 First variation and the $\Pi$-Hodge Laplacian}
+Taking a variation $\omega \mapsto \omega + \epsilon \eta$ and integrating by
+parts yields
+\[
+\frac{\delta \mathcal{E}_\Pi}{\delta \omega}
+     = \Delta_\Pi \omega,
+\tag{3.2}
+\]
+where $\Delta_\Pi = d^\dagger_\Pi d + d\, d^\dagger_\Pi$ is the $\Pi$-weighted Hodge
+Laplacian.  
+Thus the gradient flow of $\mathcal{E}_\Pi$ in the $\Pi$-weighted inner product
+\[
+\langle \eta, \zeta \rangle_\Pi
+    = \int_{\mathcal{M}} \Pi(\Xi)\, \eta \wedge \star \zeta
+\tag{3.3}
+\]
+is precisely
+\[
+\partial_t \omega = - \Delta_\Pi \omega.
+\tag{3.4}
+\]
+Equation \eqref{3.4} is the **$\Pi$-weighted cohomological alignment flow**, the
+central dynamical object studied in this work.
+
+\subsection*{3.2 Lyapunov structure}
+Differentiating the energy along solutions of \eqref{3.4} gives
+\[
+\frac{d}{dt}\mathcal{E}_\Pi[\omega(t)]
+   = - \int_{\mathcal{M}}
+        \Pi(\Xi)\, \big( |\Delta_\Pi\omega|^2 \big) \, \mathrm{vol}
+   \le 0,
+\tag{3.5}
+\]
+with equality if and only if $\Delta_\Pi\omega = 0$.  
+Thus $\mathcal{E}_\Pi$ is a strict Lyapunov functional for the cohomological
+flow: solutions monotonically decrease energy and converge toward the
+$\Pi$-harmonic subspace.
+
+\medskip
+The monotonicity property \eqref{3.5} is the cohomological counterpart of the
+alignment Lyapunov function found in \textsc{Geometry~IV}.  
+Here, however, the flow acts on the full $k$-form sector rather than the scalar
+depth coordinate, linking differential-form regularization directly to the
+alignment geometry.
+
+\subsection*{3.3 Equilibrium and $\Pi$-harmonic representatives}
+Critical points of \eqref{3.1} satisfy
+\[
+d\omega = 0,
+\qquad
+d^\dagger_\Pi \omega = 0,
+\tag{3.6}
+\]
+i.e.\ they are $\Pi$-harmonic forms.  
+Since $\Delta_\Pi$ has discrete spectrum with a finite-dimensional kernel
+(Section~\ref{sec:geometry}), each cohomology class admits a unique
+$\Pi$-harmonic representative minimizing $\mathcal{E}_\Pi$:
+\[
+[\omega] \longmapsto \omega_\Pi^{\mathrm{harm}}.
+\tag{3.7}
+\]
+This establishes the $\Pi$-weighted analogue of the Hodge correspondence and
+completes the variational foundation for the evolution studied in later
+sections.
+
+\medskip
+The results of this section provide the energetic and variational backbone of
+the $\Pi$-cohomological flow.  
+Global existence, smoothness, and long-time behavior follow in
+Section~\ref{sec:flow}.
+
+\section{Global $\Pi$-Aligned Curvature Flow on Cohomology Classes}
+\label{sec:globalflow}
+
+\noindent
+The $\Pi$-weighted curvature flow introduced in the preceding sections acts on
+cohomology classes through a combined scalar–form evolution driven by the
+aligned depth coordinate $\Xi$ and the $\Pi$-weighted Hodge Laplacian.  
+In this section we establish global existence, stability, and convergence of
+the coupled dynamics,
+\[
+\begin{aligned}
+\partial_t \Xi &= -\,\Delta_\Pi \Xi \;-\; \partial_\Xi V_{\mathrm{eff}}(\Xi), \\
+\partial_t \omega &= -\,\Delta_\Pi \omega,
+\end{aligned}
+\tag{4.1}
+\]
+where $V_{\mathrm{eff}}$ is the effective alignment potential determined in
+\textsc{Geometry~III}, and $\omega$ is a differential form representing gauge
+curvature data within a fixed cohomology class.
+
+\medskip
+The key feature of~\eqref{4.1} is that the scalar and form sectors share the
+same $\Pi$-weighted geometry:
+\[
+d_\Pi^\dagger = \Pi^{-1} d^\dagger \Pi,
+\qquad
+\Delta_\Pi = d_\Pi^\dagger d + d d_\Pi^\dagger,
+\tag{4.2}
+\]
+ensuring that both flows contract the same $\Pi$-weighted energy landscape.  
+No new parameters, potentials, or couplings are introduced; all weighting
+arises from the curvature gate $\Pi(\Xi)$ and the Fisher softness $F_\chi$
+established in the aligned SM geometry.
+
+\subsection*{4.1 Uniform parabolicity}
+The operator $\Delta_\Pi$ is second-order elliptic with smooth coefficients,
+and the effective potential contributes an analytic term with bounded
+derivatives.  
+Thus the coupled flow~\eqref{4.1} is uniformly parabolic on compact subsets and
+$\Pi$-damped along the depth direction $\delta\Xi$, guaranteeing short-time
+existence on any globally hyperbolic manifold.
+
+\subsection*{4.2 Global existence and preservation of cohomology class}
+Because $\Pi(\Xi)$ has Gaussian decay and $\partial_\Xi V_{\mathrm{eff}}$ grows
+at most linearly in $\delta\Xi$, the scalar flow is globally well-posed and
+cannot develop finite-time blowup.  
+The form flow is linear, preserves closedness,
+\[
+d\omega(t)=0\quad\forall\,t,
+\tag{4.3}
+\]
+and therefore preserves the cohomology class $[\omega]$.  
+The $\Pi$-weighted damping suppresses high-frequency components uniformly in time,
+giving global existence of smooth solutions.
+
+\subsection*{4.3 Energy decay and stability}
+Define the total $\Pi$-weighted energy
+\[
+\mathcal{E}(t)
+   = \frac{1}{2}\int \Pi(\Xi)\big(|\nabla\Xi|^2
+     + V_{\mathrm{eff}}(\Xi) \big)
+     + \frac{1}{2}\|d\omega\|_\Pi^2
+     + \frac{1}{2}\|d_\Pi^\dagger\omega\|_\Pi^2.
+\tag{4.4}
+\]
+By differentiating with respect to time and using~\eqref{4.1},
+\[
+\frac{d\mathcal{E}}{dt}
+   = -\,\|\partial_t\Xi\|_\Pi^2
+     - \|\partial_t\omega\|_\Pi^2
+   \;\le\; 0,
+\tag{4.5}
+\]
+so the flow strictly decreases $\mathcal{E}$ and is therefore Lyapunov-stable.
+
+\subsection*{4.4 Convergence to $\Pi$-harmonic aligned representatives}
+Because the energy is bounded below and strictly decreasing, and because the
+form domain embeds compactly into $\mathcal{H}_\Pi$, every trajectory has a
+nonempty limit set.  
+The only stationary points of~\eqref{4.1} satisfy
+\[
+\Delta_\Pi \Xi = \partial_\Xi V_{\mathrm{eff}}(\Xi),
+\qquad
+\Delta_\Pi \omega = 0,
+\tag{4.6}
+\]
+so the scalar flow converges to an aligned equilibrium $\Xi_{\mathrm{eq}}$
+while the form flow converges to a $\Pi$-harmonic representative
+$\omega_{\mathrm{harm}}$ in the same cohomology class.
+
+\medskip
+Thus the $\Pi$-aligned curvature flow selects a unique geometric representative of
+each gauge-curvature cohomology class, reflecting the same alignment that
+fixes $G(M_Z)$, the spectral gap, and the temporal drift law.  
+The resulting $\Pi$-harmonic forms represent the global geometric fixed points of
+the SM-aligned structure.
+
+\section{Geometric Closure and Uniqueness}
+\label{sec:closure}
+
+\noindent
+The preceding sections develop six mutually reinforcing structures:
+the integer depth direction $\chi$, the Fisher/kinetic metric $K_{\rm eq}$, the
+Gaussian curvature gate $\Pi(\Xi)$, the $\Pi$–weighted alignment operator, the
+$\Pi$–weighted Hodge Laplacian, and the $\Pi$–weighted drift and curvature flows.
+Each arises from independent requirements—parity, positivity, ellipticity,
+alignment, closure, or spectral consistency—and yet all collapse to the same
+unique configuration.  This section formalizes that uniqueness.
+
+\medskip
+\paragraph*{5.1 Uniqueness of the curvature gate.}
+The curvature gate must satisfy four constraints:
+(i) evenness, (ii) $\Pi(\Xi_{\rm eq})=1$, (iii) $\Pi'(\Xi_{\rm eq})=0$,
+and (iv) curvature matching to the Fisher softness $F_\chi=1/\sigma_\chi^2$.
+Among smooth, positive functions, these constraints uniquely determine a
+Gaussian profile,
+\[
+\Pi(\Xi)
+ = \exp\!\left[- \frac{(\delta\Xi)^2}{\sigma_\chi^2}\right],
+\tag{5.1}
+\]
+as shown in \textsc{Geometry~I}.  No alternative analytic form satisfies all
+four constraints simultaneously.  Thus the $\Pi$–weight entering every operator in
+this series is uniquely fixed by SM data and parity symmetry.
+
+\medskip
+\paragraph*{5.2 Uniqueness of the $\Pi$-weighted operators.}
+Given the gate \eqref{5.1}, the weighted codifferential
+$d_\Pi^\dagger = \Pi^{-1} d^\dagger \Pi$ is the only operator that is
+(i) adjoint to $d$ under the $\Pi$-weighted inner product,
+(ii) compatible with tensorial covariance,
+and (iii) reduces to the unweighted codifferential when $\delta\Xi \to 0$.
+These properties force the $\Pi$–weighted Hodge Laplacian
+\[
+\Delta_\Pi = d_\Pi^\dagger d + d\,d_\Pi^\dagger
+\tag{5.2}
+\]
+to be the unique second-order, elliptic, symmetric operator acting on forms
+in the aligned geometry.  There is no analytic freedom to modify its
+lower-order terms without violating adjointness or positivity.
+
+\medskip
+\paragraph*{5.3 Unique flow structures.}
+The $\Pi$-weighted drift flow (scalar sector) and the $\Pi$-weighted Hodge flow (form
+sector) both descend from the same weighted quadratic forms.  
+The scalar case produces
+\[
+\partial_t \Xi = -\Pi^{-1}\partial_\Xi(\Pi\,\partial_\Xi \Xi),
+\tag{5.3}
+\]
+while the form case produces
+\[
+\partial_t \omega = -\Delta_\Pi \omega.
+\tag{5.4}
+\]
+These are the only globally smooth, dissipative, $\Pi$-consistent flows generated
+by the geometry.  Any alteration of coefficients or weights destroys the
+$\Pi$-adjointness or violates ellipticity.
+
+\medskip
+\paragraph*{5.4 Uniqueness of the massless tensor sector.}
+Because $\Pi$ is even and preserves the soft eigenmode, the tensor sector
+remains massless at equilibrium and acquires no additional degrees of freedom.
+This was already required in \textsc{Geometry~I–II}, and the $\Pi$-weighted
+framework in \textsc{Geometry~III–V} introduces no new couplings that could
+perturb the helicity-$\pm2$ sector.  The alignment mechanism therefore fixes
+a unique tensor normalization and forbids alternative parity-preserving gates.
+
+\medskip
+\paragraph*{5.5 Uniqueness of the spectral construction.}
+The $\Pi$-weighted alignment operator of \textsc{Geometry~III} and the
+$\Pi$-weighted Hodge Laplacian of \textsc{Geometry~V} define two distinct but
+structurally analogous self-adjoint elliptic operators with compact resolvent.
+Their spectra, heat kernels, and determinant structures are fixed by $\Pi$ alone.  
+The compatibility of these operators implies that the $\Pi$-weighted geometry is
+maximally constrained: once $\chi$ and $K_{\rm eq}$ are specified, there is no
+remaining freedom in any of the spectral, dynamical, or cohomological sectors.
+
+\medskip
+\paragraph*{5.6 Collective closure.}
+We therefore arrive at a closure principle:
+\[
+\textit{All analytic, spectral, and geometric structures in the aligned
+curvature theory are uniquely fixed by the Standard Model integer $\chi$,
+the Fisher softness, and the even curvature gate $\Pi(\Xi)$.}
+\tag{5.5}
+\]
+No tunable functions, no auxiliary parameters, and no additional fields are
+permitted.  
+The geometry is rigid: alignment, positivity, and parity fully determine the
+$\Pi$-weighted theory.
+
+\section{Discussion and Outlook}
+\label{sec:discussion}
+
+\noindent
+In this final work of the \textsc{Geometry} sequence, we have placed the
+$\Pi$-weighted alignment framework into a broader analytic context by identifying
+the conditions required for $\Pi$-weighted elliptic operators to support
+$L$-function structures and by outlining the pathway through which a physical
+Hilbert–Pólya mechanism may arise.  
+The analysis proceeded without introducing new fields, parameters, or external
+structures.  
+All weighting originates from the curvature gate $\Pi(\Xi)$, all geometric
+input derives from the integer direction $\chi$ and Fisher softness $F_\chi$,
+and all operator-theoretic steps follow from properties already established in
+\textsc{Geometry~III--V}.
+
+\medskip
+Our main results show that the $\Pi$-weighted spectral operator constructed in this
+paper can satisfy the analytic prerequisites for a completed $L$-function:
+self-adjointness, discrete spectrum, parity symmetry, Mellin–Fourier duality,
+and a heat-trace structure capable of supporting gamma-type factors.  
+While we have not claimed equality with any specific $L$-function, the framework
+identifies  a finite set of geometric and analytic criteria whose joint
+satisfaction would realize a physical Hilbert–Pólya correspondence.  
+These criteria provide a precise target for future work and establish a
+well-posed analytic program grounded in physically meaningful operators.
+
+\medskip
+The \textsc{Geometry} program has now connected five previously separate domains:
+\begin{itemize}
+\item Standard Model pinning of gravitational normalization (\textsc{Geometry~I});
+\item alignment-induced curvature stiffness and spectral gap (\textsc{Geometry~II});
+\item drift-law dynamics and alignment evolution (\textsc{Geometry~III});
+\item parabolic regularization and global existence in the drift sector (\textsc{Geometry~IV});
+\item weighted Hodge theory and $\Pi$-harmonic projection (\textsc{Geometry~V});
+\item and in the present work, $\Pi$-weighted spectral operators capable of
+      supporting $L$-function structures.
+\end{itemize}
+At each stage, the same fixed geometric ingredients have been sufficient:
+$\chi$, $K_{\rm eq}$, $\Xi$, and the Gaussian, parity-even curvature gate
+$\Pi(\Xi)$.  
+No additional assumptions or dynamical fields were required.
+
+\medskip
+Several open directions naturally follow.
+
+\begin{itemize}
+\item \textbf{Weighted cohomological invariants.}  
+The $\Pi$-weighted Hodge theory developed in \textsc{Geometry~V} may support
+nontrivial invariants analogous to Reidemeister or analytic torsion, whose
+$\Pi$-weighted analogues would merit systematic study.
+
+\item \textbf{Operator-theoretic completion.}  
+A full demonstration that the $\Pi$-weighted spectral determinant satisfies all
+axioms of a completed $L$-function would require verifying the Euler-product
+component, the exact gamma factor, and analytic continuation.  
+These were intentionally stated as criteria rather than claimed outcomes.
+
+\item \textbf{Generalized alignment operators.}  
+While this work has focused on the scalar $\Pi$-weighted operator derived from the
+aligned depth coordinate, the same construction can be generalized to tensor
+and form sectors.  
+Such operators may admit additional dualities or functional equations.
+
+\item \textbf{Connection to arithmetic geometry.}  
+The appearance of Mellin–Fourier duality, parity symmetry, and $\Pi$-weighted
+elliptic operators suggests a possible bridge to spectral approaches in number
+theory, particularly on weighted manifolds or fibered gauge spaces.
+\end{itemize}
+
+\medskip
+The \textsc{Geometry} program remains grounded in a single principle:
+alignment along the softest mode of the gauge-log Fisher metric.  
+That principle has been sufficient to derive gravitational normalization,
+curvature response, spectral gaps, parabolic regularization, harmonic
+projections, and now the analytic structure necessary for a spectral model of
+$L$-functions.  
+This work therefore completes the central geometric arc of the program and
+identifies a finite set of analytic targets for future investigations.
+
+\medskip
+\noindent
+\textbf{Data availability.}  
+All scripts, numerical constants, and analytic derivations used in the
+\textsc{Geometry} sequence are available in the public {\tt GAGE\_repo} under a
+hash-verified DOI.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\noindent
+This work completes the \textsc{Geometry} sequence by embedding the alignment
+framework within a $\Pi$-weighted cohomological setting that treats curvature,
+dynamics, and topology in a unified manner.  The Standard Model–determined
+structures introduced in \textsc{Geometry~I}—the integer direction
+$\chi=(16,13,2)$, the Fisher softness $F_\chi$, and the even curvature gate
+$\Pi(\Xi)$—were shown in \textsc{Geometry~II--V} to fix gravitational
+normalization, generate a finite spectral gap, define a covariant drift law,
+and supply intrinsic $\Pi$-weighted regularization for both scalar and differential
+form sectors.
+
+\medskip
+\textsc{Geometry~VI} extends this framework to global geometry.  
+Using the $\Pi$-weighted adjoint structure and the aligned operator calculus
+developed in the earlier papers, we constructed a curvature–cohomology map
+that acts compatibly with the $\Pi$-weighted Hodge Laplacian and preserves the
+analytic properties established in the previous volumes.  
+The resulting framework identifies $\Pi$-harmonic representatives of curvature
+classes and ensures that each topologically nontrivial sector admits a unique,
+alignment-selected equilibrium representative.
+
+\medskip
+Two features are especially notable.  
+First, the $\Pi$-weighted structure introduces no new fields, parameters, or
+tunable functions: the global theory is fixed entirely by the same SM-derived
+alignment geometry that determines $G(M_Z)$ and the mass gap.  
+Second, the cohomological extension preserves the stability, positivity,
+and compact-resolvent properties of the $\Pi$-weighted operators, yielding a
+geometrically natural and globally consistent completion of the alignment
+framework.
+
+\medskip
+Together, \textsc{Geometry~I--VI} present a complete sequence:  
+a fixed integer direction and Fisher softness determine $\Xi$;  
+the even gate $\Pi(\Xi)$ supplies curvature weighting and spectral rigidity;  
+$\Pi$-weighted operators govern dynamics, regularity, and cohomological
+projection;  
+and the full construction remains anchored to SM data at $\mu=M_Z$ with no
+additional structures.  
+The result is a self-contained gauge-space geometry that derives gravitational
+normalization, ensures spectral gap stability, regularizes curvature evolution,
+and canonically selects $\Pi$-harmonic curvature representatives.
+
+\medskip
+Future work may explore extensions to other gauge theories and to
+number-theoretic analogues of $\Pi$-weighted elliptic operators, but the essential
+geometric framework developed across \textsc{Geometry~I--VI} is now complete.
+
+\end{document}

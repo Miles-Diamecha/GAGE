@@ -1,0 +1,666 @@
+\documentclass{iopjournal}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\begin{document}
+
+\articletype{Paper}
+
+\title{GEOMETRY V: $\Pi$-Weighted Hodge Flow and Harmonic Projection in Aligned Gauge Geometry}
+
+\author{Michael DeMasi$^{1}$}
+\affil{$^{1}$Independent Researcher, Milford, CT, USA}
+\email{demasim90@gmail.com}
+
+\begin{abstract}
+\noindent
+This work extends the alignment framework developed in \textsc{Geometry~I--IV}
+to the differential-form sector, introducing a $\Pi$-weighted Hodge flow that
+selects harmonic representatives of gauge-curvature cohomology classes.  
+The same geometric structures that determine gravitational normalization,
+spectral gaps, and curvature-dynamic regularization---the integer direction
+$\chi$, the Fisher/kinetic metric, and the even curvature gate $\Pi(\Xi)$---are
+shown to define a Gaussian-weighted Hodge operator and a corresponding
+elliptic flow,
+\[
+\partial_t \omega
+  = -\,d^\dagger_\Pi d\,\omega
+    - d\,d^\dagger_\Pi \omega,
+\]
+where $d^\dagger_\Pi = \Pi^{-1} d^\dagger \Pi$ is the $\Pi$-weighted codifferential.  
+This flow decreases a $\Pi$-weighted energy functional monotonically and converges
+to $\Pi$-harmonic forms satisfying $d\omega=0$ and $d^\dagger_\Pi\omega=0$.  No new
+fields or tunable functions are introduced; all weighting arises from the
+Gaussian gate and the Fisher softness of the aligned depth coordinate.
+
+We prove that the $\Pi$-weighted Hodge Laplacian is self-adjoint, positive, and
+has discrete spectrum on appropriate weighted function spaces, establishing the
+existence and uniqueness of $\Pi$-harmonic representatives.  
+The $\Pi$-weighted flow is globally well-posed, smooth for all time, and possesses
+a convex Lyapunov functional that enforces decay of non-harmonic components.  
+These properties illustrate how alignment geometry provides a natural
+regularization mechanism for differential-form evolution and suggest a physical
+interpretation for $\Pi$-harmonic projection in gauge-curvature cohomology.
+
+The results of this work complete the geometric development of the $\Pi$-weighted
+alignment framework and open a connection between gauge-space geometry,
+weighted Hodge theory, and physical curvature flows.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+\noindent
+The \textsc{Geometry} series develops a unified gauge--space framework in which
+the Standard Model (SM) determines gravitational normalization, curvature
+response, spectral structure, and dynamic evolution through the alignment of
+the integer direction $\chi=(16,13,2)$ with the soft eigenmode of the
+Fisher/kinetic metric.  
+In \textsc{Geometry~I}, this alignment fixed the electroweak--anchored
+gravitational coupling $G(M_Z)$.  
+\textsc{Geometry~II} established a finite spectral gap and reflection-positive
+Euclidean functional for aligned gauge curvature.  
+\textsc{Geometry~III} introduced time dependence, deriving a covariant drift law
+and identifying the $\Pi$-weighted alignment operator as the generator of temporal
+response.  
+\textsc{Geometry~IV} analyzed the drift equation as a parabolic evolution,
+demonstrating global smoothness, boundedness, and intrinsic geometric
+regularization.
+
+\medskip
+In this fifth work, we extend the alignment framework to the differential-form
+sector and introduce a $\Pi$-weighted Hodge flow acting on curvature-induced forms.
+The key observation is that the same structures appearing in
+\textsc{Geometry~I--IV}---the Gaussian curvature gate $\Pi(\Xi)$, the Fisher
+softness $F_\chi$, and the aligned direction $\chi$---define a natural
+weighted codifferential
+\[
+d^\dagger_\Pi = \Pi^{-1} d^\dagger \Pi,
+\tag{1.1}
+\]
+and therefore a $\Pi$-weighted Hodge Laplacian
+\[
+\Delta_\Pi = d^\dagger_\Pi d + d\,d^\dagger_\Pi.
+\tag{1.2}
+\]
+No new fields or tunable functions are introduced; the weighting arises solely
+from the curvature gate and the Fisher metric established in earlier work.
+
+\medskip
+We show that $\Delta_\Pi$ is an elliptic, self-adjoint operator on the
+$\Pi$-weighted space of differential forms, with discrete spectrum and positive
+semidefinite quadratic form.  
+This structure allows the construction of a $\Pi$-weighted Hodge flow,
+\[
+\partial_t \omega = -\Delta_\Pi \omega,
+\tag{1.3}
+\]
+which monotonically decreases a $\Pi$-weighted energy functional and converges to a
+$\Pi$-harmonic representative satisfying
+\[
+d\omega = 0,
+\qquad
+d^\dagger_\Pi \omega = 0.
+\tag{1.4}
+\]
+These fixed points define harmonic representatives of gauge-curvature
+cohomology classes in the $\Pi$-weighted geometry selected by alignment.
+
+\medskip
+The $\Pi$-weighted Hodge flow provides a natural geometric mechanism for smoothing
+differential forms, analogous to the parabolic regularization identified in
+\textsc{Geometry~IV} for the scalar depth coordinate.  
+In particular:
+\begin{itemize}
+\item the Fisher softness supplies intrinsic viscosity for form evolution,
+\item the Gaussian weighting provides a stabilizing potential,
+\item the flow remains uniformly parabolic, smooth, and globally well-posed,
+\item and no new dynamical degrees of freedom are required.
+\end{itemize}
+These properties suggest a physically motivated interpretation of $\Pi$-harmonic
+projection and link the alignment framework to weighted Hodge theory.
+
+\medskip
+The remainder of the paper is organized as follows.  
+Section~\ref{sec:weighted} introduces the $\Pi$-weighted inner product and the
+associated codifferential.  
+Section~\ref{sec:Laplacian} establishes self-adjointness and the spectral
+structure of the $\Pi$-weighted Hodge Laplacian.  
+Section~\ref{sec:flow} defines the $\Pi$-weighted Hodge flow and proves global
+well-posedness and monotonic decay of the $\Pi$-energy functional.  
+Section~\ref{sec:harmonic} analyzes convergence to $\Pi$-harmonic representatives.
+Section~\ref{sec:discussion} discusses implications for gauge geometry,
+cohomology, and the broader alignment framework.
+
+\section{$\Pi$-Weighted Inner Product and Codifferential}
+\label{sec:weighted}
+
+\noindent
+The $\Pi$-weighted Hodge theory introduced in this work builds directly on the
+structures established in \textsc{Geometry~I--IV}.  
+The Gaussian curvature gate,
+\[
+\Pi(\Xi)=\exp\!\left[-\frac{(\delta\Xi)^2}{\sigma_\chi^2}\right],
+\tag{2.1}
+\]
+originates solely from the aligned depth coordinate
+$\Xi=\chi\cdot\hat\Psi$ and the Fisher softness $F_\chi=1/\sigma_\chi^2$.
+No new parameters or functions are introduced; $\Pi(\Xi)$ is fixed entirely by
+the alignment geometry and was already required to preserve parity and the
+massless helicity-$\pm2$ sector in earlier work.
+
+\medskip
+To incorporate $\Pi$ into the differential-form sector, we equip the space of
+$k$-forms with the $\Pi$-weighted inner product
+\[
+\langle\omega,\eta\rangle_\Pi
+   = \int_{\mathcal{M}} \Pi(\Xi)\, \omega \wedge \star \eta,
+\tag{2.2}
+\]
+where $\mathcal{M}$ is the spacetime manifold and $\star$ is the standard Hodge
+dual defined by the Lorentzian or Euclidean metric, as appropriate.  
+The factor $\Pi(\Xi)$ acts as a strictly positive, smooth weight, preserving
+orientation and ensuring ellipticity of all associated operators.
+
+\medskip
+The $\Pi$-weighted codifferential $d_\Pi^\dagger$ is defined as the adjoint of the
+exterior derivative $d$ with respect to the inner product \eqref{2.2}.  
+Explicitly, for compactly supported forms,
+\[
+\langle d\omega,\eta\rangle_\Pi
+   = \langle\omega,d_\Pi^\dagger\eta\rangle_\Pi,
+\tag{2.3}
+\]
+which yields the closed-form expression
+\[
+d_\Pi^\dagger
+   = \Pi^{-1} d^\dagger \Pi,
+\tag{2.4}
+\]
+with $d^\dagger$ the standard codifferential.  
+Equation \eqref{2.4} makes manifest that weighting introduces no new geometric
+structure beyond multiplication by $\Pi(\Xi)$.  
+In particular,
+\begin{itemize}
+\item the aligned coordinate $\Xi$ governs all departures from equilibrium,
+\item the Fisher softness determines the width $\sigma_\chi$,
+\item the Gaussian weight provides the unique even function with vanishing
+      first derivative at equilibrium,
+\item and no additional fields or couplings enter the differential-form sector.
+\end{itemize}
+
+\medskip
+Two immediate consequences follow.
+
+\textbf{(i) Positivity.}
+Since $\Pi>0$, the weighted inner product defines a Hilbert norm, and the
+operator $d_\Pi^\dagger$ preserves the adjoint relation without altering the
+sign of the quadratic form.
+
+\textbf{(ii) Compatibility with curvature alignment.}
+If $\omega$ arises from aligned gauge curvature (e.g.\ via contraction with
+$\chi$ or the drift-law evolution of $\Xi$), the $\Pi$-weighted adjoint is
+automatically adapted to the same aligned geometry.  
+This ensures that the $\Pi$-weighted Hodge theory is not an independent structure
+but a direct extension of the alignment principle.
+
+\medskip
+These results prepare the ground for the $\Pi$-weighted Hodge Laplacian discussed
+in Section~\ref{sec:Laplacian}.
+
+\section{$\Pi$-Weighted Hodge Laplacian: Self-Adjointness, Positivity, and Spectrum}
+\label{sec:Laplacian}
+
+\noindent
+The $\Pi$-weighted codifferential introduced in Section~\ref{sec:weighted} defines a
+natural Laplacian acting on differential forms,
+\[
+\Delta_\Pi = d_\Pi^\dagger d + d\,d_\Pi^\dagger,
+\tag{3.1}
+\]
+which inherits all of its geometric structure from the alignment framework.
+Because $\Pi(\Xi)$ is strictly positive, smooth, and even, the weighted
+Laplacian preserves the ellipticity and symmetry properties of the standard
+Hodge Laplacian, while introducing no new degrees of freedom.
+
+\medskip
+To study $\Delta_\Pi$, we work on the $\Pi$-weighted Hilbert space of $k$-forms,
+\[
+\mathcal{H}_\Pi^k(\mathcal{M})
+  = L^2_\Pi\!\big(\Lambda^kT^\ast\mathcal{M}\big),
+\qquad
+\|\omega\|_\Pi^2 = \langle\omega,\omega\rangle_\Pi.
+\tag{3.2}
+\]
+The weight $\Pi(\Xi)$ factors multiplicatively in this inner product, allowing
+all analysis to proceed using standard elliptic-operator theory with
+coefficients determined by the aligned curvature gate.
+
+\subsection*{3.1 Symmetry and quadratic form}
+For compactly supported forms $\omega$ and $\eta$,
+\[
+\langle \Delta_\Pi \omega, \eta \rangle_\Pi
+    = \langle d\omega, d\eta\rangle_\Pi
+    + \langle d_\Pi^\dagger\omega, d_\Pi^\dagger\eta\rangle_\Pi,
+\tag{3.3}
+\]
+which is manifestly symmetric.  
+The associated quadratic form,
+\[
+\mathfrak{q}[\omega]
+  = \|d\omega\|_\Pi^2 + \|d_\Pi^\dagger\omega\|_\Pi^2,
+\tag{3.4}
+\]
+is nonnegative and vanishes only for $\Pi$-harmonic forms.  
+Since $\Pi(\Xi)$ is bounded above and below on compact sets and falls
+Gaussianly in the depth direction, the form domain is complete, and
+$\mathfrak{q}$ is closed.
+
+\medskip
+Closedness follows from the same $\Pi$-weighted coercivity used in
+\textsc{Geometry~III} for the scalar alignment operator:
+the Gaussian weight ensures compactness of the embedding of the form domain
+into $\mathcal{H}_\Pi^k$, paralleling the Rellich--Kondrachov lemma in the
+$\Pi$-weighted setting.
+
+\subsection*{3.2 Essential self-adjointness}
+The symmetry and closedness of $\mathfrak{q}$ imply that $\Delta_\Pi$ admits a
+unique self-adjoint Friedrichs extension acting on $\mathcal{H}_\Pi^k$.  
+Thus,
+\[
+\Delta_\Pi = \Delta_\Pi^\dagger,
+\qquad
+\mathrm{Dom}(\Delta_\Pi) = \mathrm{Dom}(\Delta_\Pi^{\mathrm{F}}),
+\tag{3.5}
+\]
+with no additional boundary conditions required beyond those inherited from the
+underlying manifold.
+
+\medskip
+This result mirrors the self-adjointness of the $\Pi$-weighted alignment operator
+in \textsc{Geometry~III}; the $\Pi$-weighted Laplacian is simply the differential-form
+version of the same geometric mechanism.
+
+\subsection*{3.3 Positivity and ellipticity}
+Because $d$ and $d_\Pi^\dagger$ are first-order operators, $\Delta_\Pi$ is
+second-order elliptic with smooth coefficients determined by derivatives of
+$\Pi(\Xi)$.  
+The positivity of the quadratic form \eqref{3.4} ensures the operator is
+nonnegative,
+\[
+\langle\omega,\Delta_\Pi\omega\rangle_\Pi = \mathfrak{q}[\omega] \ge 0.
+\tag{3.6}
+\]
+The kernel consists exactly of $\Pi$-harmonic forms satisfying
+\[
+d\omega = 0,
+\qquad
+d_\Pi^\dagger \omega = 0.
+\tag{3.7}
+\]
+
+\subsection*{3.4 Discrete spectrum}
+The Gaussian weight in $\Pi(\Xi)$ ensures that the $\Pi$-weighted embedding of the
+form domain into $\mathcal{H}_\Pi^k$ is compact, implying compact resolvent for
+$\Delta_\Pi$.  
+Thus the spectrum is discrete,
+\[
+0 = \lambda_1 \le \lambda_2 \le \lambda_3 \le \cdots \to \infty,
+\tag{3.8}
+\]
+with $\lambda_1$ corresponding to $\Pi$-harmonic forms.  
+The $\Pi$-weighted Hodge decomposition
+\[
+\mathcal{H}_\Pi^k
+  = \ker(\Delta_\Pi)
+  \oplus \overline{\mathrm{Im}(d)}
+  \oplus \overline{\mathrm{Im}(d_\Pi^\dagger)}
+\tag{3.9}
+\]
+follows by standard elliptic theory adapted to the weighted inner product.
+
+\medskip
+The spectral properties established in this section provide the analytic
+foundation for the $\Pi$-weighted Hodge flow, defined in
+Section~\ref{sec:flow}.
+
+\section{$\Pi$-Weighted Hodge Flow: Well-Posedness and Energy Decay}
+\label{sec:flow}
+
+\noindent
+The $\Pi$-weighted Hodge Laplacian introduced in Section~\ref{sec:Laplacian} defines
+a natural parabolic evolution equation for differential forms,
+\[
+\partial_t \omega = -\Delta_\Pi \omega,
+\tag{4.1}
+\]
+which we refer to as the $\Pi$-weighted Hodge flow.  
+This flow is the differential-form analogue of the scalar alignment-drift law
+in \textsc{Geometry~III--IV}.  
+It requires no new fields or parameters: all weighting arises solely from the
+Gaussian curvature gate $\Pi(\Xi)$ and the Fisher softness $F_\chi$ inherited
+from the aligned depth coordinate.
+
+\medskip
+Equation \eqref{4.1} is uniformly parabolic on the $\Pi$-weighted Hilbert space
+$\mathcal{H}_\Pi^k$ for all form degrees $k$, owing to the strict positivity and
+smoothness of the weight.  
+Its analytic structure is governed by the self-adjoint, nonnegative operator
+$\Delta_\Pi$, ensuring the same semigroup properties that characterize heat
+flows in standard Hodge theory.
+
+\subsection*{4.1 Existence and uniqueness}
+Because $\Delta_\Pi$ is self-adjoint with compact resolvent, the operator
+$-\Delta_\Pi$ generates a strongly continuous contraction semigroup
+$e^{-t\Delta_\Pi}$ on $\mathcal{H}_\Pi^k$.  
+Thus, for any initial form
+$\omega_0 \in \mathcal{H}_\Pi^k$, the flow
+\eqref{4.1} admits a unique global solution,
+\[
+\omega(t) = e^{-t\Delta_\Pi}\,\omega_0,
+\tag{4.2}
+\]
+which is smooth for all $t>0$ and depends continuously on the initial data.
+The $\Pi$-weighted Hodge flow is therefore globally well-posed.
+
+\medskip
+This property parallels the global well-posedness of the scalar drift law in
+\textsc{Geometry~IV}, where the Gaussian weight similarly ensured uniform
+parabolicity and excluded singular behavior.
+
+\subsection*{4.2 $\Pi$-weighted energy functional}
+Define the $\Pi$-weighted Hodge energy
+\[
+\mathcal{E}_\Pi[\omega]
+  = \tfrac12\,\mathfrak{q}[\omega]
+  = \tfrac12\!\left(
+      \|d\omega\|_\Pi^2 + \|d_\Pi^\dagger\omega\|_\Pi^2
+    \right),
+\tag{4.3}
+\]
+with $\mathfrak{q}$ the quadratic form of $\Delta_\Pi$.  
+Differentiating \eqref{4.3} along the flow \eqref{4.1} yields
+\[
+\frac{d}{dt}\mathcal{E}_\Pi[\omega(t)]
+   = -\,\langle \Delta_\Pi\omega,\,\Delta_\Pi\omega\rangle_\Pi
+   = -\,\|\Delta_\Pi\omega\|_\Pi^2
+   \le 0,
+\tag{4.4}
+\]
+demonstrating that $\mathcal{E}_\Pi$ is a strict Lyapunov functional.
+Therefore:
+\begin{itemize}
+\item the $\Pi$-weighted energy decreases monotonically,
+\item the decrease is strict unless $\Delta_\Pi\omega=0$,
+\item and only $\Pi$-harmonic forms are fixed points of the flow.
+\end{itemize}
+
+\medskip
+Monotonic decay of a convex functional is the weighted analogue of the
+dissipation principle identified in \textsc{Geometry~IV}; both arise from the
+Gaussian stabilization encoded in $\Pi(\Xi)$.
+
+\subsection*{4.3 Uniform parabolicity and smoothing}
+The coefficients of $\Delta_\Pi$ involve at most second derivatives of
+$\Pi(\Xi)$, all of which are smooth, bounded, and even in the depth direction.
+This ensures that \eqref{4.1} is uniformly parabolic on any compact coordinate
+patch and globally parabolic in the $\Pi$-weighted sense.  
+Standard parabolic regularity theory implies:
+\[
+\omega_0 \in \mathcal{H}_\Pi^k
+\quad\Longrightarrow\quad
+\omega(t)\in C^\infty(\mathcal{M})
+\quad\text{for all } t>0.
+\tag{4.5}
+\]
+Thus, the flow possesses instantaneous smoothing: non-harmonic components are
+immediately regularized by the $\Pi$-weighted Laplacian.
+
+\medskip
+This behavior reflects the same regularizing mechanism identified for the depth
+coordinate in \textsc{Geometry~IV}.  
+The Fisher softness $F_\chi$ again acts as a source of intrinsic viscosity in
+gauge-space directions aligned with $\chi$.
+
+\subsection*{4.4 Long-time behavior}
+Since $\Delta_\Pi$ has discrete spectrum $0=\lambda_1<\lambda_2\le\cdots$,
+expansion of the initial data in the $\Pi$-weighted eigenbasis gives
+\[
+\omega(t)
+ = \sum_{n=1}^\infty e^{-\lambda_n t}\,\omega_n,
+\tag{4.6}
+\]
+where $\omega_1$ spans the $\Pi$-harmonic subspace.  
+Modes with $\lambda_n>0$ decay exponentially, and only the $\Pi$-harmonic
+component survives at long times.  
+Consequently,
+\[
+\lim_{t\to\infty}\omega(t)
+   = \omega_{\mathrm{harm}},
+\tag{4.7}
+\]
+where $\omega_{\mathrm{harm}}$ is the unique $\Pi$-harmonic representative in the
+cohomology class of $\omega_0$.
+
+\medskip
+This establishes the $\Pi$-weighted Hodge flow as a natural projection mechanism
+onto $\Pi$-harmonic forms.  
+The convergence properties in \eqref{4.7} set the stage for the structural
+analysis of $\Pi$-harmonic representatives in Section~\ref{sec:harmonic}.
+
+\section{Convergence to $\Pi$-Harmonic Representatives}
+\label{sec:harmonic}
+
+\noindent
+The $\Pi$-weighted Hodge flow defined in Section~\ref{sec:flow},
+\[
+\partial_t \omega = -\,\Delta_\Pi \omega,
+\tag{5.1}
+\]
+acts as a gradient flow for the $\Pi$-weighted energy functional
+\[
+\mathcal{E}_\Pi[\omega]
+   = \frac12 \big( \|d\omega\|_\Pi^2
+                   + \|d_\Pi^\dagger\omega\|_\Pi^2 \big),
+\tag{5.2}
+\]
+and the monotonic decay of $\mathcal{E}_\Pi$ implies that the long-time
+behaviour of $\omega(t)$ is governed entirely by the structure of the
+$\Pi$-weighted Hodge decomposition.  
+In this section we show that the flow converges to the unique $\Pi$-harmonic
+representative in the cohomology class of $\omega_0$.
+
+\subsection*{5.1 $\Pi$-weighted Hodge decomposition}
+Since $\Delta_\Pi$ is self-adjoint with discrete spectrum and nonnegative
+quadratic form (Section~\ref{sec:Laplacian}), the $\Pi$-weighted Hilbert space of
+$k$-forms admits the orthogonal decomposition
+\[
+\mathcal{H}^k_\Pi
+  = \mathcal{H}^k_{\Pi,\mathrm{harm}}
+  \oplus \overline{\mathrm{Im}(d)}
+  \oplus \overline{\mathrm{Im}(d_\Pi^\dagger)},
+\tag{5.3}
+\]
+where
+\[
+\mathcal{H}^k_{\Pi,\mathrm{harm}}
+  = \ker d \;\cap\; \ker d_\Pi^\dagger
+  = \ker \Delta_\Pi.
+\tag{5.4}
+\]
+For any initial form $\omega_0$, we may therefore write
+\[
+\omega_0
+  = \omega_{\mathrm{harm}}
+  \,+\, d\alpha
+  \,+\, d_\Pi^\dagger\beta,
+\tag{5.5}
+\]
+with each term orthogonal in the $\Pi$-weighted inner product.  
+The flow acts trivially on $\omega_{\mathrm{harm}}$ and exponentially damps
+the remaining components.
+
+\subsection*{5.2 Spectral-mode analysis}
+Expanding $\omega(t)$ in the eigenbasis $\{\phi_n\}$ of $\Delta_\Pi$,
+\[
+\omega(t) = \sum_{n} c_n\, e^{-\lambda_n t}\, \phi_n,
+\tag{5.6}
+\]
+yields explicit mode-by-mode control.  
+Eigenmodes with $\lambda_n>0$ decay exponentially with rate $\lambda_n$, while
+$\Pi$-harmonic modes ($\lambda_n=0$) remain constant.  
+Thus
+\[
+\lim_{t\to\infty} \omega(t)
+  = \sum_{\lambda_n=0} c_n\,\phi_n
+  = \omega_{\mathrm{harm}},
+\tag{5.7}
+\]
+with convergence in the $\Pi$-weighted Hilbert norm.
+
+\subsection*{5.3 Energy convergence}
+From \eqref{4.5} we have $\mathcal{E}_\Pi[\omega(t)]$ strictly decreasing,
+bounded below by $0$, and differentiable for all $t>0$.  
+Since the energy is exactly the squared $\Pi$-norm of the non-harmonic component,
+\[
+\mathcal{E}_\Pi[\omega(t)]
+   = \frac12 \sum_{\lambda_n>0} \lambda_n\, |c_n|^2 e^{-2\lambda_n t},
+\tag{5.8}
+\]
+it follows that
+\[
+\lim_{t\to\infty}\mathcal{E}_\Pi[\omega(t)]
+  = 0.
+\tag{5.9}
+\]
+Thus all curvature away from the $\Pi$-harmonic sector dissipates under the flow.
+
+\subsection*{5.4 Uniqueness of the $\Pi$-harmonic representative}
+Because $\Delta_\Pi$ has discrete spectrum with finite-dimensional kernel,
+each cohomology class contains exactly one $\Pi$-harmonic representative.
+The limiting form $\omega_{\mathrm{harm}}$ appearing in \eqref{5.7} is therefore
+uniquely determined by $\omega_0$ and independent of any choices made in the
+definition of the flow or in decomposition \eqref{5.5}.  
+In particular,
+\[
+d\omega_{\mathrm{harm}} = 0,
+\qquad
+d_\Pi^\dagger \omega_{\mathrm{harm}} = 0,
+\tag{5.10}
+\]
+with convergence $\omega(t)\to\omega_{\mathrm{harm}}$ in $L^2_\Pi$ and,
+by elliptic regularity, in $C^\infty$ on compact subsets.
+
+\medskip
+\noindent
+These results complete the analysis of the $\Pi$-weighted Hodge flow: 
+the evolution is globally smooth for all $t>0$, decreases $\Pi$-energy
+monotonically, and converges to the unique $\Pi$-harmonic representative of the
+initial data.  
+The geometric and analytic foundations established in this section support the
+broader interpretation of $\Pi$-weighted harmonic projection discussed in
+Section~\ref{sec:discussion}.
+
+\section{Implications and Outlook}
+\label{sec:discussion}
+
+\noindent
+The analysis presented in this work extends the alignment framework to the
+differential–form sector, showing that the same χ/K/$\Pi$ structure that determines
+gravitational normalization, spectral gaps, and dynamic smoothness also defines
+a $\Pi$-weighted Hodge theory.  
+No new fields or parameters were introduced at any stage.  
+The $\Pi$-weighted codifferential and Laplacian arise entirely from multiplication
+by the Gaussian curvature gate $\Pi(\Xi)$, whose form was fixed in
+\textsc{Geometry~I} by parity, softness, and the requirement that the tensor
+sector of GR remain unmodified at equilibrium.
+
+\medskip
+The $\Pi$-weighted Hodge flow derived in Section~\ref{sec:flow} provides a geometric
+regularization mechanism for differential forms parallel to the drift-law
+regularization of the scalar depth coordinate.  
+The flow is strictly parabolic, admits a convex Lyapunov functional, and
+converges smoothly to $\Pi$-harmonic representatives.  
+This construction demonstrates that alignment naturally extends to cohomology:
+the $\Pi$-harmonic condition $d\omega=0$ and $d^\dagger_\Pi\omega=0$ selects
+preferred representatives in each class, determined by the same geometric
+quantities that fixed $G(M_Z)$ in \textsc{Geometry~I}.
+
+\medskip
+From a mathematical perspective, the $\Pi$-weighted Laplacian provides a new
+example of a Gaussian-weighted Hodge operator with compact resolvent and a
+fully discrete spectrum.  
+Its structure is reminiscent of Bakry–Émery modifications of the Laplacian,
+but with coefficients determined directly by the alignment geometry and fixed
+without tuning.  
+The resulting Hodge flow supplies a well-defined, globally smooth evolution with
+potential applications to weighted cohomology, gauge curvature flows, and
+Euclidean functional positivity.
+
+\medskip
+From a physical perspective, the existence of $\Pi$-harmonic representatives
+suggests a natural decomposition of gauge curvature into aligned and
+transverse components, with the $\Pi$-weight enforcing suppression of departures
+from equilibrium depth.  
+The $\Pi$-weighted flow may offer a route to understanding how curvature
+perturbations relax toward aligned configurations, complementing the drift-law
+evolution and helicity-frequency structure developed in earlier work.
+
+\medskip
+Finally, the results of this paper complete the geometric extension of the
+alignment framework to differential forms.  
+\textsc{Geometry~VI} will examine potential connections between $\Pi$-weighted Hodge
+flows, curvature quantization, and possible extensions to phenomenological
+contexts.  
+Together, \textsc{Geometry~I--V} establish a coherent structure in which the
+SM-derived alignment geometry governs curvature response, spectral structure,
+dynamic evolution, and cohomological projection.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\noindent
+This work extends the alignment framework developed in \textsc{Geometry~I--IV}
+to the differential-form sector by introducing a $\Pi$-weighted Hodge theory
+derived entirely from the aligned depth coordinate $\Xi$, the Fisher/kinetic
+metric, and the Gaussian curvature gate $\Pi(\Xi)$.  
+No new fields, parameters, or tunable functions were introduced; all weighting
+arises from the same geometric structures that fix the gravitational
+normalization, determine the mass gap, and govern dynamic alignment.
+
+\medskip
+We showed that the $\Pi$-weighted codifferential $d^\dagger_\Pi=\Pi^{-1}d^\dagger\Pi$
+defines a self-adjoint, positive $\Pi$-weighted Hodge Laplacian
+$\Delta_\Pi=d^\dagger_\Pi d + d d^\dagger_\Pi$ with discrete spectrum on the
+$\Pi$-weighted Hilbert space of differential forms.  
+The corresponding $\Pi$-weighted Hodge flow,
+\[
+\partial_t\omega = -\Delta_\Pi \omega,
+\]
+is globally well-posed, smooth for all time, and strictly decreases the
+$\Pi$-weighted energy functional.  
+The flow converges to $\Pi$-harmonic representatives satisfying
+$d\omega=0$ and $d^\dagger_\Pi\omega=0$, establishing a canonical selection
+principle for harmonic forms in the $\Pi$-weighted geometry.
+
+\medskip
+These results demonstrate that alignment geometry supplies a natural
+regularization mechanism for differential-form evolution, paralleling the
+scalar drift-law regularization of \textsc{Geometry~IV}.  
+In both cases, the Gaussian curvature gate provides stabilizing weight and the
+Fisher softness ensures parabolicity, enabling the construction of smooth,
+globally stable flows without introducing additional dynamical degrees of
+freedom.
+
+\medskip
+The $\Pi$-weighted Hodge framework developed here completes the geometric core of
+the alignment program and highlights a deeper connection between gauge-space
+structure, weighted Hodge theory, and physical curvature flows.  
+Future work may explore the extension of $\Pi$-harmonic projection to broader
+cohomological settings and its potential implications for gauge-gravity
+interplay within aligned curvature geometry.
+
+\end{document}

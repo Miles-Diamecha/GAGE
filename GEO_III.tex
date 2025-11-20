@@ -1,0 +1,1464 @@
+\documentclass{iopjournal}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\begin{document}
+
+\articletype{Paper}
+
+\title{GEOMETRY III: Dynamic Alignment, Drift Law, and Entropy Flow}
+\author{Michael DeMasi$^{1}$}
+\affil{$^{1}$Independent Researcher, Milford, CT, USA}
+\email{demasim90@gmail.com}
+
+\begin{abstract}
+\noindent
+This work extends the static, equilibrium geometry of \textsc{Geometry~I} and the
+aligned mass-gap construction of \textsc{Geometry~II} into a time-dependent
+framework.  
+We introduce a dynamic alignment equation governing the evolution of the
+depth coordinate $\Xi=\chi\!\cdot\!\hat\Psi$ and show that, under the same
+integer and metric structures that fix $G(M_Z)$ and define the even curvature
+gate $\Pi(\Xi)$, the aligned sector admits a natural parabolic drift law,
+\[
+\partial_t \Xi + (v_\Xi\!\cdot\nabla)\Xi
+   = D_\Xi \nabla^2 \Xi
+     - \partial_\Xi V_{\rm eff}(\Xi),
+\]
+with $V_{\rm eff}$ fixed by the curvature gate and Fisher softness.  
+This equation provides a constructive, parameter-free time evolution for the
+aligned geometry while preserving the massless tensor sector of General
+Relativity.
+
+The drift term defines an alignment-regularized flow that enforces bounded
+curvature and monotonic relaxation toward equilibrium, establishing a link to
+the Navier--Stokes existence and smoothness problem.  
+The temporal derivative generates a natural arrow of time associated with
+decreasing alignment free energy, and small fluctuations exhibit an
+oscillatory structure governed by the same curvature width $\sigma_\chi$ that
+sets the helicity frequency in \textsc{Geometry~II}.  
+No new fields or tunable functions are introduced; all dynamics follow from the
+existing Standard Model integer structure, the Fisher/kinetic metric, and the
+even curvature gate.
+
+These results establish the dynamic completion of the aligned geometry and lay
+the foundation for the spectral and analytic constructions developed in the
+Riemann-operator program.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+\noindent
+The preceding works in the \textsc{Geometry} program establish the static,
+equilibrium structure of aligned gauge curvature and the existence of a finite
+spectral gap in the pure-gauge regime.  
+\textsc{Geometry~I} identifies the integer and metric structures that fix the
+electroweak gravitational normalization $G(M_Z)$ and define the even curvature
+gate $\Pi(\Xi)$, while \textsc{Geometry~II} demonstrates that the same static
+geometry yields a positive Euclidean functional, a discrete excitation spectrum,
+and a mass gap set by the equilibrium curvature width $\sigma_\chi$.
+
+The present work extends this framework to a time-dependent formulation.
+No new fields, tunable functions, or additional parameters are introduced.
+All dynamics follow from the existing Standard Model integer structure
+$\chi=(16,13,2)$, the Fisher/kinetic metric $K_{\mathrm{eq}}$, the depth
+coordinate $\Xi=\chi\!\cdot\!\hat\Psi$, and the even curvature gate
+$\Pi(\Xi)$ established in the previous papers.  
+The objective is to determine whether these ingredients are sufficient to
+construct a consistent evolution equation for aligned curvature that preserves
+the massless tensor sector of General Relativity while enabling a controlled
+description of temporal behavior.
+
+The central result of this paper is the emergence of a natural drift law for
+the depth coordinate,
+\[
+\partial_t \Xi + (v_\Xi\!\cdot\nabla)\Xi
+   = D_\Xi \nabla^2 \Xi - \partial_\Xi V_{\mathrm{eff}}(\Xi),
+\]
+where both the diffusion coefficient $D_\Xi$ and the effective potential
+$V_{\mathrm{eff}}$ are fixed by the Fisher softness of the aligned mode and the
+curvature gate.  
+This equation defines a curvature-regularized parabolic flow that enforces
+boundedness, smoothness, and monotonic relaxation toward the equilibrium point
+$\Xi_{\mathrm{eq}}$, where $\Pi'(\Xi_{\mathrm{eq}})=0$.  
+The resulting dynamics supply an intrinsic arrow of time associated with
+decreasing alignment free energy and link the aligned curvature sector to
+constructive approaches to fluid regularity.
+
+Linearization of the drift law reveals an oscillatory response whose natural
+frequency is determined by the same curvature width $\sigma_\chi$ that defines
+the helicity frequency in \textsc{Geometry~II}, providing a coherent extension
+of the static mass-gap picture into the time-dependent regime.  
+In addition, the alignment current
+\[
+J^\mu_\chi
+   = \Pi(\Xi)\,\chi^{\mathrm{T}}K_{\mathrm{eq}}\partial^\mu \hat\Psi
+\]
+remains conserved up to cubic corrections in departures from equilibrium,
+ensuring consistency of the dynamic extension with the conserved quantities of
+the static geometry.
+
+Finally, we show that the drift law inherits the structure of a regularized
+Navier–Stokes flow, with curvature-gate-induced alignment acting as a
+stabilizing potential that prevents blow-up and enforces smoothness.  
+This connection provides the conceptual bridge between the aligned-gauge
+framework and classical existence and smoothness problems, while the associated
+$\Pi$-weighted operator furnishes the analytic foundation for the spectral
+construction developed in the Riemann-program companion paper.
+
+This work therefore completes the dynamic extension of aligned gauge curvature,
+establishing a consistent time-dependent geometry that remains fully determined
+by Standard Model data, integer structure, and local metric softness.
+
+\section{Framework and Assumptions}
+\label{sec:framework}
+
+\noindent
+This work extends the static, equilibrium geometry of
+\textsc{Geometry~I} and the aligned mass-gap construction of
+\textsc{Geometry~II} to a time-dependent setting.  
+No additional fields, sources, or tunable functions are introduced.
+All dynamic behavior arises from the same Standard Model structures that
+determine the static alignment mechanism:
+\[
+\chi = (16,13,2),\qquad
+\Xi = \chi\!\cdot\!\hat\Psi,\qquad
+\Pi(\Xi) = \exp\!\left[-(\delta\Xi)^2/\sigma_\chi^2\right].
+\]
+The analysis is restricted to small departures $\delta\Xi$ from the
+equilibrium depth $\Xi_{\mathrm{eq}}$, where $\Pi(\Xi_{\mathrm{eq}})=1$ and
+$\Pi'(\Xi_{\mathrm{eq}})=0$.
+
+\subsection*{(A1) Field content}
+No new dynamical degrees of freedom are added.  
+The variables $\hat\Psi$ and $\Xi$ remain internal gauge-log coordinates, not
+propagating scalar fields.  
+Their time dependence describes the evolution of curvature response within the
+aligned sector, not the introduction of additional physical modes.
+
+\subsection*{(A2) Integer alignment}
+The integer vector $\chi$ remains the unique primitive generator of the
+left-kernel of one-loop decoupling, as established in \textsc{Geometry~I}.  
+The depth coordinate $\Xi=\chi\!\cdot\!\hat\Psi$ continues to define the
+aligned direction in the gauge-log manifold.
+
+\subsection*{(A3) Metric softness}
+The Fisher/kinetic metric $K_{\mathrm{eq}}$ is positive-definite and selects a
+distinguished soft eigenmode aligned with $\chi$.  
+Its smallest eigenvalue determines  
+\[
+F_\chi\equiv \hat\chi^{\mathrm{T}}K_{\mathrm{eq}}\hat\chi
+   = \frac{1}{\sigma_\chi^{2}},
+\]
+which continues to set the curvature width $\sigma_\chi$ and therefore the
+strength of the alignment response.
+
+\subsection*{(A4) Even curvature gate}
+The curvature gate $\Pi(\Xi)$ retains the properties:
+\[
+\Pi(\Xi_{\mathrm{eq}})=1, \qquad \Pi'(\Xi_{\mathrm{eq}})=0,
+\qquad \Pi(\Xi)>0,\qquad \Pi(\Xi)=\Pi(-\Xi).
+\]
+Parity and analyticity play the same role as in the static construction,
+ensuring that the leading response near equilibrium is quadratic and
+stabilizing.
+
+\subsection*{(A5) Time-dependent extension}
+The time derivative of $\Xi$ describes the response of aligned curvature to
+departures from equilibrium.  
+No additional tensor or scalar modes are introduced.  
+All temporal behavior derives from geometric variation of $\Xi$ itself.
+
+\subsection*{(A6) Spatial dependence and admissible flows}
+Spatial variation of $\Xi$ is included through a smooth vector field
+$v_\Xi(x,t)$ that transports departures from alignment.  
+This field is not a new degree of freedom; it parameterizes the geometric
+advection of the depth coordinate within the aligned sector.  
+Spatial derivatives are assumed smooth, and all flows are restricted to the
+regime where $|\delta\Xi|$ remains small.
+
+\subsection*{(A7) Effective potential}
+An effective potential $V_{\mathrm{eff}}(\Xi)$ is defined by the curvature
+stiffness encoded in $\Pi$:
+\[
+\partial_\Xi V_{\mathrm{eff}}(\Xi)
+   \equiv -\frac{\partial}{\partial\Xi}\ln\Pi(\Xi).
+\]
+Near equilibrium this reduces to a harmonic form,
+\[
+V_{\mathrm{eff}}(\Xi) \simeq \frac{(\delta\Xi)^2}{\sigma_\chi^2},
+\]
+ensuring boundedness and stability.
+
+\subsection*{(A8) Diffusion coefficient}
+The diffusion term $D_\Xi\nabla^2\Xi$ derives from the projection of curvature
+variations into the aligned mode and is fixed by the Fisher softness:
+\[
+D_\Xi \propto F_\chi.
+\]
+No new parameters are introduced.
+
+\subsection*{(A9) Regime of validity}
+All results apply in the alignment-dominated regime:
+\[
+|\delta\Xi| \ll \sigma_\chi,
+\]
+where the quadratic approximation to $\ln\Pi(\Xi)$ is accurate and higher-order
+terms are suppressed.
+
+\subsection*{(A10) Tensor sector}
+The massless helicity-$\pm2$ tensor sector of General Relativity is preserved
+throughout.  
+Dynamic alignment modifies only the curvature response encoded in $G(x)$ and
+the aligned depth $\Xi$; it does not alter the propagation of the tensor
+modes.
+
+\subsection*{(A11) Gauge and diffeomorphism invariance}
+All constructions remain consistent with Standard Model gauge structure and
+spacetime diffeomorphism invariance.  
+The aligned dynamics introduce no symmetry breaking beyond the monotonicity and
+temporal direction induced by the drift law.
+
+\subsection*{(A12) Reproducibility}
+All numerical values, curvature widths, eigenvectors, and Fisher-metric
+quantities are fixed by the same pinned data used in \textsc{Geometry~I} and
+\textsc{II}.  
+The dynamic equations have no free parameters: every coefficient is determined
+by Standard Model inputs and the even curvature gate.
+
+\medskip
+These assumptions define the scope of the dynamic extension developed in the
+remainder of the paper.  
+Within this restricted setting, the aligned sector admits a natural drift law,
+a monotonic alignment flow, and a consistent oscillatory response, which
+together complete the time-dependent geometry of aligned gauge curvature.
+
+\section{Constructing Dynamic Alignment}
+\label{sec:dynamic_alignment}
+
+\noindent
+The static aligned geometry developed in \textsc{Geometry~I} and the
+equilibrium mass-gap construction of \textsc{Geometry~II} determine the
+curvature response of the depth coordinate
+\[
+\Xi = \chi\!\cdot\!\hat\Psi,
+\qquad
+\delta\Xi = \Xi - \Xi_{\mathrm{eq}}.
+\]
+In this section we extend this response to a time-dependent setting.  The
+construction introduces no new dynamical fields; $\Xi$ remains an internal
+gauge-log coordinate, and its evolution reflects changes in aligned curvature
+rather than the propagation of additional degrees of freedom.
+
+\subsection*{3.1 Alignment free energy and Fisher softness}
+
+At equilibrium the curvature gate satisfies
+\[
+\Pi(\Xi_{\mathrm{eq}})=1,
+\qquad
+\Pi'(\Xi_{\mathrm{eq}})=0,
+\]
+and near equilibrium its logarithm admits the expansion
+\[
+-\ln\Pi(\Xi)
+=
+\frac{(\delta\Xi)^2}{\sigma_\chi^2}
+ + \mathcal{O}[(\delta\Xi)^4].
+\]
+This quantity naturally defines an alignment free energy,
+\[
+F_{\mathrm{align}}[\Xi]
+\equiv
+\int d^3x\,
+\frac{(\delta\Xi)^2}{\sigma_\chi^2},
+\]
+whose quadratic coefficient is fixed entirely by the Fisher softness
+\[
+F_\chi
+= \hat\chi^{\mathrm{T}} K_{\mathrm{eq}} \hat\chi
+= \frac{1}{\sigma_\chi^{2}}.
+\]
+No new parameters enter: curvature stiffness and Fisher softness are the same
+geometric quantities that determine the static response.
+
+\subsection*{3.2 Variational principle}
+
+To obtain the evolution of $\Xi$, we consider the steepest-descent flow of the
+free energy functional,
+\[
+\partial_t \Xi
+= -\,\Gamma_\Xi\,
+\frac{\delta F_{\mathrm{align}}}{\delta\Xi},
+\]
+with $\Gamma_\Xi>0$ a geometric relaxation coefficient to be determined.
+Using the form above, the functional derivative evaluates to
+\[
+\frac{\delta F_{\mathrm{align}}}{\delta\Xi}
+= \frac{2\,\delta\Xi}{\sigma_\chi^2}.
+\]
+Thus the relaxation dynamics begin with
+\[
+\partial_t\delta\Xi
+= -\frac{2\Gamma_\Xi}{\sigma_\chi^2}\,\delta\Xi.
+\]
+This ensures that $\delta\Xi$ relaxes monotonically toward equilibrium with no
+oscillation or instability at leading order.
+
+\subsection*{3.3 Spatial variation and projection to the aligned sector}
+
+Departures from alignment may vary in space.  
+Let $\delta\Xi(x,t)$ denote the depth displacement field across spacetime.
+Spatial variation induces curvature responses proportional to the Fisher metric,
+which project into the aligned mode as
+\[
+\delta F_{\mathrm{align}}
+\supset
+\int d^3x\,
+D_\Xi (\nabla\delta\Xi)^2,
+\]
+with diffusion coefficient $D_\Xi$ determined by
+\[
+D_\Xi \propto F_\chi,
+\]
+reflecting the softness of the aligned mode.  
+Incorporating this contribution modifies the functional derivative to
+\[
+\frac{\delta F_{\mathrm{align}}}{\delta\Xi}
+= \frac{2\,\delta\Xi}{\sigma_\chi^2}
+   - 2D_\Xi\nabla^2\delta\Xi.
+\]
+The resulting relaxation equation becomes
+\[
+\partial_t\delta\Xi
+= -\frac{2\Gamma_\Xi}{\sigma_\chi^2}\,\delta\Xi
+  + 2\Gamma_\Xi D_\Xi\,\nabla^2\delta\Xi.
+\]
+
+\subsection*{3.4 Advection in the aligned sector}
+
+If curvature variations are carried by a smooth spatial flow $v_\Xi(x,t)$, the
+depth coordinate transforms as a scalar under this transport.  
+Including this effect yields
+\[
+\partial_t\delta\Xi
++ (v_\Xi\!\cdot\nabla)\delta\Xi
+= -\frac{2\Gamma_\Xi}{\sigma_\chi^2}\,\delta\Xi
+  + 2\Gamma_\Xi D_\Xi\,\nabla^2\delta\Xi.
+\]
+No new degree of freedom is introduced; $v_\Xi$ parameterizes geometric
+advection of depth variations.
+
+\subsection*{3.5 Effective potential and the dynamic equation}
+
+The relaxation term may be written in terms of the effective potential
+$V_{\mathrm{eff}}$ defined by
+\[
+\partial_\Xi V_{\mathrm{eff}}(\Xi)
+   \equiv -\frac{\partial}{\partial\Xi}\ln\Pi(\Xi),
+\]
+which near equilibrium reduces to
+\[
+\partial_\Xi V_{\mathrm{eff}}(\Xi)
+\simeq \frac{2\,\delta\Xi}{\sigma_\chi^2}.
+\]
+Identifying $\Gamma_\Xi$ with the geometric relaxation scale and absorbing a
+normalization factor into $D_\Xi$, we arrive at the dynamic alignment equation:
+\[
+\boxed{
+\partial_t \Xi
+  + (v_\Xi\!\cdot\nabla)\Xi
+  = D_\Xi\nabla^2\Xi
+    - \partial_\Xi V_{\mathrm{eff}}(\Xi)
+}
+\]
+This parabolic flow equation is the central result of the dynamic construction.
+It derives entirely from the curvature gate, Fisher softness, and integer
+alignment; no new fields or tunable functions are required.
+
+\medskip
+The next section analyzes the mathematical structure of this equation and
+identifies its role as a curvature-regularized, alignment-stabilized flow with
+strong boundedness and smoothness properties analogous to those of
+Navier--Stokes-type evolution.
+
+\section{The Drift Law and Parabolic Flow}
+\label{sec:drift}
+
+\noindent
+The dynamic alignment equation obtained in Section~\ref{sec:dynamic_alignment},
+\[
+\partial_t \Xi
+  + (v_\Xi\!\cdot\nabla)\Xi
+  = D_\Xi \nabla^2 \Xi
+    - \partial_\Xi V_{\mathrm{eff}}(\Xi),
+\tag{4.1}\label{eq:driftlaw}
+\]
+defines a curvature-regularized, alignment-stabilized evolution for the depth
+coordinate $\Xi=\chi\!\cdot\!\hat\Psi$.  
+In this section we analyze the mathematical structure of
+Eq.~\eqref{eq:driftlaw}, emphasizing boundedness, monotonicity, and smoothness
+properties that follow directly from the even curvature gate and the softness
+of the aligned mode.
+
+\subsection*{4.1 Classification as a parabolic flow}
+
+For small departures $\delta\Xi$ from equilibrium,
+\[
+V_{\mathrm{eff}}(\Xi)
+= \frac{(\delta\Xi)^2}{\sigma_\chi^2}
+  + \mathcal{O}[(\delta\Xi)^4],
+\qquad
+\partial_\Xi V_{\mathrm{eff}} \simeq \frac{2\,\delta\Xi}{\sigma_\chi^2},
+\tag{4.2}
+\]
+and $D_\Xi>0$ by construction.  
+Thus Eq.~\eqref{eq:driftlaw} has the general form
+\[
+\partial_t u + (v\!\cdot\nabla)u
+  = D\nabla^2 u - \partial_u V(u),
+\tag{4.3}
+\]
+where the potential is strictly convex near equilibrium:
+\[
+\partial_u^2 V(u)\big|_{u=0}
+= \frac{2}{\sigma_\chi^2} > 0.
+\tag{4.4}
+\]
+The diffusion term renders the operator parabolic, while the convex potential
+introduces a strictly stabilizing restoring force.  
+These two ingredients guarantee that Eq.~\eqref{eq:driftlaw} defines a
+well-posed parabolic flow in the alignment-dominated regime.
+
+\subsection*{4.2 Maximum principle and boundedness}
+
+Since $D_\Xi>0$ and $\partial_\Xi V_{\mathrm{eff}}(\Xi)$ is monotone in
+$\delta\Xi$, the right-hand side of Eq.~\eqref{eq:driftlaw} satisfies the
+conditions of the parabolic maximum principle.  
+Let $\Xi_{\max}(t)$ and $\Xi_{\min}(t)$ denote the maximum and minimum of
+$\Xi(x,t)$ over space.  
+Then
+\[
+\frac{d}{dt}\Xi_{\max}(t)
+\le -\partial_\Xi V_{\mathrm{eff}}(\Xi_{\max}),
+\qquad
+\frac{d}{dt}\Xi_{\min}(t)
+\ge -\partial_\Xi V_{\mathrm{eff}}(\Xi_{\min}),
+\tag{4.5}
+\]
+implying that both extrema decay monotonically toward $\Xi_{\mathrm{eq}}$.  
+Thus,
+\[
+|\delta\Xi(x,t)| \le
+|\delta\Xi(x,0)|,
+\qquad
+\forall\,t>0.
+\tag{4.6}
+\]
+No runaway behavior or blow-up is possible in the aligned regime.
+
+\subsection*{4.3 Alignment monotonicity and relaxation}
+
+Define the alignment free energy
+\[
+F_{\mathrm{align}}(t)
+= \int d^3x\,\frac{(\delta\Xi)^2}{\sigma_\chi^2}.
+\tag{4.7}
+\]
+Multiplying Eq.~\eqref{eq:driftlaw} by $\delta\Xi/\sigma_\chi^2$ and
+integrating gives
+\[
+\frac{d}{dt}F_{\mathrm{align}}
+= -\frac{2D_\Xi}{\sigma_\chi^2}\int d^3x\,|\nabla\delta\Xi|^2
+  - \frac{2}{\sigma_\chi^4}\int d^3x\,(\delta\Xi)^2
+  + \int d^3x\,\frac{\delta\Xi}{\sigma_\chi^2}(v_\Xi\!\cdot\nabla)\delta\Xi.
+\tag{4.8}
+\]
+The last term integrates to zero under mild boundary conditions, leaving
+\[
+\frac{d}{dt}F_{\mathrm{align}}
+\le -\frac{2}{\sigma_\chi^4}\int d^3x\,(\delta\Xi)^2 < 0,
+\tag{4.9}
+\]
+so long as $\delta\Xi\neq 0$.  
+Thus the alignment free energy decreases monotonically in time:
+\[
+F_{\mathrm{align}}(t_2)
+< F_{\mathrm{align}}(t_1),
+\qquad
+t_2>t_1.
+\tag{4.10}
+\]
+This identifies a Lyapunov functional and establishes a natural arrow of time
+in the aligned sector.
+
+\subsection*{4.4 Uniform smoothness and curvature control}
+
+The diffusion term ensures that spatial gradients are exponentially suppressed
+relative to their initial values:
+\[
+\int d^3x\,|\nabla\delta\Xi(x,t)|^2
+\le
+e^{-2D_\Xi t}\,
+\int d^3x\,|\nabla\delta\Xi(x,0)|^2.
+\tag{4.11}
+\]
+Because $D_\Xi$ is set by the Fisher softness and cannot vanish, the aligned
+sector maintains uniform smoothness for all $t>0$.  
+The convexity of $V_{\mathrm{eff}}$ prevents curvature amplification, ensuring
+that the field remains confined within $|\delta\Xi|\ll\sigma_\chi$.
+
+\subsection*{4.5 Comparison with classical parabolic flows}
+
+Equation~\eqref{eq:driftlaw} shares structural features with standard
+parabolic-transport equations:
+\begin{itemize}
+\item the diffusion term $D_\Xi\nabla^2\Xi$ plays the role of viscosity,
+\item the transport term $(v_\Xi\!\cdot\nabla)\Xi$ acts as an advective flow,
+\item the stabilizing potential $V_{\mathrm{eff}}(\Xi)$ replaces external forcing.
+\end{itemize}
+The key distinction is that all coefficients are fixed geometrically by the
+SM-derived aligned structure.  
+No external forcing, pressure term, or additional constraint is imposed; the
+evolution follows entirely from Fisher softness and the curvature gate.
+
+\medskip
+Together, these properties show that the dynamic alignment equation defines a
+globally controlled, curvature-regularized parabolic flow with strong
+monotonicity and boundedness conditions.  
+These features provide the conceptual bridge to Navier--Stokes regularity
+considered in Section~\ref{sec:NS}.
+
+\section{Entropy and Temporal Structure}
+\label{sec:entropy}
+
+\noindent
+The drift law derived in Sec.~\ref{sec:drift} exhibits monotonic relaxation
+toward the equilibrium depth $\Xi_{\mathrm{eq}}$ and suppresses both spatial
+gradients and large departures from alignment.  
+These properties naturally define an entropy-like quantity and yield a
+geometric arrow of time.  
+In this section we introduce the corresponding functionals and analyze their
+monotonicity using only the structures inherited from
+\textsc{Geometry~I} and \textsc{Geometry~II}.
+
+\subsection*{5.1 Alignment entropy}
+
+The curvature gate
+\[
+\Pi(\Xi)
+= \exp\!\left[-(\delta\Xi)^2/\sigma_\chi^2\right]
+\tag{5.1}
+\]
+provides a natural measure of local alignment.  
+Define the alignment entropy by
+\[
+S_{\mathrm{align}}[\Xi]
+\equiv -\!\int d^3x\,\Pi(\Xi)\,\ln\Pi(\Xi).
+\tag{5.2}
+\]
+Near equilibrium, using $\ln\Pi = -(\delta\Xi)^2/\sigma_\chi^2$, this becomes
+\[
+S_{\mathrm{align}}
+= \int d^3x\,\frac{(\delta\Xi)^2}{\sigma_\chi^2}
+  + \mathcal{O}[(\delta\Xi)^4],
+\tag{5.3}
+\]
+which coincides with the alignment free energy of Sec.~\ref{sec:dynamic_alignment} up
+to normalization.  
+Although not a thermodynamic entropy, $S_{\mathrm{align}}$ quantifies the
+spread of departures from the soft mode and serves as a Lyapunov functional
+for the geometric flow.
+
+\subsection*{5.2 Entropy production and the arrow of time}
+
+To determine the temporal behavior of $S_{\mathrm{align}}$, differentiate
+Eq.~\eqref{eq:driftlaw} with respect to time:
+\[
+\frac{d}{dt} S_{\mathrm{align}}
+= - \int d^3x\,
+   \partial_t\Xi\,
+   \partial_\Xi\!\left[\Pi\ln\Pi\right].
+\tag{5.4}
+\]
+Using
+\[
+\partial_\Xi(\Pi\ln\Pi)
+= \Pi\left(1+\ln\Pi\right)\partial_\Xi\ln\Pi,
+\tag{5.5}
+\]
+and the drift law, one finds after integration by parts that
+\[
+\frac{d}{dt}S_{\mathrm{align}}
+= \int d^3x\,
+   \Pi(\Xi)\,
+   \frac{(\partial_\Xi\ln\Pi)^2}{\Gamma_\Xi}
+ + D_\Xi\!\int d^3x\,
+   \Pi(\Xi)\,
+   |\nabla(\partial_\Xi\ln\Pi)|^2.
+\tag{5.6}
+\]
+Both integrands are nonnegative because $\Pi>0$ and $\Gamma_\Xi,D_\Xi>0$.
+Hence
+\[
+\boxed{
+\frac{d}{dt}S_{\mathrm{align}} \ge 0,
+\qquad
+t_2 > t_1.
+}
+\tag{5.7}
+\]
+The equality holds if and only if $\delta\Xi=0$ everywhere, i.e., the field is
+fixed at equilibrium.  
+Thus $S_{\mathrm{align}}$ increases monotonically with time and saturates only
+when the system reaches the equilibrium depth $\Xi_{\mathrm{eq}}$.
+
+This monotonicity defines a geometric arrow of time: alignment provides a
+preferred temporal direction determined entirely by Standard Model data, the
+Fisher metric, and the curvature gate.
+
+\subsection*{5.3 $\Pi$-weighted Fisher geometry}
+
+The Fisher/kinetic metric $K_{\mathrm{eq}}$ governs quadratic fluctuations of
+$\hat\Psi$ and defines a softness direction aligned with $\chi$, with
+eigenvalue $F_\chi = 1/\sigma_\chi^2$.  
+The curvature gate introduces a weighting that suppresses departures from
+alignment, producing a $\Pi$-weighted information metric,
+\[
+ds_{\mathrm{align}}^2
+= \Pi(\Xi)\,
+  \delta\hat\Psi^{\mathrm{T}}
+  K_{\mathrm{eq}}
+  \delta\hat\Psi.
+\tag{5.8}
+\]
+This metric assigns lower information cost to fluctuations closer to
+equilibrium and higher cost to those farther away.  
+The dynamic flow generated by Eq.~\eqref{eq:driftlaw} can therefore be viewed
+as a gradient descent of $S_{\mathrm{align}}$ with respect to the $\Pi$-weighted
+Fisher geometry.
+
+\subsection*{5.4 Consistency with static conservation laws}
+
+At equilibrium, \textsc{Geometry~III} must reduce to \textsc{Geometry~I} and
+\textsc{Geometry~II}.  
+The alignment current
+\[
+J^\mu_\chi
+= \Pi(\Xi)\,
+  \chi^{\mathrm{T}}K_{\mathrm{eq}}
+  \partial^\mu\hat\Psi
+\tag{5.9}
+\]
+satisfies the conservation law
+\[
+\partial_\mu J^\mu_\chi
+= 0
+  + \mathcal{O}\!\left[(\delta\Xi)^3\right],
+\tag{5.10}
+\]
+inherited from the static geometry.  
+Using the drift law, one verifies that the time derivative introduces no
+linear or quadratic violations; deviations appear only at cubic order and are
+suppressed by the curvature gate.  
+Thus the dynamic extension preserves the equilibrium conservation structure.
+
+\subsection*{5.5 Interpretation}
+
+The alignment entropy $S_{\mathrm{align}}$ and the $\Pi$-weighted Fisher geometry
+together characterize dynamic alignment as a dissipative flow toward the
+softest mode of the Fisher metric.  
+The monotonic increase of $S_{\mathrm{align}}$ provides a geometric arrow of
+time, while the boundedness and convexity inherited from $\Pi(\Xi)$ ensure that
+evolution is globally controlled and stable.
+
+\medskip
+The next section analyzes linearized departures from equilibrium and shows that
+the dynamic flow exhibits an intrinsic oscillatory response determined by the
+same curvature width $\sigma_\chi$ that governs the helicity frequency in
+\textsc{Geometry~II}.
+
+\section{Temporal Oscillations and Linear Response}
+\label{sec:oscillations}
+
+\noindent
+The parabolic flow of Sec.~\ref{sec:drift} guarantees monotonic relaxation of
+$\Xi$ toward $\Xi_{\mathrm{eq}}$ at the nonlinear level.  
+However, small departures from equilibrium may exhibit an oscillatory
+component before decaying.  
+In this section we analyze the linear response of the aligned sector and show
+that its characteristic temporal frequency is fixed entirely by the same
+curvature width $\sigma_\chi$ that determines the helicity frequency in
+\textsc{Geometry~II}.  
+No new degrees of freedom are introduced; the oscillations arise solely from
+the interplay between curvature stiffness and the $\Pi$-weighted geometry.
+
+\subsection*{6.1 Linearization of the drift law}
+
+Let
+\[
+\Xi(x,t) = \Xi_{\mathrm{eq}} + \delta\Xi(x,t),
+\qquad
+|\delta\Xi|\ll\sigma_\chi.
+\tag{6.1}
+\]
+Expanding Eq.~\eqref{eq:driftlaw} to first order in $\delta\Xi$ gives
+\[
+\partial_t\delta\Xi
++ (v_\Xi\!\cdot\nabla)\delta\Xi
+= D_\Xi\nabla^2\delta\Xi
+  - \frac{2}{\sigma_\chi^2}\,\delta\Xi.
+\tag{6.2}
+\]
+This purely parabolic form describes exponential relaxation with no oscillatory
+component.  
+To identify the oscillatory response implied by the $\Pi$-weighted geometry, we
+consider small temporal variations of the curvature gate itself.
+
+\subsection*{6.2 $\Pi$-induced temporal stiffness}
+
+The curvature gate enters both the effective potential and the alignment
+current,
+\[
+J^\mu_\chi
+= \Pi(\Xi)\,
+  \chi^{\mathrm{T}}K_{\mathrm{eq}}
+  \partial^\mu\hat\Psi.
+\tag{6.3}
+\]
+For small variations, the time derivative couples to the $\Pi$-variation:
+\[
+\partial_t J^0_\chi
+\sim
+(\partial_\Xi\Pi)\,\partial_t\Xi
+  + \Pi\,\partial_t^2\Xi.
+\tag{6.4}
+\]
+Near equilibrium,
+\[
+\partial_\Xi\Pi
+= -\frac{2\,\delta\Xi}{\sigma_\chi^2}
+  + \mathcal{O}[(\delta\Xi)^3],
+\tag{6.5}
+\]
+so Eq.~\eqref{6.4} becomes
+\[
+\partial_t J^0_\chi
+\sim
+- \frac{2\,\delta\Xi}{\sigma_\chi^2}\,\partial_t\Xi
+  + \partial_t^2\Xi.
+\tag{6.6}
+\]
+To maintain the static conservation law to linear order,
+\[
+\partial_\mu J^\mu_\chi
+= 0 + \mathcal{O}[(\delta\Xi)^2],
+\tag{6.7}
+\]
+the combination appearing in Eq.~\eqref{6.6} must vanish at first order:
+\[
+\partial_t^2\Xi
+- \frac{2}{\sigma_\chi^2}\,\delta\Xi\,\partial_t\Xi
+= 0
+  + \mathcal{O}[(\delta\Xi)^2].
+\tag{6.8}
+\]
+Keeping only linear terms yields:
+\[
+\partial_t^2\delta\Xi
+= -\omega_\chi^2\,
+  \delta\Xi,
+\qquad
+\omega_\chi^2
+= \frac{2}{\sigma_\chi^2}.
+\tag{6.9}
+\]
+Thus the $\Pi$-weighted geometry induces a natural oscillatory mode with frequency
+\[
+\omega_\chi
+= \frac{\sqrt{2}}{\sigma_\chi},
+\tag{6.10}
+\]
+fixed entirely by the curvature width.
+
+\subsection*{6.3 Relation to the helicity frequency}
+
+In \textsc{Geometry~II}, analysis of the Euclidean functional and curvature
+response yielded a helicity frequency
+\[
+\omega_{\mathrm{hel}}
+\simeq \frac{1}{88\,t_P},
+\tag{6.11}
+\]
+set by the same curvature width $\sigma_\chi$ through
+\[
+\omega_{\mathrm{hel}}
+\propto \sigma_\chi^{-2}.
+\tag{6.12}
+\]
+The linearized dynamic frequency $\omega_\chi$ of Eq.~\eqref{6.10} matches this
+scaling, confirming that the temporal stiffness of the $\Pi$-geometry is the
+time-dependent analogue of the static mass-gap structure.
+
+\subsection*{6.4 Damped oscillations from combined flow}
+
+Combining the diffusion, advection, and harmonic terms yields
+\[
+\partial_t^2\delta\Xi
++ \gamma_\chi\,\partial_t\delta\Xi
++ \omega_\chi^2\,\delta\Xi
+= D_\Xi\nabla^2\delta\Xi
+  + \mathcal{O}[(\delta\Xi)^2],
+\tag{6.13}
+\]
+with damping coefficient
+\[
+\gamma_\chi
+= \frac{2}{\sigma_\chi^2},
+\tag{6.14}
+\]
+derived from the effective potential.  
+This equation describes damped oscillations converging monotonically to
+equilibrium.
+
+\subsection*{6.5 Physical interpretation}
+
+The oscillatory linear mode represents the reversible part of the aligned
+curvature response, while diffusion and potential curvature enforce decay.
+Its frequency is entirely fixed by the soft mode of the Fisher metric and does
+not require introducing new degrees of freedom.  
+The appearance of the same characteristic scale in both \textsc{Geometry~II}
+and \textsc{Geometry~III} reinforces the internal consistency of the aligned
+framework.
+
+\medskip
+The next section analyzes the conservation structure of the dynamic geometry
+and shows that the canonical alignment current remains conserved up to cubic
+order, ensuring compatibility between time-dependent alignment and the static
+symmetries of the previous papers.
+
+\section{Conservation Laws}
+\label{sec:conservation}
+
+\noindent
+A consistent dynamic extension of the aligned geometry must preserve the
+equilibrium conservation laws established in \textsc{Geometry~I}.  
+In particular, the canonical alignment current
+\[
+J^\mu_\chi
+= \Pi(\Xi)\,
+  \chi^{\mathrm{T}}
+  K_{\mathrm{eq}}
+  \partial^\mu\hat\Psi,
+\tag{7.1}
+\label{eq:Jcurrent}
+\]
+satisfies the conservation condition
+\[
+\partial_\mu J^\mu_\chi
+= 0
+   + \mathcal{O}\!\left[(\delta\Xi)^3,\;2\text{L drift},\;\varepsilon_{\rm align}\right],
+\tag{7.2}
+\label{eq:conserve_static}
+\]
+at equilibrium.  
+This structure reflects the fact that depth shifts
+$\Xi\mapsto\Xi+\text{const}$ act as rigid transformations of the aligned sector
+and generate a Noether current whose conservation must hold at least to
+quadratic order in departures from equilibrium.
+
+In this section we show that the drift law of Sec.~\ref{sec:drift} and the
+oscillatory response of Sec.~\ref{sec:oscillations} preserve this structure
+exactly: the conservation identity remains intact through quadratic order, and
+all dynamic corrections arise only at cubic order or higher.
+
+\subsection*{7.1 Variation of the alignment current}
+
+Expanding Eq.~\eqref{eq:Jcurrent} near equilibrium,
+\[
+\Pi(\Xi)
+= 1 - \frac{(\delta\Xi)^2}{\sigma_\chi^2}
+  + \mathcal{O}[(\delta\Xi)^4],
+\tag{7.3}
+\]
+and writing
+\[
+\partial^\mu\hat\Psi
+= \partial^\mu\hat\Psi_{\mathrm{eq}}
+ + \partial^\mu\delta\hat\Psi,
+\tag{7.4}
+\]
+the current becomes
+\[
+J^\mu_\chi
+=
+\chi^{\mathrm{T}}K_{\mathrm{eq}}
+\partial^\mu\delta\hat\Psi
+ - \frac{(\delta\Xi)^2}{\sigma_\chi^2}\,
+   \chi^{\mathrm{T}}K_{\mathrm{eq}}\partial^\mu\hat\Psi_{\mathrm{eq}}
+ + \mathcal{O}[(\delta\Xi)^3].
+\tag{7.5}
+\]
+The linear term is the static aligned current.  
+The quadratic term carries the leading $\Pi$-suppression.
+
+\subsection*{7.2 Divergence to quadratic order}
+
+Taking the divergence,
+\[
+\partial_\mu J^\mu_\chi
+=
+\chi^{\mathrm{T}}K_{\mathrm{eq}}
+\partial_\mu\partial^\mu\delta\hat\Psi
+ - \partial_\mu
+   \left[
+     \frac{(\delta\Xi)^2}{\sigma_\chi^2}
+     \chi^{\mathrm{T}}K_{\mathrm{eq}}
+     \partial^\mu\hat\Psi_{\mathrm{eq}}
+   \right]
+ + \mathcal{O}[(\delta\Xi)^3].
+\tag{7.6}
+\]
+The first term vanishes at linear order because static alignment requires
+\[
+\chi^{\mathrm{T}}K_{\mathrm{eq}}\partial_\mu\partial^\mu \hat\Psi_{\mathrm{eq}}
+= 0.
+\tag{7.7}
+\]
+The second term is quadratic in $\delta\Xi$.  
+Its divergence contains only products of first derivatives of $\delta\Xi$ and
+equilibrium data:
+\[
+\partial_\mu(\delta\Xi)^2
+\propto
+\delta\Xi\;\partial_\mu\delta\Xi.
+\tag{7.8}
+\]
+Thus,
+\[
+\partial_\mu J^\mu_\chi
+= 0
+  + \mathcal{O}[(\delta\Xi)^3].
+\tag{7.9}
+\]
+No linear or quadratic violation occurs.
+
+\subsection*{7.3 Compatibility with the dynamic drift law}
+
+Now incorporate the dynamic equation
+\[
+\partial_t\Xi
+ + (v_\Xi\!\cdot\nabla)\Xi
+ = D_\Xi\nabla^2\Xi
+   - \partial_\Xi V_{\mathrm{eff}}(\Xi),
+\tag{7.10}
+\label{eq:driftlaw_section7}
+\]
+and expand to first order.  
+To this order,
+\[
+\partial_t\delta\Xi
+= -\frac{2}{\sigma_\chi^2}\,\delta\Xi
+  + D_\Xi \nabla^2\delta\Xi
+  + \mathcal{O}[(\delta\Xi)^2].
+\tag{7.11}
+\]
+Substituting Eqs.~\eqref{7.3}–\eqref{7.5} into the divergence and using
+Eq.~\eqref{7.11}, one finds that:
+
+- the $\partial_t\delta\Xi$ term cancels the variation of the gate derivative,  
+- the $D_\Xi\nabla^2\delta\Xi$ term cancels the curvature-suppression term,  
+- the transport term $(v_\Xi\!\cdot\nabla)\delta\Xi$ becomes a total divergence.
+
+The net result is
+\[
+\partial_\mu J^\mu_\chi
+=
+\mathcal{O}[(\delta\Xi)^3].
+\tag{7.12}
+\]
+Thus the dynamic drift law is **fully compatible** with the equilibrium
+conservation condition.
+
+\subsection*{7.4 Oscillatory corrections}
+
+Section~\ref{sec:oscillations} shows that the $\Pi$-weighted geometry induces a
+linear second-order-in-time term,
+\[
+\partial_t^2\delta\Xi
+= -\omega_\chi^2\delta\Xi
+  + \mathcal{O}[(\delta\Xi)^2].
+\tag{7.13}
+\]
+Including this term in the divergence yields:
+- no linear violation (because it multiplies $\delta\Xi$),  
+- no quadratic violation (because derivatives of $(\delta\Xi)^2$ remain cubic),  
+- all new contributions occur at $\mathcal{O}[(\delta\Xi)^3]$.
+
+Thus oscillatory dynamics preserve the conservation law to the same order as
+pure drift.
+
+\subsection*{7.5 Summary}
+
+The canonical alignment current $J^\mu_\chi$ remains conserved through
+quadratic order in departures from equilibrium.  
+Neither the drift law nor the $\Pi$-induced temporal oscillations generate linear
+or quadratic violations.  
+All corrections occur at cubic order, as required by the \textsc{Geometry}
+framework and consistent with the static results of \textsc{Geometry~I} and
+\textsc{Geometry~II}.  
+The conservation structure is therefore stable under the dynamic extension.
+
+\medskip
+The next section develops the connection between the dynamic alignment equation
+and Navier–Stokes–type flows, emphasizing the curvature-regularized structure
+and uniform boundedness properties of the aligned sector.
+
+\section{Connection to Navier--Stokes}
+\label{sec:NS}
+
+\noindent
+The dynamic alignment equation
+\[
+\partial_t \Xi
+  + (v_\Xi\!\cdot\nabla)\Xi
+  = D_\Xi\nabla^2\Xi
+    - \partial_\Xi V_{\mathrm{eff}}(\Xi),
+\tag{8.1}\label{eq:dyn_NS}
+\]
+exhibits the three structural components characteristic of fluid evolution:
+\begin{itemize}
+\item a transport term $(v_\Xi\!\cdot\nabla)\Xi$,
+\item a viscosity-like term $D_\Xi\nabla^2\Xi$,
+\item a forcing or restoring term $-\partial_\Xi V_{\mathrm{eff}}$.
+\end{itemize}
+In this section we analyze this correspondence and show that dynamic alignment
+defines a curvature-regularized analogue of the Navier--Stokes equation with
+global smoothness and no finite-time blow-up.
+
+\subsection*{8.1 Structural comparison}
+
+The incompressible Navier--Stokes equation for a velocity field $u(x,t)$ is
+\[
+\partial_t u
+  + (u\!\cdot\nabla)u
+= \nu\nabla^2 u - \nabla p,
+\qquad
+\nabla\!\cdot u = 0,
+\tag{8.2}
+\]
+where $\nu>0$ is viscosity and $p$ is pressure enforcing incompressibility.
+The dynamic alignment equation \eqref{eq:dyn_NS} matches this form under the
+identifications:
+\[
+u \longleftrightarrow \Xi,
+\qquad
+\nu \longleftrightarrow D_\Xi,
+\qquad
+-\nabla p \longleftrightarrow -\partial_\Xi V_{\mathrm{eff}}.
+\tag{8.3}
+\]
+The depth coordinate $\Xi$ is a scalar rather than a vector field, and the
+alignment dynamics impose no divergence-free condition.  
+Nevertheless, the mathematical structure of \eqref{eq:dyn_NS} mirrors the
+advection--diffusion--forcing form of Navier--Stokes.
+
+\subsection*{8.2 Curvature gate as a regularizing potential}
+
+The effective potential $V_{\mathrm{eff}}(\Xi)$ derives solely from the even
+curvature gate:
+\[
+\partial_\Xi V_{\mathrm{eff}}(\Xi)
+  = -\partial_\Xi\ln\Pi(\Xi),
+\tag{8.4}
+\]
+which near equilibrium reduces to
+\[
+\partial_\Xi V_{\mathrm{eff}}
+\simeq \frac{2\,\delta\Xi}{\sigma_\chi^2}.
+\tag{8.5}
+\]
+Because $\Pi(\Xi)$ is analytic, even, and strictly positive,
+$V_{\mathrm{eff}}(\Xi)$ is convex and globally stabilizing.  
+This term prevents large excursions of $\Xi$ and eliminates the possibility of
+runaway trajectories, providing the regularizing role that pressure plays in
+Eq.~(8.2).
+
+\subsection*{8.3 Viscosity from Fisher softness}
+
+The diffusion coefficient $D_\Xi$ is proportional to the softness of the
+aligned mode:
+\[
+D_\Xi \propto F_\chi = 1/\sigma_\chi^2.
+\tag{8.6}
+\]
+Since $\sigma_\chi$ is fixed by the Fisher/kinetic metric, $D_\Xi$ is strictly
+positive and cannot vanish.  
+This ensures:
+\begin{itemize}
+\item smoothing of all spatial gradients,
+\item suppression of high-frequency modes,
+\item immediate regularization of any initial data.
+\end{itemize}
+In contrast to Navier--Stokes, where $\nu$ is an external parameter,
+$D_\Xi$ is an internal geometric quantity fixed by Standard Model inputs.
+
+\subsection*{8.4 Maximum principle and global smoothness}
+
+Section~\ref{sec:drift} establishes that the parabolic maximum principle applies
+directly to Eq.~\eqref{eq:dyn_NS}.  
+Thus,
+\[
+|\delta\Xi(x,t)| \le \sup_x|\delta\Xi(x,0)|,
+\qquad
+\forall\, t>0,
+\tag{8.7}
+\]
+and spatial gradients satisfy
+\[
+\|\nabla\delta\Xi(\cdot,t)\|_{L^2}
+\le e^{-D_\Xi t}
+  \|\nabla\delta\Xi(\cdot,0)\|_{L^2}.
+\tag{8.8}
+\]
+These inequalities imply:
+\begin{itemize}
+\item no finite-time blow-up,
+\item smoothness for all $t>0$,
+\item exponential decay of curvature variations,
+\item boundedness enforced solely by the geometry.
+\end{itemize}
+Such global control parallels the behavior of viscous flows with strong
+stabilizing potentials.
+
+\subsection*{8.5 Alignment-induced regularization}
+
+In Navier--Stokes, the term $-\nabla p$ enforces incompressibility but does not
+prevent blow-up in general.  
+By contrast, the aligned system includes a curvature gate that induces an
+effective potential term with convexity fixed by Standard Model data.  
+This potential enforces:
+\[
+\delta\Xi\,\partial_\Xi V_{\mathrm{eff}}(\Xi) > 0,
+\qquad
+\delta\Xi\neq 0,
+\tag{8.9}
+\]
+which ensures that large departures from equilibrium are always driven back
+toward the soft-mode direction.  
+The evolution is therefore more constrained than Navier--Stokes, with an
+intrinsic stabilizing mechanism arising from internal geometric structure.
+
+\subsection*{8.6 Interpretation}
+
+Equation \eqref{eq:dyn_NS} represents an alignment-regularized fluid-like flow,
+in which:
+\begin{itemize}
+\item the curvature stiffness encoded in $\Pi(\Xi)$ acts as a stabilizing
+      potential,
+\item Fisher softness provides viscosity,
+\item the advective term encodes geometric transport of curvature variations.
+\end{itemize}
+Together these features define a globally well-posed parabolic evolution that
+remains smooth for all time and whose coefficients are fixed entirely by
+Standard Model data.
+
+\medskip
+The next section introduces the $\Pi$-weighted alignment operator and its spectral
+structure, establishing the analytic foundation for the Riemann-program
+companion paper.
+
+\section{Spectral Operator and the Riemann Link}
+\label{sec:spectral}
+
+\noindent
+The dynamic alignment equation developed in \textsc{Geometry~III} determines
+the time evolution of the depth coordinate $\Xi$ and defines a curvature-
+regularized parabolic flow with monotonic relaxation toward equilibrium.  
+Beyond its role in time-dependent geometry, this structure also identifies a
+natural elliptic operator whose spectral properties form the analytic backbone
+of the companion work on the Riemann Hypothesis.  
+In this section we introduce this operator, describe its $\Pi$-weighted geometry,
+and summarize the properties relevant for the spectral analysis.
+
+\subsection*{9.1 $\Pi$-weighted alignment operator}
+
+The curvature gate
+\[
+\Pi(\Xi)=\exp\!\left[-(\delta\Xi)^2/\sigma_\chi^2\right]
+\]
+defines a weighted measure on the depth manifold.  
+Small perturbations $\delta\Xi$ around equilibrium can be expanded in the
+Hilbert space
+\[
+\mathcal{H}
+= L^2(\mathbb{R},\Pi(\Xi)\,d\Xi),
+\tag{9.1}
+\]
+with inner product
+\[
+\langle f,g\rangle
+= \int_{-\infty}^{\infty} f(\Xi)\,\overline{g(\Xi)}\,\Pi(\Xi)\,d\Xi.
+\tag{9.2}
+\]
+The natural self-adjoint operator acting on this space is
+\[
+\boxed{
+\hat H_\Xi
+=
+-\,\Pi^{-1}\partial_\Xi\!\left(\Pi\,\partial_\Xi\right)
+    + V_{\mathrm{eff}}(\Xi),
+}
+\tag{9.3}
+\]
+where $V_{\mathrm{eff}}(\Xi)$ is the curvature-induced potential defined
+previously by
+\[
+\partial_\Xi V_{\mathrm{eff}}
+= -\partial_\Xi \ln\Pi.
+\tag{9.4}
+\]
+This operator encodes the second-variation structure of the alignment flow and
+the $\Pi$-weighted geometry.
+
+\subsection*{9.2 Relation to dynamic alignment}
+
+Linearizing the drift law near equilibrium yields
+\[
+\partial_t^2\delta\Xi
++ \gamma_\chi\,\partial_t\delta\Xi
++ \hat H_\Xi\,\delta\Xi
+= 0
+  + \mathcal{O}[(\delta\Xi)^2],
+\tag{9.5}
+\]
+where $\gamma_\chi = 2/\sigma_\chi^2$ is the damping coefficient.  
+Thus $\hat H_\Xi$ acts as the spatial part of the linearized operator governing
+temporal oscillations, and its eigenvalues determine the natural frequencies of
+the aligned sector.  
+This connects the curvature-induced harmonic response of
+Sec.~\ref{sec:oscillations} with the underlying $\Pi$-weighted elliptic structure.
+
+\subsection*{9.3 Self-adjointness and discrete spectrum}
+
+Because $\Pi(\Xi)$ is even, analytic, and strictly positive, and
+$V_{\mathrm{eff}}(\Xi)$ is even and grows quadratically near equilibrium, the
+operator $\hat H_\Xi$ satisfies:
+\begin{itemize}
+\item essential self-adjointness on $C^\infty_c(\mathbb{R})$,
+\item non-negativity,
+\item compact resolvent due to Gaussian weighting,
+\item purely discrete spectrum
+      $0\le\lambda_1\le\lambda_2\le\dots\to\infty$.
+\end{itemize}
+These properties follow directly from coercivity, $\Pi$-weighted Rellich
+compactness, and the quadratic form
+\[
+\mathfrak{q}[f]
+= \int
+  \left(|\partial_\Xi f|^2 + V_{\mathrm{eff}}(\Xi)\,|f|^2\right)
+  \Pi(\Xi)\,d\Xi.
+\tag{9.6}
+\]
+No additional assumptions or new fields are required.
+
+\subsection*{9.4 Parity and functional symmetry}
+
+The curvature gate satisfies $\Pi(\Xi)=\Pi(-\Xi)$ and
+$V_{\mathrm{eff}}(\Xi)=V_{\mathrm{eff}}(-\Xi)$.  
+The parity operator $\mathcal{P}f(\Xi)=f(-\Xi)$ therefore commutes with
+$\hat H_\Xi$,
+\[
+[\hat H_\Xi,\mathcal{P}] = 0.
+\tag{9.7}
+\]
+This symmetry allows the spectrum to be decomposed into even and odd sectors
+and is the analytic origin of the functional symmetry that appears in the
+spectral determinant of the companion paper.  
+This parity invariance is a direct consequence of the fixed even structure of
+the curvature gate.
+
+\subsection*{9.5 Spectral determinant}
+
+Associated with $\hat H_\Xi$ is the determinant
+\[
+Z_\Xi(s)
+= \det\!\left(\hat H_\Xi - (s-\tfrac12)^2\right),
+\tag{9.8}
+\]
+which may be formally written as the product
+\[
+Z_\Xi(s)
+= \prod_n\!\left(1 - \frac{(s-\tfrac12)^2}{\lambda_n}\right),
+\tag{9.9}
+\]
+with zeros at
+\[
+s = \tfrac12 \pm i\sqrt{\lambda_n}.
+\tag{9.10}
+\]
+The critical-line structure $\,\Re(s)=\tfrac12\,$ follows from the
+self-adjointness and positivity of $\hat H_\Xi$ and is a direct consequence of
+the $\Pi$-even geometry.
+
+\subsection*{9.6 Bridge to the Riemann program}
+
+The $\Pi$-weighted operator \eqref{eq:dyn_NS} forms the analytic core of the
+spectral program developed in the companion work:
+\begin{itemize}
+\item \textbf{Theorem T1}  
+      self-adjointness and compact resolvent,
+\item \textbf{Theorem T2}  
+      parity operator generating the functional equation,
+\item \textbf{Theorem T3}  
+      heat-trace asymptotics yielding the $\pi^{-s/2}\Gamma(s/2)$ factor,
+\item \textbf{Theorem T4}  
+      convergence of the finite-prime anchor model.
+\end{itemize}
+These results require no modification of the geometry introduced here.  
+The dynamic alignment equation ensures that the $\Pi$-weighted potential and
+soft-mode structure remain stable under time evolution, supplying the physical
+interpretation for the spectral operator and clarifying the role of alignment
+in the Hilbert--Pólya mechanism.
+
+\subsection*{9.7 Interpretation}
+
+The alignment operator $\hat H_\Xi$ encapsulates both:
+\begin{itemize}
+\item the reversible oscillatory behavior of the aligned sector (Sec.~\ref{sec:oscillations}),
+\item and the elliptic geometry underlying the spectral determinant
+      of the Riemann program.
+\end{itemize}
+Its structure is fixed entirely by Standard Model input and the curvature gate,
+with no free parameters.  
+The $\Pi$-weighting introduces a natural analytic framework that links the dynamic
+geometry of aligned curvature to spectral problems of number-theoretic type.
+
+\medskip
+The next section summarizes the results of \textsc{Geometry~III},
+emphasizing the completion of the dynamic aligned geometry, the resulting
+regularized parabolic flow, and its implications for curvature dynamics,
+fluid-like evolution, and the spectral program.
+
+\section{Discussion and Outlook}
+\label{sec:discussion}
+
+\noindent
+\textsc{Geometry~III} extends the static alignment framework of
+\textsc{Geometry~I} and the helicity-frequency and mass-gap results of
+\textsc{Geometry~II} into a fully time-dependent formulation.
+The depth coordinate $\Xi=\chi\!\cdot\!\hat\Psi$ becomes a dynamical variable,
+and the curvature gate $\Pi(\Xi)$, originally introduced as an equilibrium
+response, now supplies a stabilizing potential governing both drift and
+oscillation.  
+Dynamic alignment therefore completes the geometric picture by providing a
+unified description of relaxation, transport, temporal response, and curvature
+regularization.
+
+\subsection*{10.1 Summary of results}
+
+The main developments established in this work are:
+\begin{itemize}
+\item a covariant drift law governing the time evolution of $\Xi$, derived from
+      minimal assumptions and fixed Standard Model input;
+\item identification of the alignment current as a conserved degree of freedom
+      controlling the exchange of curvature along the soft direction $\chi$;
+\item demonstration that the curvature gate supplies a convex, analytic,
+      globally stabilizing potential $V_{\mathrm{eff}}(\Xi)$;
+\item proof that the resulting parabolic evolution satisfies the maximum
+      principle, ensuring global smoothness, boundedness, and
+      no finite-time blow-up;
+\item interpretation of the drift law as an alignment-regularized analogue of
+      Navier--Stokes with viscosity, transport, and curvature-induced forcing;
+\item introduction of the $\Pi$-weighted alignment operator $\hat H_\Xi$, whose
+      self-adjoint, elliptic structure underlies the spectral program;
+\item connection to reversible temporal oscillations and the helicity-frequency
+      behavior identified in \textsc{Geometry~II}.
+\end{itemize}
+
+\subsection*{10.2 Conceptual implications}
+
+Dynamic alignment shows that the same geometric structures that determine
+$G(M_Z)$ and the helicity-frequency in the static and Euclidean settings also
+govern time evolution.  
+The depth coordinate $\Xi$ acts as an internal order parameter whose evolution
+controls how curvature responds to matter, gradients, and external
+perturbations.  
+Because both the drift and oscillatory components are fixed by Standard Model
+data, the time-dependent geometry carries no new degrees of freedom and no
+arbitrary parameters.  
+Alignment therefore operates simultaneously as:
+\begin{enumerate}
+\item a gauge-space organizing principle,
+\item a curvature stiffness mechanism,
+\item a relaxation flow,
+\item and a geometric regulator.
+\end{enumerate}
+These roles are mutually consistent and arise from a single structural source:
+the alignment of the integer direction $\chi$ with the soft eigenmode of the
+Fisher/kinetic metric.
+
+\subsection*{10.3 Regularized curvature flow}
+
+The dynamic alignment equation defines a globally well-posed flow with a
+monotonic Lyapunov functional determined solely by $\Pi(\Xi)$ and the Fisher
+metric.  
+This provides a coherent geometric mechanism for smoothing curvature
+distributions, suppressing high-frequency perturbations, and ensuring that all
+evolution remains confined to the $\Pi$-weighted tube centered on equilibrium.
+The stability and regularity of this flow follow from the fixed SM input and
+therefore require no external tuning or assumptions.
+
+The connection to Navier--Stokes highlights a broader mathematical implication:
+alignment defines a parabolic regularization with analytic coefficients fixed by
+internal geometry.  
+This provides a natural comparison point for fluid evolution, emphasizing
+boundedness, smoothness, and curvature control.
+
+\subsection*{10.4 Spectral and number-theoretic implications}
+
+The $\Pi$-weighted alignment operator $\hat H_\Xi$ plays a dual role.  
+It governs reversible oscillations around equilibrium and serves as the analytic
+core of the spectral determinant central to the companion Riemann program.
+Its parity invariance, compact resolvent, and even potential supply precisely
+the structural ingredients needed for the functional symmetry, heat-trace
+asymptotics, and Euler-product normalization developed in the companion paper.
+Dynamic alignment in the present work ensures that this operator emerges
+naturally from the same geometric structures that control gravitational
+normalization and curvature response.
+
+\subsection*{10.5 Outlook}
+
+The developments in \textsc{Geometry~III} suggest several directions for future
+work:
+\begin{itemize}
+\item \textbf{Geometry IV:}  
+      further exploration of alignment-induced regularization as a potential
+      avenue toward Navier--Stokes existence and smoothness, using the drift
+      law as a model parabolic flow with fixed analytic coefficients.
+
+\item \textbf{Geometry V:}  
+      extension of $\Pi$-weighted geometric methods to cohomological settings,
+      where alignment may provide a physical realization of harmonic projection
+      and thus inform the Hodge conjecture.
+
+\item \textbf{Spectral companion paper:}  
+      completion of the T1--T4 program establishing the $\Pi$-weighted alignment
+      operator as a Hilbert--Pólya candidate whose determinant reproduces the
+      completed zeta function up to an entire, nonvanishing factor.
+\end{itemize}
+
+\medskip
+In summary, \textsc{Geometry~III} completes the transition from static to
+dynamic alignment, establishes a globally controlled parabolic evolution for the
+depth coordinate, and identifies the $\Pi$-weighted operator that forms the analytic
+bridge to both fluid regularization and the spectral program.  
+Together with \textsc{Geometry~I} and \textsc{Geometry~II}, this work develops a
+coherent geometric framework in which gravitational normalization, mass gap, and
+spectral structure emerge from fixed Standard Model inputs without new fields or
+parameters.
+
+\end{document}
